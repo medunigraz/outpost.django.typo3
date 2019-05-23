@@ -8,18 +8,16 @@ from django.conf import settings
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0003_auto_20170818_1538'),
-    ]
+    dependencies = [("typo3", "0003_auto_20170818_1538")]
 
     forward = [
-        '''
+        """
         DROP VIEW IF EXISTS "public"."typo3_event";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."typo3_news";
-        ''',
-        '''
+        """,
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_event" AS SELECT
             uid AS id,
             pid AS source_id,
@@ -93,8 +91,10 @@ class Migration(migrations.Migration):
             deleted = 0 AND
             hidden = 0
         WITH DATA;
-        '''.format(typo3_fileadmin=settings.OUTPOST.get('typo3_fileadmin')),
-        '''
+        """.format(
+            typo3_fileadmin=settings.OUTPOST.get("typo3_fileadmin")
+        ),
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_news" AS SELECT
             uid AS id,
             pid AS source_id,
@@ -148,17 +148,19 @@ class Migration(migrations.Migration):
             deleted = 0 AND
             hidden = 0
         WITH DATA;
-        '''.format(typo3_fileadmin=settings.OUTPOST.get('typo3_fileadmin')),
+        """.format(
+            typo3_fileadmin=settings.OUTPOST.get("typo3_fileadmin")
+        ),
     ]
 
     reverse = [
-        '''
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_event";
-        ''',
-        '''
+        """,
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_news";
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."typo3_event" AS SELECT
             uid AS id,
             to_date(start_date, 'YYYYMMDD') + CASE
@@ -230,8 +232,8 @@ class Migration(migrations.Migration):
             END > NOW() AND
             deleted = 0 AND
             hidden = 0;
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."typo3_news" AS SELECT
             uid AS id,
             pid AS page,
@@ -265,12 +267,7 @@ class Migration(migrations.Migration):
             (endtime = 0 OR to_timestamp(endtime) > NOW()) AND
             deleted = 0 AND
             hidden = 0;
-        ''',
+        """,
     ]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]

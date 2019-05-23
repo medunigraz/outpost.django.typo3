@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE FOREIGN TABLE "typo3"."group" (
             uid integer,
             pid integer,
@@ -22,8 +22,10 @@ class Migration(migrations.Migration):
             tablename 'fe_groups',
             db_url '{typo3}'
         );
-        '''.format(typo3=settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            typo3=settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_group" AS SELECT
             uid AS id,
             pid AS page,
@@ -33,8 +35,8 @@ class Migration(migrations.Migration):
         WHERE
             hidden = 0 AND
             deleted = 0
-        ''',
-        '''
+        """,
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_news_group" AS SELECT
             uid AS news_id,
             unnest(string_to_array(fe_group, ',')::integer[]) AS group_id
@@ -42,27 +44,20 @@ class Migration(migrations.Migration):
             typo3.news
         WHERE
             fe_group IS NOT NULL
-        ''',
+        """,
     ]
     reverse = [
-        '''
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_news_group";
-        ''',
-        '''
+        """,
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_group";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."group";
-        ''',
+        """,
     ]
 
-    dependencies = [
-        ('typo3', '0012_indexes'),
-    ]
+    dependencies = [("typo3", "0012_indexes")]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]

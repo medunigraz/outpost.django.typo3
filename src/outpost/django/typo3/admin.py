@@ -5,7 +5,4 @@ from . import models
 
 @admin.register(models.DjangoSource)
 class DjangoSourceAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'private',
-    )
+    list_display = ("id", "private")

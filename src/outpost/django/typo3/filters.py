@@ -1,14 +1,11 @@
 from django.utils.translation import gettext_lazy as _
-from django_filters.rest_framework import (
-    filters,
-    filterset,
-)
+from django_filters.rest_framework import filters, filterset
 
 from . import models
 
 
 class NewsFilter(filterset.FilterSet):
-    '''
+    """
     ## Filters
 
     To filter for exact value matches:
@@ -30,120 +27,90 @@ class NewsFilter(filterset.FilterSet):
       - `email`: `iexact`, `contains`, `icontains`, `startswith`, `istartswith`, `endswith`, `iendswith`, `regex`, `iregex`
       - `keywords`: `iexact`, `contains`, `icontains`, `startswith`, `istartswith`, `endswith`, `iendswith`, `regex`, `iregex`
       - `last_modified`: `gt`, `lt`, `gte`, `lte`, `date`
-    '''
+    """
+
     language = filters.ModelChoiceFilter(
-        label=_('Language'),
-        queryset=models.Language.objects.all()
+        label=_("Language"), queryset=models.Language.objects.all()
     )
     categories = filters.ModelMultipleChoiceFilter(
-        label=_('Categories'),
-        queryset=models.Category.objects.all()
+        label=_("Categories"), queryset=models.Category.objects.all()
     )
     groups = filters.ModelMultipleChoiceFilter(
-        label=_('Groups'),
-        queryset=models.Group.objects.all()
+        label=_("Groups"), queryset=models.Group.objects.all()
     )
 
     class Meta:
         model = models.News
         fields = {
-            'datetime': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'date',
+            "datetime": ("exact", "gt", "lt", "gte", "lte", "date"),
+            "title": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'title': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
+            "teaser": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'teaser': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
+            "start": ("exact", "gt", "lt", "gte", "lte", "date"),
+            "end": ("exact", "gt", "lt", "gte", "lte", "date"),
+            "author": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'start': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'date',
+            "email": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'end': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'date',
+            "keywords": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'author': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
-            ),
-            'email': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
-            ),
-            'keywords': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
-            ),
-            'last_modified': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'date',
-            ),
+            "last_modified": ("exact", "gt", "lt", "gte", "lte", "date"),
         }
 
 
 class EventFilter(filterset.FilterSet):
-    '''
+    """
     ## Filters
 
     To filter for exact value matches:
@@ -167,136 +134,112 @@ class EventFilter(filterset.FilterSet):
       - `contact`: `iexact`, `contains`, `icontains`, `startswith`, `istartswith`, `endswith`, `iendswith`, `regex`, `iregex`
       - `email`: `iexact`, `contains`, `icontains`, `startswith`, `istartswith`, `endswith`, `iendswith`, `regex`, `iregex`
       - `last_modified`: `exact`, `gt`, `lt`, `gte`, `lte`, `contains`, `startswith`
-    '''
+    """
+
     language = filters.ModelChoiceFilter(
-        label=_('Language'),
-        queryset=models.Language.objects.all()
+        label=_("Language"), queryset=models.Language.objects.all()
     )
     calendar = filters.ModelChoiceFilter(
-        label=_('Calendar'),
-        queryset=models.Calendar.objects.all()
+        label=_("Calendar"), queryset=models.Calendar.objects.all()
     )
     categories = filters.ModelMultipleChoiceFilter(
-        label=_('Categories'),
-        queryset=models.EventCategory.objects.all()
+        label=_("Categories"), queryset=models.EventCategory.objects.all()
     )
 
     class Meta:
         model = models.Event
         fields = {
-            'title': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
+            "title": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'organizer': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
+            "organizer": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'location': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
+            "location": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'teaser': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
+            "teaser": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'start': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'contains',
-                'startswith',
+            "start": ("exact", "gt", "lt", "gte", "lte", "contains", "startswith"),
+            "end": ("exact", "gt", "lt", "gte", "lte", "contains", "startswith"),
+            "registration_end": (
+                "exact",
+                "gt",
+                "lt",
+                "gte",
+                "lte",
+                "contains",
+                "startswith",
             ),
-            'end': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'contains',
-                'startswith',
+            "dfp_points": ("exact", "lt", "gt", "lte", "gte"),
+            "contact": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'registration_end': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'contains',
-                'startswith',
+            "email": (
+                "exact",
+                "iexact",
+                "contains",
+                "icontains",
+                "startswith",
+                "istartswith",
+                "endswith",
+                "iendswith",
+                "regex",
+                "iregex",
             ),
-            'dfp_points': (
-                'exact',
-                'lt',
-                'gt',
-                'lte',
-                'gte',
-            ),
-            'contact': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
-            ),
-            'email': (
-                'exact',
-                'iexact',
-                'contains',
-                'icontains',
-                'startswith',
-                'istartswith',
-                'endswith',
-                'iendswith',
-                'regex',
-                'iregex',
-            ),
-            'last_modified': (
-                'exact',
-                'gt',
-                'lt',
-                'gte',
-                'lte',
-                'contains',
-                'startswith',
+            "last_modified": (
+                "exact",
+                "gt",
+                "lt",
+                "gte",
+                "lte",
+                "contains",
+                "startswith",
             ),
         }

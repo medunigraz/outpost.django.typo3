@@ -7,28 +7,31 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0013_news_fe_groups'),
-    ]
+    dependencies = [("typo3", "0013_news_fe_groups")]
 
     operations = [
         migrations.CreateModel(
-            name='Group',
+            name="Group",
             fields=[
-                ('id', models.IntegerField(primary_key=True, serialize=False)),
-                ('title', models.CharField(blank=True, max_length=256, null=True)),
+                ("id", models.IntegerField(primary_key=True, serialize=False)),
+                ("title", models.CharField(blank=True, max_length=256, null=True)),
             ],
+            options={"db_table": "typo3_group", "managed": False},
+        ),
+        migrations.AlterModelOptions(
+            name="event",
             options={
-                'db_table': 'typo3_group',
-                'managed': False,
+                "get_latest_by": "start",
+                "managed": False,
+                "ordering": ("start", "end"),
             },
         ),
         migrations.AlterModelOptions(
-            name='event',
-            options={'get_latest_by': 'start', 'managed': False, 'ordering': ('start', 'end')},
-        ),
-        migrations.AlterModelOptions(
-            name='news',
-            options={'get_latest_by': 'datetime', 'managed': False, 'ordering': ('-datetime',)},
+            name="news",
+            options={
+                "get_latest_by": "datetime",
+                "managed": False,
+                "ordering": ("-datetime",),
+            },
         ),
     ]

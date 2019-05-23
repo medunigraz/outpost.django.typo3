@@ -7,19 +7,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0005_category_mapping'),
-    ]
+    dependencies = [("typo3", "0005_category_mapping")]
 
     operations = [
         migrations.CreateModel(
-            name='NewsCategory',
+            name="NewsCategory",
             fields=[
-                ('id', models.CharField(max_length=128, primary_key=True, serialize=False)),
+                (
+                    "id",
+                    models.CharField(max_length=128, primary_key=True, serialize=False),
+                )
             ],
-            options={
-                'db_table': 'typo3_newscategory',
-                'managed': False,
-            },
-        ),
+            options={"db_table": "typo3_newscategory", "managed": False},
+        )
     ]

@@ -7,21 +7,16 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0015_event_category'),
-    ]
+    dependencies = [("typo3", "0015_event_category")]
 
     operations = [
         migrations.CreateModel(
-            name='EventCategory',
+            name="EventCategory",
             fields=[
-                ('id', models.IntegerField(primary_key=True, serialize=False)),
-                ('title', models.TextField(blank=True, null=True)),
-                ('sib_order', models.PositiveIntegerField()),
+                ("id", models.IntegerField(primary_key=True, serialize=False)),
+                ("title", models.TextField(blank=True, null=True)),
+                ("sib_order", models.PositiveIntegerField()),
             ],
-            options={
-                'db_table': 'typo3_eventcategory',
-                'managed': False,
-            },
-        ),
+            options={"db_table": "typo3_eventcategory", "managed": False},
+        )
     ]

@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE FOREIGN TABLE "typo3"."cal_category" (
             uid integer,
             pid integer,
@@ -26,8 +26,10 @@ class Migration(migrations.Migration):
             tablename 'tx_cal_category',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE FOREIGN TABLE "typo3"."cal_event_category" (
             uid_local integer,
             uid_foreign integer,
@@ -38,8 +40,10 @@ class Migration(migrations.Migration):
             tablename 'tx_cal_event_category_mm',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE VIEW "public"."typo3_eventcategory" AS SELECT
             uid AS id,
             pid AS page,
@@ -52,36 +56,29 @@ class Migration(migrations.Migration):
         WHERE
             hidden = 0 AND
             deleted = 0;
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."typo3_event_eventcategory" AS SELECT
             uid_local AS event_id,
             uid_foreign AS eventcategory_id
         FROM "typo3"."cal_event_category";
-        ''',
+        """,
     ]
     reverse = [
-        '''
+        """
         DROP VIEW IF EXISTS "public"."typo3_event_eventcategory";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."typo3_eventcategory";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."cal_event_category";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."cal_category";
-        ''',
+        """,
     ]
 
-    dependencies = [
-        ('typo3', '0014_auto_20180906_1035'),
-    ]
+    dependencies = [("typo3", "0014_auto_20180906_1035")]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]

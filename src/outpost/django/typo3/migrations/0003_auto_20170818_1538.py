@@ -7,17 +7,13 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0002_calendar_category_event_language_news'),
-    ]
+    dependencies = [("typo3", "0002_calendar_category_event_language_news")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='event',
-            options={'managed': False, 'ordering': ('start', 'end')},
+            name="event", options={"managed": False, "ordering": ("start", "end")}
         ),
         migrations.AlterModelOptions(
-            name='news',
-            options={'managed': False, 'ordering': ('-datetime',)},
+            name="news", options={"managed": False, "ordering": ("-datetime",)}
         ),
     ]

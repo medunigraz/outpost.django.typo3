@@ -9,10 +9,10 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE SCHEMA IF NOT EXISTS typo3;
-        ''',
-        '''
+        """,
+        """
         CREATE FOREIGN TABLE "typo3"."language" (
             uid integer,
             tstamp integer,
@@ -25,8 +25,10 @@ class Migration(migrations.Migration):
             tablename 'sys_language',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE FOREIGN TABLE "typo3"."category" (
             uid integer,
             tstamp integer,
@@ -49,8 +51,10 @@ class Migration(migrations.Migration):
             tablename 'sys_category',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE FOREIGN TABLE "typo3"."calendar" (
             uid integer,
             tstamp integer,
@@ -68,8 +72,10 @@ class Migration(migrations.Migration):
             tablename 'tx_cal_calendar',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE FOREIGN TABLE "typo3"."event" (
             uid integer,
             pid integer,
@@ -106,8 +112,10 @@ class Migration(migrations.Migration):
             tablename 'tx_cal_event',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE FOREIGN TABLE "typo3"."news" (
             uid integer,
             pid integer,
@@ -151,8 +159,10 @@ class Migration(migrations.Migration):
             tablename 'tx_news_domain_model_news',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE VIEW "public"."typo3_language" AS SELECT
             uid AS id,
             title,
@@ -161,8 +171,8 @@ class Migration(migrations.Migration):
         FROM "typo3"."language"
         WHERE
             hidden = 0;
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."typo3_category" AS SELECT
             uid AS id,
             CASE WHEN
@@ -198,8 +208,8 @@ class Migration(migrations.Migration):
         WHERE
             deleted = 0 AND
             hidden = 0;
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."typo3_calendar" AS SELECT
             uid AS id,
             title,
@@ -215,8 +225,8 @@ class Migration(migrations.Migration):
             type = 0 AND
             deleted = 0 AND
             hidden = 0;
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."typo3_event" AS SELECT
             uid AS id,
             to_date(start_date, 'YYYYMMDD') + CASE
@@ -288,8 +298,8 @@ class Migration(migrations.Migration):
             END > NOW() AND
             deleted = 0 AND
             hidden = 0;
-        ''',
-        '''
+        """,
+        """
         CREATE VIEW "public"."typo3_news" AS SELECT
             uid AS id,
             pid AS page,
@@ -323,48 +333,41 @@ class Migration(migrations.Migration):
             (endtime = 0 OR to_timestamp(endtime) > NOW()) AND
             deleted = 0 AND
             hidden = 0;
-        ''',
+        """,
     ]
     reverse = [
-        '''
+        """
         DROP VIEW IF EXISTS "public"."typo3_news";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."typo3_event";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."typo3_calendar";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."typo3_category";
-        ''',
-        '''
+        """,
+        """
         DROP VIEW IF EXISTS "public"."typo3_language";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."language";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."category";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."event";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."calendar";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."news";
-        ''',
+        """,
     ]
 
-    dependencies = [
-        ('base', '0005_html_unescape'),
-    ]
+    dependencies = [("base", "0005_html_unescape")]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]

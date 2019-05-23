@@ -7,26 +7,21 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0010_event_media'),
-    ]
+    dependencies = [("typo3", "0010_event_media")]
 
     operations = [
         migrations.CreateModel(
-            name='EventMedia',
+            name="EventMedia",
             fields=[
-                ('id', models.IntegerField(primary_key=True, serialize=False)),
-                ('title', models.CharField(blank=True, max_length=256, null=True)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('alternative', models.TextField(blank=True, null=True)),
-                ('url', models.URLField()),
-                ('mimetype', models.CharField(blank=True, max_length=256, null=True)),
-                ('filename', models.CharField(blank=True, max_length=256, null=True)),
-                ('size', models.PositiveIntegerField(blank=True, null=True)),
+                ("id", models.IntegerField(primary_key=True, serialize=False)),
+                ("title", models.CharField(blank=True, max_length=256, null=True)),
+                ("description", models.TextField(blank=True, null=True)),
+                ("alternative", models.TextField(blank=True, null=True)),
+                ("url", models.URLField()),
+                ("mimetype", models.CharField(blank=True, max_length=256, null=True)),
+                ("filename", models.CharField(blank=True, max_length=256, null=True)),
+                ("size", models.PositiveIntegerField(blank=True, null=True)),
             ],
-            options={
-                'db_table': 'typo3_eventmedia',
-                'managed': False,
-            },
-        ),
+            options={"db_table": "typo3_eventmedia", "managed": False},
+        )
     ]

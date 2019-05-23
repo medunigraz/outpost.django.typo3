@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE FOREIGN TABLE "typo3"."sys_category_record_mm" (
             uid_local integer,
             uid_foreign integer,
@@ -22,8 +22,10 @@ class Migration(migrations.Migration):
             tablename 'sys_category_record_mm',
             db_url '{}'
         );
-        '''.format(settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE VIEW "public"."typo3_newscategory" AS SELECT
             CONCAT(uid_local, '-', uid_foreign) AS id,
             uid_local AS category_id,
@@ -31,24 +33,17 @@ class Migration(migrations.Migration):
         FROM "typo3"."sys_category_record_mm"
         WHERE
             tablenames = 'tx_news_domain_model_news';
-        ''',
+        """,
     ]
     reverse = [
-        '''
+        """
         DROP VIEW IF EXISTS "public"."typo3_newscategory";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."sys_category_record_mm";
-        ''',
+        """,
     ]
 
-    dependencies = [
-        ('typo3', '0004_auto_20170906_1021'),
-    ]
+    dependencies = [("typo3", "0004_auto_20170906_1021")]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]

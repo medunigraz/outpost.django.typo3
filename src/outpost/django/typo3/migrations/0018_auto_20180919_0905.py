@@ -7,31 +7,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0017_media'),
-    ]
+    dependencies = [("typo3", "0017_media")]
 
     operations = [
         migrations.CreateModel(
-            name='Media',
+            name="Media",
             fields=[
-                ('id', models.IntegerField(primary_key=True, serialize=False)),
-                ('url', models.URLField()),
-                ('mimetype', models.CharField(blank=True, max_length=256, null=True)),
-                ('filename', models.CharField(blank=True, max_length=256, null=True)),
-                ('size', models.PositiveIntegerField(blank=True, null=True)),
+                ("id", models.IntegerField(primary_key=True, serialize=False)),
+                ("url", models.URLField()),
+                ("mimetype", models.CharField(blank=True, max_length=256, null=True)),
+                ("filename", models.CharField(blank=True, max_length=256, null=True)),
+                ("size", models.PositiveIntegerField(blank=True, null=True)),
             ],
-            options={
-                'db_table': 'typo3_media',
-                'managed': False,
-            },
+            options={"db_table": "typo3_media", "managed": False},
         ),
         migrations.AlterModelOptions(
-            name='eventmedia',
-            options={'managed': False, 'ordering': ('order',)},
+            name="eventmedia", options={"managed": False, "ordering": ("order",)}
         ),
         migrations.AlterModelOptions(
-            name='newsmedia',
-            options={'managed': False, 'ordering': ('order',)},
+            name="newsmedia", options={"managed": False, "ordering": ("order",)}
         ),
     ]

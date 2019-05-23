@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_media" AS SELECT
             uid AS id,
             format('{base}%s', identifier) AS url,
@@ -18,11 +18,13 @@ class Migration(migrations.Migration):
             size AS size
         FROM
             typo3.file
-        '''.format(base=settings.OUTPOST.get('typo3_fileadmin')),
-        '''
+        """.format(
+            base=settings.OUTPOST.get("typo3_fileadmin")
+        ),
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newsmedia";
-        ''',
-        '''
+        """,
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_newsmedia" AS SELECT
             r.uid AS id,
             r.uid_local AS media_id,
@@ -45,11 +47,13 @@ class Migration(migrations.Migration):
             n.hidden = 0 AND
             r.deleted = 0 AND
             r.hidden = 0
-        '''.format(base=settings.OUTPOST.get('typo3_fileadmin')),
-        '''
+        """.format(
+            base=settings.OUTPOST.get("typo3_fileadmin")
+        ),
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventmedia";
-        ''',
-        '''
+        """,
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_eventmedia" AS  SELECT
             r.uid AS id,
             r.uid_local AS media_id,
@@ -72,13 +76,15 @@ class Migration(migrations.Migration):
             e.hidden = 0 AND
             r.deleted = 0 AND
             r.hidden = 0
-        '''.format(base=settings.OUTPOST.get('typo3_fileadmin')),
+        """.format(
+            base=settings.OUTPOST.get("typo3_fileadmin")
+        ),
     ]
     reverse = [
-        '''
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventmedia";
-        ''',
-        '''
+        """,
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_eventmedia" AS  SELECT
             r.uid AS id,
             f.uid AS media_id,
@@ -106,11 +112,13 @@ class Migration(migrations.Migration):
             e.hidden = 0 AND
             r.deleted = 0 AND
             r.hidden = 0
-        '''.format(base=settings.OUTPOST.get('typo3_fileadmin')),
-        '''
+        """.format(
+            base=settings.OUTPOST.get("typo3_fileadmin")
+        ),
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newsmedia";
-        ''',
-        '''
+        """,
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_newsmedia" AS SELECT
             r.uid AS id,
             f.uid AS media_id,
@@ -138,19 +146,14 @@ class Migration(migrations.Migration):
             n.hidden = 0 AND
             r.deleted = 0 AND
             r.hidden = 0
-        '''.format(base=settings.OUTPOST.get('typo3_fileadmin')),
-        '''
+        """.format(
+            base=settings.OUTPOST.get("typo3_fileadmin")
+        ),
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_media";
-        ''',
+        """,
     ]
 
-    dependencies = [
-        ('typo3', '0016_eventcategory'),
-    ]
+    dependencies = [("typo3", "0016_eventcategory")]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]

@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_eventmedia" AS  SELECT
             r.uid AS id,
             f.uid AS media_id,
@@ -37,21 +37,16 @@ class Migration(migrations.Migration):
             e.hidden = 0 AND
             r.deleted = 0 AND
             r.hidden = 0
-        '''.format(base=settings.OUTPOST.get('typo3_fileadmin')),
-    ]
-    reverse = [
-        '''
-        DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventmedia";
-        ''',
-    ]
-
-    dependencies = [
-        ('typo3', '0009_newsmedia'),
-    ]
-
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
+        """.format(
+            base=settings.OUTPOST.get("typo3_fileadmin")
         )
     ]
+    reverse = [
+        """
+        DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventmedia";
+        """
+    ]
+
+    dependencies = [("typo3", "0009_newsmedia")]
+
+    operations = [migrations.RunSQL(forward, reverse)]

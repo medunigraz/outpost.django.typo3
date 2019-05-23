@@ -7,17 +7,15 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0018_auto_20180919_0905'),
-    ]
+    dependencies = [("typo3", "0018_auto_20180919_0905")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='eventmedia',
-            options={'managed': False, 'ordering': ('-preview', '-order')},
+            name="eventmedia",
+            options={"managed": False, "ordering": ("-preview", "-order")},
         ),
         migrations.AlterModelOptions(
-            name='newsmedia',
-            options={'managed': False, 'ordering': ('-preview', '-order')},
+            name="newsmedia",
+            options={"managed": False, "ordering": ("-preview", "-order")},
         ),
     ]

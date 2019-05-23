@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     forward = [
-        '''
+        """
         CREATE FOREIGN TABLE "typo3"."file" (
             uid integer,
             pid integer,
@@ -34,8 +34,10 @@ class Migration(migrations.Migration):
             tablename 'sys_file',
             db_url '{typo3}'
         );
-        '''.format(typo3=settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            typo3=settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE FOREIGN TABLE "typo3"."file_reference" (
             uid integer,
             pid integer,
@@ -65,8 +67,10 @@ class Migration(migrations.Migration):
             tablename 'sys_file_reference',
             db_url '{typo3}'
         );
-        '''.format(typo3=settings.MULTICORN.get('typo3')),
-        '''
+        """.format(
+            typo3=settings.MULTICORN.get("typo3")
+        ),
+        """
         CREATE MATERIALIZED VIEW "public"."typo3_newsmedia" AS SELECT
             r.uid AS id,
             f.uid AS media_id,
@@ -94,27 +98,22 @@ class Migration(migrations.Migration):
             n.hidden = 0 AND
             r.deleted = 0 AND
             r.hidden = 0
-        '''.format(base=settings.OUTPOST.get('typo3_fileadmin')),
+        """.format(
+            base=settings.OUTPOST.get("typo3_fileadmin")
+        ),
     ]
     reverse = [
-        '''
+        """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newsmedia";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."file_reference";
-        ''',
-        '''
+        """,
+        """
         DROP FOREIGN TABLE IF EXISTS "typo3"."file";
-        ''',
+        """,
     ]
 
-    dependencies = [
-        ('typo3', '0007_indices'),
-    ]
+    dependencies = [("typo3", "0007_indices")]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]

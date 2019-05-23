@@ -7,16 +7,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0020_sources'),
-    ]
+    dependencies = [("typo3", "0020_sources")]
 
     operations = [
         migrations.CreateModel(
-            name='DjangoSource',
+            name="DjangoSource",
             fields=[
-                ('id', models.PositiveIntegerField(primary_key=True, serialize=False)),
-                ('private', models.BooleanField(default=True)),
+                ("id", models.PositiveIntegerField(primary_key=True, serialize=False)),
+                ("private", models.BooleanField(default=True)),
             ],
-        ),
+        )
     ]

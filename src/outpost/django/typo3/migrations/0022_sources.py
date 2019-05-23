@@ -7,12 +7,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('typo3', '0021_djangosource'),
-    ]
+    dependencies = [("typo3", "0021_djangosource")]
 
     forward = [
-        '''
+        """
         CREATE VIEW "public"."typo3_source" AS
         SELECT
         t.id AS id,
@@ -22,18 +20,13 @@ class Migration(migrations.Migration):
         LEFT OUTER JOIN
             "public"."typo3_djangosource" AS d
             ON t.id = d.id
-        ''',
+        """
     ]
 
     reverse = [
-        '''
+        """
         DROP VIEW IF EXISTS "public"."typo3_source";
-        ''',
+        """
     ]
 
-    operations = [
-        migrations.RunSQL(
-            forward,
-            reverse
-        )
-    ]
+    operations = [migrations.RunSQL(forward, reverse)]
