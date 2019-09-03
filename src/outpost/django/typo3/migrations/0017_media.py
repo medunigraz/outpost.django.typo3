@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from django.conf import settings
+
+from ..conf import settings
 
 
 class Migration(migrations.Migration):
@@ -19,7 +20,7 @@ class Migration(migrations.Migration):
         FROM
             typo3.file
         """.format(
-            base=settings.OUTPOST.get("typo3_fileadmin")
+            base=settings.TYPO3_FILEADMIN_URL
         ),
         """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newsmedia";
@@ -48,7 +49,7 @@ class Migration(migrations.Migration):
             r.deleted = 0 AND
             r.hidden = 0
         """.format(
-            base=settings.OUTPOST.get("typo3_fileadmin")
+            base=settings.TYPO3_FILEADMIN_URL
         ),
         """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventmedia";
@@ -77,7 +78,7 @@ class Migration(migrations.Migration):
             r.deleted = 0 AND
             r.hidden = 0
         """.format(
-            base=settings.OUTPOST.get("typo3_fileadmin")
+            base=settings.TYPO3_FILEADMIN_URL
         ),
     ]
     reverse = [
@@ -113,7 +114,7 @@ class Migration(migrations.Migration):
             r.deleted = 0 AND
             r.hidden = 0
         """.format(
-            base=settings.OUTPOST.get("typo3_fileadmin")
+            base=settings.TYPO3_FILEADMIN_URL
         ),
         """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newsmedia";
@@ -147,7 +148,7 @@ class Migration(migrations.Migration):
             r.deleted = 0 AND
             r.hidden = 0
         """.format(
-            base=settings.OUTPOST.get("typo3_fileadmin")
+            base=settings.TYPO3_FILEADMIN_URL
         ),
         """
         DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_media";

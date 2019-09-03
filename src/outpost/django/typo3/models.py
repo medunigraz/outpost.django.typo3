@@ -1,11 +1,12 @@
 import logging
 
 import requests
-from django.conf import settings
 from django.contrib.gis.db import models
 from memoize import memoize
 from purl import URL
 from treebeard.al_tree import AL_Node
+
+from .conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -383,7 +384,7 @@ class Event(models.Model):
 
     @memoize(timeout=3600)
     def url(self):
-        url = URL(settings.OUTPOST["typo3_api"])
+        url = URL(settings.TYPO3_API_URL)
         url = url.query_param("tx_mugapi_endpoint[recordType]", "Event")
         url = url.query_param("tx_mugapi_endpoint[recordUid]", self.pk)
         url = url.query_param("tx_mugapi_endpoint[redirect]", 1)
@@ -397,7 +398,7 @@ class Event(models.Model):
 
     @memoize(timeout=86400)
     def breadcrumb(self):
-        url = URL(settings.OUTPOST["typo3_api"])
+        url = URL(settings.TYPO3_API_URL)
         url = url.query_param("tx_mugapi_endpoint[recordType]", "RootLine")
         url = url.query_param("tx_mugapi_endpoint[pageUid]", self.source_id)
         logger.debug(f"Fetching TYPO3 event breadcrumb: {url.as_string()}")
@@ -580,7 +581,7 @@ class News(models.Model):
 
     @memoize(timeout=3600)
     def url(self):
-        url = URL(settings.OUTPOST["typo3_api"])
+        url = URL(settings.TYPO3_API_URL)
         url = url.query_param("tx_mugapi_endpoint[recordType]", "News")
         url = url.query_param("tx_mugapi_endpoint[recordUid]", self.pk)
         url = url.query_param("tx_mugapi_endpoint[redirect]", 1)
@@ -595,7 +596,7 @@ class News(models.Model):
 
     @memoize(timeout=86400)
     def breadcrumb(self):
-        url = URL(settings.OUTPOST["typo3_api"])
+        url = URL(settings.TYPO3_API_URL)
         url = url.query_param("tx_mugapi_endpoint[recordType]", "RootLine")
         url = url.query_param("tx_mugapi_endpoint[pageUid]", self.source_id)
         logger.debug(f"Fetching TYPO3 news breadcrumb: {url.as_string()}")

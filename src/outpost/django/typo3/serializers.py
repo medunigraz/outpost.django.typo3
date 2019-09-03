@@ -2,7 +2,6 @@ import logging
 import re
 
 from bs4 import BeautifulSoup
-from django.conf import settings
 from django.urls import reverse
 from drf_haystack.serializers import HaystackSerializerMixin
 from memoize import memoize
@@ -18,13 +17,14 @@ from rest_framework.serializers import (
 )
 
 from . import models
+from .conf import settings
 
 logger = logging.getLogger(__name__)
 
 
 class RichTextField(Field):
 
-    fileadmin = URL(settings.OUTPOST.get("typo3_fileadmin"))
+    fileadmin = URL(settings.TYPO3_FILEADMIN_URL)
 
     regex = (
         (

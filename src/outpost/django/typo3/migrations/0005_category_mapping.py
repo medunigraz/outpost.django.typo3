@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from django.conf import settings
+
+from ..conf import settings
 
 
 class Migration(migrations.Migration):

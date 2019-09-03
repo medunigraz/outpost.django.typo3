@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from django.conf import settings
+
+from ..conf import settings
 
 
 class Migration(migrations.Migration):
@@ -92,7 +93,7 @@ class Migration(migrations.Migration):
             hidden = 0
         WITH DATA;
         """.format(
-            typo3_fileadmin=settings.OUTPOST.get("typo3_fileadmin")
+            typo3_fileadmin=settings.TYPO3_FILEADMIN_URL
         ),
         """
         CREATE MATERIALIZED VIEW "public"."typo3_news" AS SELECT
@@ -149,7 +150,7 @@ class Migration(migrations.Migration):
             hidden = 0
         WITH DATA;
         """.format(
-            typo3_fileadmin=settings.OUTPOST.get("typo3_fileadmin")
+            typo3_fileadmin=settings.TYPO3_FILEADMIN_URL
         ),
     ]
 
