@@ -28,9 +28,9 @@ class RichTextField(Field):
 
     regex = (
         (
-            r'<a href="mailto:\g<mail>">\g<content></a>',
+            r'<a href="mailto:\g<mail>" title="\g<title>">\g<content></a>',
             re.compile(
-                r"<link\s(?P<mail>[\w\.\+\-]+\@(?:[\w]+\.)+[a-z]+)>(?P<content>.+?)<\/link>"
+                r"""<link\s(?P<mail>[\w\.\+\-]+\@(?:[\w]+\.)+[a-z]+)(?:.*?"(?P<title>.*?)")?>(?P<content>.+?)<\/link>"""
             ),
         ),
         (
