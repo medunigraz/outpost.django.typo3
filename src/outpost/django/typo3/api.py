@@ -1,11 +1,10 @@
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_haystack.viewsets import HaystackViewSet
+from outpost.django.base.decorators import docstring_format
 from rest_flex_fields.views import FlexFieldsMixin
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
-
-from outpost.django.base.decorators import docstring_format
 
 # from rest_framework_extensions.mixins import (
 #     CacheResponseAndETAGMixin,
