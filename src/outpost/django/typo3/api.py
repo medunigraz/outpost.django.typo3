@@ -148,3 +148,22 @@ class NewsSearchViewSet(HaystackViewSet):
     index_models = [models.News]
     serializer_class = serializers.NewsSearchSerializer
     permission_classes = (AllowAny,)
+
+
+@docstring_format(
+    model=models.ZMFCourse.__doc__, serializer=serializers.ZMFCourseSerializer.__doc__
+)
+class ZMFCourseViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
+    """
+    List ZMF courses from TYPO3.
+
+    {model}
+    {serializer}
+    """
+
+    queryset = models.ZMFCourse.objects.all()
+    serializer_class = serializers.ZMFCourseSerializer
+    permission_classes = (AllowAny,)
+    permit_list_expands = ("language", "category")
+
+

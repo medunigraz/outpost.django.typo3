@@ -9,4 +9,5 @@ v1 = [
     (r"typo3/search/event", api.EventSearchViewSet, "typo3-event-search"),
     (r"typo3/news", api.NewsViewSet, "typo3-news"),
     (r"typo3/search/news", api.NewsSearchViewSet, "typo3-news-search"),
+    (r"typo3/zmf_course", api.ZMFCourseViewSet, "typo3-zmf_course"),
 ]

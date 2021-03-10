@@ -654,3 +654,58 @@ class NewsMedia(models.Model):
 
     def __str__(s):
         return f"{s.news}: {s.media}"
+
+
+class ZMFCourse(models.Model):
+    """
+    ## Fields
+
+    ### `id` (`integer`)
+    Primary key.
+
+    ### `language` (`integer`)
+    Foreign key to [TYPO3 language](../language).
+
+    ### `title` (`string`)
+    Titel of category.
+
+    ### `description` (`string`)
+    Full description of category.
+
+    ### `start` (`datetime`)
+    Start of period of validity.
+
+    ### `end` (`datetime`)
+    End of period of validity.
+    """
+
+    id = models.IntegerField(primary_key=True)
+    page = models.IntegerField()
+    last_modified = models.DateTimeField(blank=True, null=True)
+    created = models.DateTimeField(blank=True, null=True)
+    language = models.ForeignKey(
+        "Language",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    title = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    category = models.ForeignKey(
+        "Category",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+
+    class Meta:
+        managed = False
+        db_table = "typo3_zmf_course"
+
+    def __str__(self):
+        return self.title
