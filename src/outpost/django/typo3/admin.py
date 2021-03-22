@@ -6,3 +6,8 @@ from . import models
 @admin.register(models.DjangoSource)
 class DjangoSourceAdmin(admin.ModelAdmin):
     list_display = ("id", "private")
+
+
+@admin.register(models.DjangoStorage)
+class DjangoStorageAdmin(admin.ModelAdmin):
+    list_display = ("id", "url")

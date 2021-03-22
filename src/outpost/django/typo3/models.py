@@ -3,8 +3,8 @@ import logging
 import requests
 from django.contrib.gis.db import models
 from memoize import memoize
+from functools import reduce
 from purl import URL
-from treebeard.al_tree import AL_Node
 
 from .conf import settings
 
@@ -43,6 +43,33 @@ class DjangoSource(models.Model):
         return str(self.id)
 
 
+class Storage(models.Model):
+    id = models.PositiveIntegerField(primary_key=True)
+    title = models.CharField(max_length=256, blank=True, null=True)
+    url = models.URLField()
+
+    class Meta:
+        managed = False
+        db_table = "typo3_storage"
+
+    def __str__(self):
+        return f"{self.title} ({self.pk})"
+
+
+class DjangoStorage(models.Model):
+    id = models.OneToOneField(
+        "Storage",
+        models.DO_NOTHING,
+        db_constraint=False,
+        related_name="+",
+        primary_key=True,
+    )
+    url = models.URLField()
+
+    def __str__(self):
+        return str(self.id)
+
+
 class Language(models.Model):
     """
     ## Fields
@@ -54,10 +81,10 @@ class Language(models.Model):
     Titel of language.
 
     ### `flag` (`string`)
-    Flag code to be used with icon sets.
+    [ISO 3361-1](https://en.wikipedia.org/wiki/ISO_3166-1) code.
 
     ### `isocode` (`string`)
-    [ISO 3361](https://www.iso.org/iso-3166-country-codes.html) code.
+    [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) code.
     """
 
     id = models.IntegerField(primary_key=True)
@@ -77,6 +104,16 @@ class Language(models.Model):
 
 
 class Group(models.Model):
+    """
+    ## Fields
+
+    ### `id` (`integer`)
+    Primary key.
+
+    ### `title` (`string`)
+    Titel of group.
+    """
+
     id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=256, blank=True, null=True)
 
@@ -117,7 +154,7 @@ class Category(models.Model):
     id = models.IntegerField(primary_key=True)
     language = models.ForeignKey(
         "Language",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -140,46 +177,17 @@ class Category(models.Model):
         return self.title
 
 
-class Calendar(models.Model):
-    """
-    ## Fields
-
-    ### `id` (`integer`)
-    Primary key.
-
-    ### `title` (`string`)
-    Titel of event.
-
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
-
-    """
-
+class Media(models.Model):
     id = models.IntegerField(primary_key=True)
-    title = models.TextField(blank=True, null=True)
-    language = models.ForeignKey(
-        "Language",
-        models.SET_NULL,
+    storage = models.ForeignKey(
+        "Storage",
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
         related_name="+",
     )
-
-    class Meta:
-        managed = False
-        db_table = "typo3_calendar"
-
-    class Refresh:
-        interval = 86400
-
-    def __str__(self):
-        return self.title
-
-
-class Media(models.Model):
-    id = models.IntegerField(primary_key=True)
-    url = models.URLField()
+    path = models.TextField()
     mimetype = models.CharField(max_length=256, blank=True, null=True)
     filename = models.CharField(max_length=256, blank=True, null=True)
     size = models.PositiveIntegerField(blank=True, null=True)
@@ -191,65 +199,31 @@ class Media(models.Model):
     class Refresh:
         interval = 1800
 
+    @property
+    def url(self):
+        return reduce(
+            lambda u, p: u.add_path_segment(p),
+            URL(self.path).path_segments(),
+            URL(self.storage.url),
+        ).as_string()
+
     def __str__(self):
         return self.filename
 
 
-class EventCategory(AL_Node):
-    """
-    ## Fields
-
-    ### `id` (`integer`)
-    Primary key.
-
-    ### `title` (`string`)
-    Titel of event.
-
-    ### `calendar` (`integer`)
-    Foreign key to [TYPO3 calendar](../calendar) if this category is only valid
-    for a single calendar. A value of `null` indicates a global category.
-
-    ### `parent` (`integer`)
-    Foreign key to parent [TYPO3 event category](../eventcategory). A value
-    of `null` indicates a root calendar category.
-
-    Only required when assembling the full category
-    [AL tree](https://en.wikipedia.org/wiki/Adjacency_list).
-
-    ### `sib_order` (`integer`)
-    Value to sort by.
-
-    Only required when assembling the full category
-    [AL tree](https://en.wikipedia.org/wiki/Adjacency_list).
-
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
-
-    """
-
-    id = models.IntegerField(primary_key=True)
-    title = models.TextField(blank=True, null=True)
-    calendar = models.ForeignKey(
-        "Calendar",
-        models.SET_NULL,
+class EventCategory(models.Model):
+    id = models.CharField(max_length=128, primary_key=True)
+    category = models.ForeignKey(
+        "Category",
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
         related_name="+",
     )
-    parent = models.ForeignKey(
-        "self",
-        models.SET_NULL,
-        related_name="children_set",
-        db_constraint=False,
-        db_index=False,
-        null=True,
-        blank=True,
-    )
-    sib_order = models.PositiveIntegerField()
-    language = models.ForeignKey(
-        "Language",
-        models.SET_NULL,
+    event = models.ForeignKey(
+        "Event",
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -260,11 +234,8 @@ class EventCategory(AL_Node):
         managed = False
         db_table = "typo3_eventcategory"
 
-    class Refresh:
-        interval = 86400
-
-    def __str__(self):
-        return self.title
+    def __str__(s):
+        return f"{s.event.title}: {s.category.title}"
 
 
 class Event(models.Model):
@@ -273,6 +244,27 @@ class Event(models.Model):
 
     ### `id` (`integer`)
     Primary key.
+
+    ### `url` (`string`)
+    URL pointing to the original location of this event object.
+
+    ### `media` (`[object]`)
+    List of associated media objects.
+
+    ### `breadcrumb` (`[object]`)
+    List of nodes in the page tree where this news objects is located.
+
+    ### `categories` (`[integer]`)
+    List of foreign keys to [TYPO3 categories](../category).
+
+    ### `groups` (`[object]`)
+    List of foreign keys to [TYPO3 groups](../group).
+
+    ### `body` (`string`)
+    Full description of news with embedded HTML.
+
+    ### `link` (`string`)
+    URL pointing to the an external site related to this event.
 
     ### `start` (`timestamp`)
     Begin of event.
@@ -286,9 +278,6 @@ class Event(models.Model):
     ### `title` (`string`)
     Titel of event.
 
-    ### `calendar` (`integer`)
-    Foreign key to [TYPO3 calendar](../calendar).
-
     ### `organizer` (`string`)
     Name of person responsible for event.
 
@@ -298,12 +287,6 @@ class Event(models.Model):
     ### `teaser` (`string`)
     Short summary of event description without HTML.
 
-    ### `description` (`string`)
-    Full description of event with embedded HTML.
-
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
-
     ### `register` (`boolean`)
     Registration required for event attendance.
 
@@ -312,9 +295,6 @@ class Event(models.Model):
 
     ### `attending_fees` (`boolean`)
     Event attendance requires a fee.
-
-    ### `url` (`string`)
-    URL where event can be viewed in the frontend CMS.
 
     ### `dfp_points` (`integer`)
     The amount of [DFP points](https://www.meindfp.at/) credited for
@@ -328,6 +308,9 @@ class Event(models.Model):
 
     ### `last_modified` (`datetime`)
     Date and time of last modification to this event.
+
+    ### `language` (`integer`)
+    Foreign key to [TYPO3 language](../language).
     """
 
     id = models.IntegerField(primary_key=True)
@@ -338,27 +321,14 @@ class Event(models.Model):
     end = models.DateTimeField(blank=True, null=True)
     allday = models.BooleanField()
     title = models.TextField(blank=True, null=True)
-    calendar = models.ForeignKey(
-        "Calendar",
-        models.SET_NULL,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
-    categories = models.ManyToManyField(
-        "EventCategory",
-        db_table="typo3_event_eventcategory",
-        db_constraint=False,
-        related_name="+",
-    )
+    categories = models.ManyToManyField("Category", through="EventCategory")
     organizer = models.CharField(max_length=256, blank=True, null=True)
     location = models.TextField(blank=True, null=True)
     teaser = models.TextField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
     language = models.ForeignKey(
         "Language",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -385,7 +355,7 @@ class Event(models.Model):
     @memoize(timeout=3600)
     def url(self):
         url = URL(settings.TYPO3_API_URL)
-        url = url.query_param("tx_mugapi_endpoint[recordType]", "Event")
+        url = url.query_param("tx_mugapi_endpoint[recordType]", "News")
         url = url.query_param("tx_mugapi_endpoint[recordUid]", self.pk)
         url = url.query_param("tx_mugapi_endpoint[redirect]", 1)
         logger.debug(f"Fetching TYPO3 event URL: {url.as_string()}")
@@ -418,7 +388,7 @@ class EventMedia(models.Model):
     id = models.IntegerField(primary_key=True)
     media = models.ForeignKey(
         "Media",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -426,7 +396,7 @@ class EventMedia(models.Model):
     )
     event = models.ForeignKey(
         "Event",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -437,7 +407,7 @@ class EventMedia(models.Model):
     alternative = models.TextField(blank=True, null=True)
     language = models.ForeignKey(
         "Language",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -462,7 +432,7 @@ class NewsCategory(models.Model):
     id = models.CharField(max_length=128, primary_key=True)
     category = models.ForeignKey(
         "Category",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -470,7 +440,7 @@ class NewsCategory(models.Model):
     )
     news = models.ForeignKey(
         "News",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -495,8 +465,23 @@ class News(models.Model):
     ### `id` (`integer`)
     Primary key.
 
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
+    ### `url` (`string`)
+    URL pointing to the original location of this news object.
+
+    ### `media` (`[object]`)
+    List of associated media objects.
+
+    ### `breadcrumb` (`[object]`)
+    List of nodes in the page tree where this news objects is located.
+
+    ### `categories` (`[integer]`)
+    List of foreign keys to [TYPO3 categories](../category).
+
+    ### `groups` (`[object]`)
+    List of foreign keys to [TYPO3 groups](../group).
+
+    ### `body` (`string`)
+    Full description of news with embedded HTML.
 
     ### `datetime` (`timestamp`)
     Date & time of creation.
@@ -506,9 +491,6 @@ class News(models.Model):
 
     ### `teaser` (`string`)
     Short summary of news description without HTML.
-
-    ### `body` (`string`)
-    Full description of news with embedded HTML.
 
     ### `start` (`datetime`)
     Begin of validity.
@@ -525,20 +507,14 @@ class News(models.Model):
     ### `keywords` (`string`)
     Comma separated list of keywords.
 
-    ### `tags` (`string`)
-    Comma separated list of tags.
-
     ### `topnews` (`boolean`)
     News are considered top news to be shown on frontpage.
 
-    ### `categories` (`[integer]`)
-    List of foreign keys to [TYPO3 categories](../category).
-
-    ### `groups` (`[object]`)
-    List of TYPO3 group objects that have been assigned to this news.
-
     ### `last_modified` (`datetime`)
     Date and time of last modification to this event.
+
+    ### `language` (`integer`)
+    Foreign key to [TYPO3 language](../language).
     """
 
     id = models.IntegerField(primary_key=True)
@@ -547,7 +523,7 @@ class News(models.Model):
     )
     language = models.ForeignKey(
         "Language",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -616,7 +592,7 @@ class NewsMedia(models.Model):
     id = models.IntegerField(primary_key=True)
     media = models.ForeignKey(
         "Media",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -624,7 +600,7 @@ class NewsMedia(models.Model):
     )
     news = models.ForeignKey(
         "News",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -635,7 +611,7 @@ class NewsMedia(models.Model):
     alternative = models.TextField(blank=True, null=True)
     language = models.ForeignKey(
         "Language",
-        models.SET_NULL,
+        models.DO_NOTHING,
         db_constraint=False,
         null=True,
         blank=True,
@@ -663,20 +639,26 @@ class ZMFCourse(models.Model):
     ### `id` (`integer`)
     Primary key.
 
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
+    ### `last_modified` (`datetime`)
+    Date and time of last modification to this ZMF course.
+
+    ### ` created` (`datetime`)
+    Date and time of creation of this ZMF course.
 
     ### `title` (`string`)
     Titel of category.
 
     ### `description` (`string`)
-    Full description of category.
+    Full description of this ZMF course.
 
-    ### `start` (`datetime`)
-    Start of period of validity.
+    ### `email` (`string`)
+    Contact email address.
 
-    ### `end` (`datetime`)
-    End of period of validity.
+    ### `language` (`integer`)
+    Foreign key to [TYPO3 language](../language).
+
+    ### `category` (`integer`)
+    Foreign key to [TYPO3 category](../category).
     """
 
     id = models.IntegerField(primary_key=True)

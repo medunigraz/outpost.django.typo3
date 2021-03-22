@@ -48,40 +48,19 @@ class CategoryViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
 
 
 @docstring_format(
-    model=models.Calendar.__doc__, serializer=serializers.CalendarSerializer.__doc__
+    model=models.Group.__doc__, serializer=serializers.GroupSerializer.__doc__
 )
-class CalendarViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
+class GroupViewSet(ReadOnlyModelViewSet):
     """
-    List calendars from TYPO3.
+    List groups from TYPO3.
 
     {model}
     {serializer}
     """
 
-    queryset = models.Calendar.objects.all()
-    serializer_class = serializers.CalendarSerializer
+    queryset = models.Group.objects.all()
+    serializer_class = serializers.GroupSerializer
     permission_classes = (AllowAny,)
-    filter_fields = ("language",)
-    permit_list_expands = ("language",)
-
-
-@docstring_format(
-    model=models.EventCategory.__doc__,
-    serializer=serializers.EventCategorySerializer.__doc__,
-)
-class EventCategoryViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
-    """
-    List event categories from TYPO3.
-
-    {model}
-    {serializer}
-    """
-
-    queryset = models.EventCategory.objects.all()
-    serializer_class = serializers.EventCategorySerializer
-    permission_classes = (AllowAny,)
-    filter_fields = ("calendar", "language")
-    permit_list_expands = ("calendar", "language")
 
 
 @docstring_format(
@@ -103,7 +82,7 @@ class EventViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
     filter_class = filters.EventFilter
-    permit_list_expands = ("calendar", "language")
+    permit_list_expands = ("language",)
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -165,5 +144,3 @@ class ZMFCourseViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     serializer_class = serializers.ZMFCourseSerializer
     permission_classes = (AllowAny,)
     permit_list_expands = ("language", "category")
-
-

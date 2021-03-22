@@ -139,11 +139,11 @@ class EventFilter(filterset.FilterSet):
     language = filters.ModelChoiceFilter(
         label=_("Language"), queryset=models.Language.objects.all()
     )
-    calendar = filters.ModelChoiceFilter(
-        label=_("Calendar"), queryset=models.Calendar.objects.all()
-    )
     categories = filters.ModelMultipleChoiceFilter(
-        label=_("Categories"), queryset=models.EventCategory.objects.all()
+        label=_("Categories"), queryset=models.Category.objects.all()
+    )
+    groups = filters.ModelMultipleChoiceFilter(
+        label=_("Groups"), queryset=models.Group.objects.all()
     )
 
     class Meta:

@@ -10,6 +10,7 @@ from django.views.generic import View
 from PIL import Image
 
 from . import models
+from .conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +19,11 @@ logger = logging.getLogger(__name__)
 class MediaView(View):
     def get(self, request, pk, width=None):
         media = get_object_or_404(models.Media, pk=pk)
+        timeout = int(settings.TYPO3_MEDIA_CACHE_TIMEOUT.total_seconds())
         try:
             req = requests.get(media.url)
             response = HttpResponse()
-            response["Cache-Control"] = "private,max-age=604800"
+            response["Cache-Control"] = f"private,max-age={timeout}"
             if not width:
                 response["Content-Type"] = req.headers.get("Content-Type")
                 response.write(req.content)
@@ -35,7 +37,12 @@ class MediaView(View):
                     return response
                 height = int(img.height * (width / float(img.width)))
                 img = img.resize((width, height), Image.ANTIALIAS)
-                img.save(response, format=fmt, quality=95, optimize=True)
+                img.save(
+                    response,
+                    format=fmt,
+                    quality=settings.TYPO3_MEDIA_CACHE_QUALITY,
+                    optimize=True,
+                )
                 return response
         except Exception as e:
             logger.warn(f"Failed to load image blob: {e}")

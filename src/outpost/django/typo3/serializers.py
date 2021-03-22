@@ -129,6 +129,9 @@ class LanguageSerializer(ModelSerializer):
 
 
 class GroupSerializer(ModelSerializer):
+    """
+    """
+
     class Meta:
         model = models.Group
         fields = "__all__"
@@ -156,35 +159,13 @@ class CategorySerializer(FlexFieldsModelSerializer):
         exclude = ("marker",)
 
 
-class CalendarSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
-
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
-
-    class Meta:
-        model = models.Calendar
-        fields = "__all__"
-
-
 class MediaSerializer(FlexFieldsModelSerializer):
     url = SerializerMethodField()
     original = URLField(source="url")
 
     class Meta:
         model = models.Media
-        fields = "__all__"
+        fields = ("url", "original", "mimetype", "filename", "size")
 
     def get_url(self, obj):
         path = reverse("typo3:media", kwargs={"pk": obj.pk})
@@ -228,15 +209,11 @@ class EventCategorySerializer(FlexFieldsModelSerializer):
 
     The following relational fields can be expanded:
 
-     * `calendar`
      * `language`
 
     """
 
-    expandable_fields = {
-        "calendar": (CalendarSerializer, {"source": "calendar"}),
-        "language": (LanguageSerializer, {"source": "language"}),
-    }
+    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
 
     class Meta:
         model = models.EventCategory
@@ -254,20 +231,21 @@ class EventSerializer(FlexFieldsModelSerializer):
 
     The following relational fields can be expanded:
 
-     * `calendar`
      * `language`
 
     """
 
     expandable_fields = {
-        "calendar": (CalendarSerializer, {"source": "calendar"}),
+        "categories": (CategorySerializer, {"source": "categories", "many": True}),
         "language": (LanguageSerializer, {"source": "language"}),
     }
+    url = URLField(read_only=True, allow_null=True)
     media = EventMediaSerializer(many=True, read_only=True)
     breadcrumb = ReadOnlyField()
-    url = URLField(read_only=True, allow_null=True)
+    categories = PrimaryKeyRelatedField(many=True, read_only=True)
+    groups = GroupSerializer(many=True, read_only=True)
+    body = RichTextField(read_only=True)
     link = URLField(read_only=True, allow_null=True)
-    description = RichTextField(read_only=True)
 
     class Meta:
         model = models.Event
@@ -368,4 +346,4 @@ class ZMFCourseSerializer(FlexFieldsModelSerializer):
 
     class Meta:
         model = models.ZMFCourse
-        fields = "__all__"
+        exclude = ("page",)
