@@ -270,7 +270,7 @@ class Migration(migrations.Migration):
                 NULLIF(BTRIM(n.author, ' '), '') AS author,
                 NULLIF(BTRIM(n.author_email, ' '), '') AS email,
                 NULLIF(BTRIM(n.keywords, ' '), '') AS keywords,
-                NULLIF(BTRIM(n.tags, ' '), '') AS tags,
+                n.tags AS tags,
                 n.istopnews = 1 AS topnews,
                 to_timestamp(n.tstamp) AS last_modified
             FROM
