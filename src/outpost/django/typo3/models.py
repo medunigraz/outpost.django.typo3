@@ -355,7 +355,7 @@ class Event(models.Model):
     @memoize(timeout=3600)
     def url(self):
         url = URL(settings.TYPO3_API_URL)
-        url = url.query_param("tx_mugapi_endpoint[recordType]", "News")
+        url = url.query_param("tx_mugapi_endpoint[recordType]", "Event")
         url = url.query_param("tx_mugapi_endpoint[recordUid]", self.pk)
         url = url.query_param("tx_mugapi_endpoint[redirect]", 1)
         logger.debug(f"Fetching TYPO3 event URL: {url.as_string()}")
