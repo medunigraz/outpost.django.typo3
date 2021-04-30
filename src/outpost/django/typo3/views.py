@@ -25,10 +25,7 @@ class MediaView(View):
         try:
             req = requests.get(media.url)
             response["Cache-Control"] = f"private,max-age={timeout}"
-            contenttype = req.headers.get(
-                "Content-Type",
-                "application/octet-stream"
-            )
+            contenttype = req.headers.get("Content-Type", "application/octet-stream")
             maintype, *_ = mimeparse.parse_mime_type(contenttype)
             if not width or maintype != "image":
                 response["Content-Type"] = contenttype

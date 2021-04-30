@@ -468,9 +468,7 @@ class Migration(migrations.Migration):
         ),
     ]
 
-    dependencies = [
-        ('typo3', '0003_views'),
-    ]
+    dependencies = [("typo3", "0003_views")]
 
     operations = [
         migrations.RunSQL(
