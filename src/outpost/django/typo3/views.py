@@ -2,6 +2,7 @@ import io
 import logging
 
 import requests
+import mimeparse
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -20,12 +21,17 @@ class MediaView(View):
     def get(self, request, pk, width=None):
         media = get_object_or_404(models.Media, pk=pk)
         timeout = int(settings.TYPO3_MEDIA_CACHE_TIMEOUT.total_seconds())
+        response = HttpResponse()
         try:
             req = requests.get(media.url)
-            response = HttpResponse()
             response["Cache-Control"] = f"private,max-age={timeout}"
-            if not width:
-                response["Content-Type"] = req.headers.get("Content-Type")
+            contenttype = req.headers.get(
+                "Content-Type",
+                "application/octet-stream"
+            )
+            maintype, *_ = mimeparse.parse_mime_type(contenttype)
+            if not width or maintype != "image":
+                response["Content-Type"] = contenttype
                 response.write(req.content)
                 return response
             with Image.open(io.BytesIO(req.content)) as img:
@@ -43,7 +49,7 @@ class MediaView(View):
                     quality=settings.TYPO3_MEDIA_CACHE_QUALITY,
                     optimize=True,
                 )
-                return response
         except Exception as e:
             logger.warn(f"Failed to load image blob: {e}")
-        return HttpResponseNotFound()
+            return HttpResponseNotFound()
+        return response
