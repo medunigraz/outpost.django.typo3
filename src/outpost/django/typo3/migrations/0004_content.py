@@ -166,7 +166,7 @@ class Migration(migrations.Migration):
             UNION ALL
             SELECT r.uid AS id,
                 r.uid_local AS media_id,
-                r.uid_foreign AS news_id,
+                n.uid AS news_id,
                     CASE btrim(r.title::text, ' '::text)
                         WHEN ''::text THEN NULL::text
                         ELSE btrim(r.title::text, ' '::text)
