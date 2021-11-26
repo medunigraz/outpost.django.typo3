@@ -7,6 +7,7 @@ from functools import reduce
 from purl import URL
 
 from .conf import settings
+from .fields import RichTextField
 
 logger = logging.getLogger(__name__)
 
@@ -325,7 +326,7 @@ class Event(models.Model):
     organizer = models.CharField(max_length=256, blank=True, null=True)
     location = models.TextField(blank=True, null=True)
     teaser = models.TextField(blank=True, null=True)
-    body = models.TextField(blank=True, null=True)
+    body = RichTextField(Media, blank=True, null=True)
     language = models.ForeignKey(
         "Language",
         models.DO_NOTHING,
@@ -532,7 +533,7 @@ class News(models.Model):
     datetime = models.DateTimeField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
     teaser = models.TextField(blank=True, null=True)
-    body = models.TextField(blank=True, null=True)
+    body = RichTextField(Media, blank=True, null=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     author = models.TextField(blank=True, null=True)
