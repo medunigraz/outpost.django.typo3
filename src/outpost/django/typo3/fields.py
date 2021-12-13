@@ -48,6 +48,11 @@ class RichTextField(models.TextField):
         self.media_model = media_model
         super().__init__(*args, **kwargs)
 
+    def deconstruct(self):
+        name, path, args, kwargs = super().deconstruct()
+        kwargs["media_model"] = self.media_model
+        return name, path, args, kwargs
+
     def function_paragraphs(self, html):
         parts = re.split(r"\r?\n", html)
         body = "</p><p>".join(parts[1:])
