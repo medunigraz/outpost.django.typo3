@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from purl import URL
 
 from .conf import settings
+from .utils import fetch
 
 
 class RichTextField(models.TextField):
@@ -38,7 +39,7 @@ class RichTextField(models.TextField):
         ),
     )
     parser = {
-        "a": ("link_file", "link_path", "a_file"),
+        "a": ("link_file", "link_path", "a_file", "a_page"),
         "img": ("images_data", "images_src", "clean_attrs_data"),
         None: ("clean_attrs_empty",),
     }
@@ -92,6 +93,32 @@ class RichTextField(models.TextField):
         elem.attrs["href"] = base.path_segments(
             URL(media.url).path_segments()
         ).as_string()
+
+    def handle_a_page(self, elem):
+        if "href" not in elem.attrs:
+            return
+        url = URL(elem.attrs["href"])
+        if url.scheme() != "t3":
+            return
+        if url.host() != "page":
+            return
+        if not url.has_query_param("uid"):
+            return
+        uid = url.query_param("uid")
+        elem.attrs["href"] = URL(settings.TYPO3_PAGE_URL).query_param("id", uid).as_string()
+        api = URL(settings.TYPO3_API_URL)
+        api = url.query_param("tx_mugapi_endpoint[recordType]", "RootLine")
+        api = url.query_param("tx_mugapi_endpoint[pageUid]", uid)
+        with fetch(api.as_string()) as r:
+            if r.status_code != 200:
+                return
+            data = r.json()
+            if not isinstance(data, list):
+                return
+            page = next(filter(lambda p: p.get("uid") == uid, data), None)
+            if not page:
+                return
+            elem["href"] = page.get("uri", elem["href"])
 
     def handle_images_data(self, elem):
         if elem.attrs.get("data-htmlarea-file-table") != "sys_file":

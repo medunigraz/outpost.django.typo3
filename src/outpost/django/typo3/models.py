@@ -1,6 +1,5 @@
 import logging
 
-import requests
 from django.contrib.gis.db import models
 from memoize import memoize
 from functools import reduce
@@ -8,13 +7,9 @@ from purl import URL
 
 from .conf import settings
 from .fields import RichTextField
+from .utils import fetch
 
 logger = logging.getLogger(__name__)
-
-
-@memoize(timeout=600)
-def fetch(url):
-    return requests.get(url, allow_redirects=False)
 
 
 class Source(models.Model):
