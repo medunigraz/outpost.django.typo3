@@ -3,6 +3,7 @@ import re
 from django.db import models
 from bs4 import BeautifulSoup
 from purl import URL
+from requests.exceptions import JSONDecodeError
 
 from .conf import settings
 from .utils import fetch
@@ -112,7 +113,10 @@ class RichTextField(models.TextField):
         with fetch(api.as_string()) as r:
             if r.status_code != 200:
                 return
-            data = r.json()
+            try:
+                data = r.json()
+            except JSONDecodeError:
+                return
             if not isinstance(data, list):
                 return
             page = next(filter(lambda p: p.get("uid") == uid, data), None)
