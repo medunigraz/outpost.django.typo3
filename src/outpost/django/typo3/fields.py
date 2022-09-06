@@ -3,7 +3,7 @@ import re
 from django.db import models
 from bs4 import BeautifulSoup
 from purl import URL
-from requests.exceptions import JSONDecodeError
+from simplejson.errors import JSONDecodeError
 
 from .conf import settings
 from .utils import fetch
