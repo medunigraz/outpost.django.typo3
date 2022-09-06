@@ -106,7 +106,9 @@ class RichTextField(models.TextField):
         if not url.has_query_param("uid"):
             return
         uid = int(url.query_param("uid"))
-        elem.attrs["href"] = URL(settings.TYPO3_PAGE_URL).query_param("id", uid).as_string()
+        elem.attrs["href"] = (
+            URL(settings.TYPO3_PAGE_URL).query_param("id", uid).as_string()
+        )
         api = URL(settings.TYPO3_API_URL)
         api = api.query_param("tx_mugapi_endpoint[recordType]", "RootLine")
         api = api.query_param("tx_mugapi_endpoint[pageUid]", uid)

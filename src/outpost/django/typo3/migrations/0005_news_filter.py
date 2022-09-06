@@ -171,7 +171,7 @@ class Migration(migrations.Migration):
     ]
 
     dependencies = [
-        ('typo3', '0004_content'),
+        ("typo3", "0004_content"),
     ]
 
     operations = [

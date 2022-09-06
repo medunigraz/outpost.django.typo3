@@ -24,8 +24,7 @@ class LanguageSerializer(ModelSerializer):
 
 
 class GroupSerializer(ModelSerializer):
-    """
-    """
+    """"""
 
     class Meta:
         model = models.Group
