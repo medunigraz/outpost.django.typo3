@@ -1,6 +1,7 @@
+{% load base %}
 {% filter striptags|cut:"&nbsp;" %}{{ object.title|safe }}
 {{ object.teaser|safe }}
-{{ object.body|safe }}
+{{ object.body|striptags|truncate_words:220|safe }}
 {{ object.author }}
 {{ object.keywords }}
 {{ object.tags }}{% endfilter %}
