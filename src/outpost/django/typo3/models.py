@@ -342,7 +342,7 @@ class Event(models.Model):
     class Meta:
         managed = False
         db_table = "typo3_event"
-        ordering = ("start", "end")
+        ordering = ("-start", "-end")
         get_latest_by = "start"
 
     class Refresh:
@@ -374,10 +374,10 @@ class Event(models.Model):
         return list(filter(lambda b: b.get("pid", None) is not None, r.json()))
 
     def __str__(self):
-        return self.title
+        return f"{self.start} - {self.end}: {self.title}"
 
     def __repr__(self):
-        return "{s.__class__.__name__}({s.pk})".format(s=self)
+        return f"{self.__class__.__name__}({self.pk})"
 
 
 class EventMedia(models.Model):
@@ -578,10 +578,10 @@ class News(models.Model):
         return list(filter(lambda b: b.get("pid", None) is not None, r.json()))
 
     def __str__(self):
-        return self.title
+        return f"{self.datetime}: {self.title}"
 
     def __repr__(self):
-        return "{s.__class__.__name__}({s.pk})".format(s=self)
+        return f"{self.__class__.__name__}({self.pk})"
 
 
 class NewsMedia(models.Model):
