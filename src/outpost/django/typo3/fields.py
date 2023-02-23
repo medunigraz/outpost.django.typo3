@@ -150,6 +150,8 @@ class RichTextField(models.TextField):
         elem.attrs = {k: v for k, v in elem.attrs.items() if v}
 
     def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
         for name in self.functions:
             func = getattr(self, f"function_{name}", None)
             if func:
