@@ -96,18 +96,6 @@ class NewsFilter(filterset.FilterSet):
                 "regex",
                 "iregex",
             ),
-            "keywords": (
-                "exact",
-                "iexact",
-                "contains",
-                "icontains",
-                "startswith",
-                "istartswith",
-                "endswith",
-                "iendswith",
-                "regex",
-                "iregex",
-            ),
             "last_modified": ("exact", "gt", "lt", "gte", "lte", "date"),
         }
 
@@ -245,4 +233,7 @@ class EventFilter(filterset.FilterSet):
                 "contains",
                 "startswith",
             ),
+            "allday": ("exact",),
+            "register": ("exact",),
+            "attending_fees": ("exact",),
         }

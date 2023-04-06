@@ -2,6 +2,7 @@ import logging
 from functools import reduce
 
 from django.contrib.gis.db import models
+from django.contrib.postgres.fields import ArrayField
 from memoize import memoize
 from ordered_model.models import OrderedModel
 from purl import URL
@@ -293,6 +294,9 @@ class Event(models.Model):
     ### `attending_fees` (`boolean`)
     Event attendance requires a fee.
 
+    ### `attending_fees_info` (`string`)
+    Informative text about detailing attendance fees.
+
     ### `dfp_points` (`integer`)
     The amount of [DFP points](https://www.meindfp.at/) credited for
     attendance.
@@ -323,6 +327,10 @@ class Event(models.Model):
     location = models.TextField(blank=True, null=True)
     teaser = models.TextField(blank=True, null=True)
     body = RichTextField(Media, blank=True, null=True)
+    keywords = ArrayField(
+        models.TextField(blank=True),
+    )
+    description = models.TextField(blank=True, null=True)
     language = models.ForeignKey(
         "Language",
         models.DO_NOTHING,
@@ -334,6 +342,7 @@ class Event(models.Model):
     register = models.BooleanField()
     registration_end = models.DateTimeField(blank=True, null=True)
     attending_fees = models.BooleanField()
+    attending_fees_info = models.TextField(blank=True, null=True)
     link = models.CharField(max_length=512, blank=True, null=True)
     dfp_points = models.IntegerField(blank=True, null=True)
     contact = models.CharField(max_length=256, blank=True, null=True)
@@ -501,8 +510,11 @@ class News(models.Model):
     ### `email` (`string`)
     Email of author.
 
-    ### `keywords` (`string`)
-    Comma separated list of keywords.
+    ### `keywords` (`string[]`)
+    List of metadata keywords.
+
+    ### `description` (`string`)
+    Metadata description text.
 
     ### `topnews` (`boolean`)
     News are considered top news to be shown on frontpage.
@@ -534,7 +546,10 @@ class News(models.Model):
     end = models.DateTimeField(blank=True, null=True)
     author = models.TextField(blank=True, null=True)
     email = models.TextField(blank=True, null=True)
-    keywords = models.TextField(blank=True, null=True)
+    keywords = ArrayField(
+        models.TextField(blank=True),
+    )
+    description = models.TextField(blank=True, null=True)
     tags = models.IntegerField(blank=True, null=True)
     topnews = models.BooleanField()
     categories = models.ManyToManyField("Category", through="NewsCategory")
