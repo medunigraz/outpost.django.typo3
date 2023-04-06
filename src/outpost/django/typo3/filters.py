@@ -1,5 +1,8 @@
 from django.utils.translation import gettext_lazy as _
-from django_filters.rest_framework import filters, filterset
+from django_filters.rest_framework import (
+    filters,
+    filterset,
+)
 
 from . import models
 

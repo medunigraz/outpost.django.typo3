@@ -1,8 +1,8 @@
 import logging
+from functools import reduce
 
 from django.contrib.gis.db import models
 from memoize import memoize
-from functools import reduce
 from ordered_model.models import OrderedModel
 from purl import URL
 

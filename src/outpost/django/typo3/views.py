@@ -1,9 +1,12 @@
 import io
 import logging
 
-import requests
 import mimeparse
-from django.http import HttpResponse, HttpResponseNotFound
+import requests
+from django.http import (
+    HttpResponse,
+    HttpResponseNotFound,
+)
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page

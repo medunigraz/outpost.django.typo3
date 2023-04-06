@@ -1,7 +1,13 @@
 from celery_haystack.indexes import CelerySearchIndex
-from haystack import indexes, fields
+from haystack import (
+    fields,
+    indexes,
+)
 
-from .models import Event, News
+from .models import (
+    Event,
+    News,
+)
 
 
 class NewsIndex(CelerySearchIndex, indexes.Indexable):

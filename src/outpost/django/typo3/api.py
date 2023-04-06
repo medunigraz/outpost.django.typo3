@@ -12,7 +12,11 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 # from rest_framework_extensions.cache.mixins import (
 #     CacheResponseMixin,
 # )
-from . import filters, models, serializers
+from . import (
+    filters,
+    models,
+    serializers,
+)
 
 
 @docstring_format(model=models.Language.__doc__)

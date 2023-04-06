@@ -1,7 +1,7 @@
 import re
 
-from django.db import models
 from bs4 import BeautifulSoup
+from django.db import models
 from purl import URL
 from simplejson.errors import JSONDecodeError
 

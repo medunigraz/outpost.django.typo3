@@ -1,5 +1,4 @@
 import requests
-
 from memoize import memoize
 
 from .conf import settings
