@@ -176,6 +176,51 @@ class NewsMediaSerializer(FlexFieldsModelSerializer):
         exclude = ("order", "news")
 
 
+class NewsRelatedLinkSerializer(FlexFieldsModelSerializer):
+    """
+    ## Expansions
+
+    To activate relation expansion add the desired fields as a comma separated
+    list to the `expand` query parameter like this:
+
+        ?expand=<field>,<field>,<field>,...
+
+    The following relational fields can be expanded:
+
+     * `language`
+
+    """
+
+    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+
+    class Meta:
+        model = models.NewsRelatedLink
+        exclude = ("order", "news", "source")
+
+
+class NewsRelatedMediaSerializer(FlexFieldsModelSerializer):
+    """
+    ## Expansions
+
+    To activate relation expansion add the desired fields as a comma separated
+    list to the `expand` query parameter like this:
+
+        ?expand=<field>,<field>,<field>,...
+
+    The following relational fields can be expanded:
+
+     * `language`
+
+    """
+
+    media = MediaSerializer(read_only=True)
+    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+
+    class Meta:
+        model = models.NewsRelatedMedia
+        exclude = ("order", "news", "source")
+
+
 class NewsSerializer(FlexFieldsModelSerializer):
     """
     ## Expansions
@@ -201,6 +246,8 @@ class NewsSerializer(FlexFieldsModelSerializer):
     breadcrumb = ReadOnlyField()
     categories = PrimaryKeyRelatedField(many=True, read_only=True)
     groups = GroupSerializer(many=True, read_only=True)
+    related_links = NewsRelatedLinkSerializer(many=True, read_only=True)
+    related_media = NewsRelatedMediaSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.News
