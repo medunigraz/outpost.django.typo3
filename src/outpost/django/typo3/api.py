@@ -86,7 +86,7 @@ class EventViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
     filter_class = filters.EventFilter
-    permit_list_expands = ("language",)
+    permit_list_expands = ("categories", "language")
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
