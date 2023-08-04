@@ -348,6 +348,9 @@ class Event(models.Model):
     contact = models.CharField(max_length=256, blank=True, null=True)
     email = models.CharField(max_length=256, blank=True, null=True)
     last_modified = models.DateTimeField(blank=True, null=True)
+    groups = models.ManyToManyField(
+        "Group", db_table="typo3_event_group", db_constraint=False, related_name="events"
+    )
 
     class Meta:
         managed = False
@@ -554,7 +557,7 @@ class News(models.Model):
     topnews = models.BooleanField()
     categories = models.ManyToManyField("Category", through="NewsCategory")
     groups = models.ManyToManyField(
-        "Group", db_table="typo3_news_group", db_constraint=False, related_name="+"
+        "Group", db_table="typo3_news_group", db_constraint=False, related_name="news"
     )
     last_modified = models.DateTimeField(blank=True, null=True)
 
