@@ -349,7 +349,10 @@ class Event(models.Model):
     email = models.CharField(max_length=256, blank=True, null=True)
     last_modified = models.DateTimeField(blank=True, null=True)
     groups = models.ManyToManyField(
-        "Group", db_table="typo3_event_group", db_constraint=False, related_name="events"
+        "Group",
+        db_table="typo3_event_group",
+        db_constraint=False,
+        related_name="events",
     )
 
     class Meta:
