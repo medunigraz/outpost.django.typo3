@@ -105,7 +105,10 @@ class RichTextField(models.TextField):
             return
         if not url.has_query_param("uid"):
             return
-        uid = int(url.query_param("uid"))
+        try:
+            uid = int(url.query_param("uid"))
+        except ValueError:
+            return
         elem.attrs["href"] = (
             URL(settings.TYPO3_PAGE_URL).query_param("id", uid).as_string()
         )
