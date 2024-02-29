@@ -8,7 +8,10 @@ from ordered_model.models import OrderedModel
 from purl import URL
 
 from .conf import settings
-from .fields import RichTextField
+from .fields import (
+    LinkField,
+    RichTextField,
+)
 from .utils import fetch
 
 logger = logging.getLogger(__name__)
@@ -673,7 +676,7 @@ class NewsRelatedLink(OrderedModel):
     )
     title = models.CharField(max_length=256, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    url = models.URLField()
+    url = LinkField(Media)
 
     class Meta:
         managed = False

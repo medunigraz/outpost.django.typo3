@@ -9,6 +9,63 @@ from .conf import settings
 from .utils import fetch
 
 
+class LinkField(models.URLField):
+    def __init__(self, media_model, *args, **kwargs):
+        self.media_model = media_model
+        super().__init__(*args, **kwargs)
+
+    def deconstruct(self):
+        name, path, args, kwargs = super().deconstruct()
+        kwargs["media_model"] = self.media_model
+        return name, path, args, kwargs
+
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
+        return self.resolve(value)
+
+    def resolve(self, value):
+        url = URL(value)
+        if url.scheme() == "t3":
+            if url.host() == "page":
+                if not url.has_query_param("uid"):
+                    return
+                try:
+                    uid = int(url.query_param("uid"))
+                except ValueError:
+                    return
+                fallback = (
+                    URL(settings.TYPO3_PAGE_URL).query_param("id", uid).as_string()
+                )
+                api = URL(settings.TYPO3_API_URL)
+                api = api.query_param("tx_mugapi_endpoint[recordType]", "RootLine")
+                api = api.query_param("tx_mugapi_endpoint[pageUid]", uid)
+                with fetch(api.as_string()) as r:
+                    if r.status_code != 200:
+                        return fallback
+                    try:
+                        data = r.json()
+                    except JSONDecodeError:
+                        return fallback
+                    if not isinstance(data, list):
+                        return fallback
+                    page = next(filter(lambda p: p.get("uid") == uid, data), None)
+                    if page:
+                        return page.get("uri", fallback)
+                return fallback
+            if url.host() == "file":
+                if not url.has_query_param("uid"):
+                    return
+                try:
+                    media = self.media_model.objects.get(pk=int(url.query_param("uid")))
+                except (self.media_model.DoesNotExist, ValueError):
+                    return
+                base = URL(media.storage.url)
+                return base.path_segments(URL(media.url).path_segments()).as_string()
+            return
+        return value
+
+
 class RichTextField(models.TextField):
 
     fileadmin = URL(settings.TYPO3_FILEADMIN_URL)
