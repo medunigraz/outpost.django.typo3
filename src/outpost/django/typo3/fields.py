@@ -25,7 +25,7 @@ class LinkField(models.URLField):
         return self.resolve(value)
 
     def resolve(self, value):
-        url = URL(value)
+        url = URL(value.removesuffix("_blank"))
         if url.scheme() == "t3":
             if url.host() == "page":
                 if not url.has_query_param("uid"):
@@ -63,7 +63,7 @@ class LinkField(models.URLField):
                 base = URL(media.storage.url)
                 return base.path_segments(URL(media.url).path_segments()).as_string()
             return
-        return value
+        return url.as_string()
 
 
 class RichTextField(models.TextField):
