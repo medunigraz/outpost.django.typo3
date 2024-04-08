@@ -76,17 +76,18 @@ class Migration(migrations.Migration):
                 typo3.news n,
                 typo3.file_reference r
             WHERE
-            r.tablenames = 'tx_news_domain_model_news' AND
-            (r.fieldname = ANY (ARRAY['fal_media', 'fal_related_files'])) AND
-            r.uid_foreign = n.uid  AND
-            r.table_local = 'sys_file' AND
-            r.deleted = 0 AND
-            r.hidden = 0 AND
-            (n.starttime = 0 OR to_timestamp(n.starttime::double precision) < now()) AND
-            (n.endtime = 0 OR to_timestamp(n.endtime::double precision) > now()) AND
-            n.deleted = 0 AND
-            n.hidden = 0 AND
-            n.is_event = 0;
+                r.tablenames = 'tx_news_domain_model_news' AND
+                (r.fieldname = ANY (ARRAY['fal_media', 'fal_related_files'])) AND
+                r.uid_foreign = n.uid  AND
+                r.table_local = 'sys_file' AND
+                r.deleted = 0 AND
+                r.hidden = 0 AND
+                (n.starttime = 0 OR to_timestamp(n.starttime::double precision) < now()) AND
+                (n.endtime = 0 OR to_timestamp(n.endtime::double precision) > now()) AND
+                n.deleted = 0 AND
+                n.hidden = 0 AND
+                n.is_event = 0
+            WITH DATA;
             """,
         ),
         (
@@ -166,7 +167,8 @@ class Migration(migrations.Migration):
                 (n.endtime = 0 OR n.endtime > extract(epoch from now())) AND
                 n.deleted = 0 AND
                 n.hidden = 0 AND
-                n.is_event = 0;
+                n.is_event = 0
+            WITH DATA;
             """,
             """
             DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newsmedia";

@@ -5,6 +5,7 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField
 from memoize import memoize
 from ordered_model.models import OrderedModel
+from phonenumber_field.modelfields import PhoneNumberField
 from purl import URL
 
 from .conf import settings
@@ -566,6 +567,14 @@ class News(models.Model):
         "Group", db_table="typo3_news_group", db_constraint=False, related_name="news"
     )
     last_modified = models.DateTimeField(blank=True, null=True)
+    header_image = models.ForeignKey(
+        "Media",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
 
     class Meta:
         managed = False
@@ -639,12 +648,92 @@ class NewsMedia(models.Model):
         related_name="+",
     )
     order = models.PositiveIntegerField(blank=True, null=True)
-    preview = models.BooleanField()
 
     class Meta:
         managed = False
         db_table = "typo3_newsmedia"
-        ordering = ("-preview", "-order")
+        ordering = ("-order",)
+
+    class Refresh:
+        interval = 1800
+
+    def __str__(s):
+        return f"{s.news}: {s.media}"
+
+
+class NewsGallery(models.Model):
+    id = models.IntegerField(primary_key=True)
+    media = models.ForeignKey(
+        "Media",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    news = models.ForeignKey(
+        "News",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="gallery",
+    )
+    title = models.CharField(max_length=256, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    alternative = models.TextField(blank=True, null=True)
+    language = models.ForeignKey(
+        "Language",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    order = models.PositiveIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = "typo3_newsgallery"
+        ordering = ("-order",)
+
+    class Refresh:
+        interval = 1800
+
+    def __str__(s):
+        return f"{s.news}: {s.media}"
+
+
+class NewsContact(models.Model):
+    id = models.IntegerField(primary_key=True)
+    media = models.ForeignKey(
+        "Media",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    news = models.ForeignKey(
+        "News",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="contact",
+    )
+    title = models.CharField(max_length=256, blank=True, null=True)
+    name = models.CharField(max_length=256, blank=True, null=True)
+    phone = PhoneNumberField(blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
+    link_label = models.CharField(max_length=256, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    headline = models.CharField(max_length=256, blank=True, null=True)
+    address = ArrayField(models.CharField(max_length=256, blank=True, null=True))
+
+    class Meta:
+        managed = False
+        db_table = "typo3_newscontact"
 
     class Refresh:
         interval = 1800

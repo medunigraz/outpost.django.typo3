@@ -4,7 +4,6 @@ from django.urls import reverse
 from drf_haystack.serializers import HaystackSerializerMixin
 from rest_flex_fields import FlexFieldsModelSerializer
 from rest_framework.serializers import (
-    Field,
     ModelSerializer,
     PrimaryKeyRelatedField,
     ReadOnlyField,
@@ -176,6 +175,39 @@ class NewsMediaSerializer(FlexFieldsModelSerializer):
         exclude = ("order", "news")
 
 
+class NewsGallerySerializer(FlexFieldsModelSerializer):
+    """
+    ## Expansions
+
+    To activate relation expansion add the desired fields as a comma separated
+    list to the `expand` query parameter like this:
+
+        ?expand=<field>,<field>,<field>,...
+
+    The following relational fields can be expanded:
+
+     * `language`
+
+    """
+
+    media = MediaSerializer(read_only=True)
+    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+
+    class Meta:
+        model = models.NewsGallery
+        exclude = ("order", "news")
+
+
+class NewsContactSerializer(FlexFieldsModelSerializer):
+    """"""
+
+    media = MediaSerializer(read_only=True)
+
+    class Meta:
+        model = models.NewsContact
+        exclude = ("news",)
+
+
 class NewsRelatedLinkSerializer(FlexFieldsModelSerializer):
     """
     ## Expansions
@@ -243,11 +275,14 @@ class NewsSerializer(FlexFieldsModelSerializer):
     }
     url = URLField(read_only=True, allow_null=True)
     media = NewsMediaSerializer(many=True, read_only=True)
+    gallery = NewsGallerySerializer(many=True, read_only=True)
+    contact = NewsContactSerializer(many=True, read_only=True)
     breadcrumb = ReadOnlyField()
     categories = PrimaryKeyRelatedField(many=True, read_only=True)
     groups = GroupSerializer(many=True, read_only=True)
     related_links = NewsRelatedLinkSerializer(many=True, read_only=True)
     related_media = NewsRelatedMediaSerializer(many=True, read_only=True)
+    header_image = MediaSerializer(read_only=True)
 
     class Meta:
         model = models.News
