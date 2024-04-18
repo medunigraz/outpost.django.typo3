@@ -68,6 +68,39 @@ class MediaSerializer(FlexFieldsModelSerializer):
         return path
 
 
+class EventGallerySerializer(FlexFieldsModelSerializer):
+    """
+    ## Expansions
+
+    To activate relation expansion add the desired fields as a comma separated
+    list to the `expand` query parameter like this:
+
+        ?expand=<field>,<field>,<field>,...
+
+    The following relational fields can be expanded:
+
+     * `language`
+
+    """
+
+    media = MediaSerializer(read_only=True)
+    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+
+    class Meta:
+        model = models.EventGallery
+        exclude = ("order", "event")
+
+
+class EventContactBoxSerializer(FlexFieldsModelSerializer):
+    """"""
+
+    media = MediaSerializer(read_only=True)
+
+    class Meta:
+        model = models.EventContactBox
+        exclude = ("event",)
+
+
 class EventMediaSerializer(FlexFieldsModelSerializer):
     """
     ## Expansions
@@ -134,10 +167,13 @@ class EventSerializer(FlexFieldsModelSerializer):
     }
     url = URLField(read_only=True, allow_null=True)
     media = EventMediaSerializer(many=True, read_only=True)
+    gallery = EventGallerySerializer(many=True, read_only=True)
+    contact_box = EventContactBoxSerializer(many=True, read_only=True)
     breadcrumb = ReadOnlyField()
     categories = PrimaryKeyRelatedField(many=True, read_only=True)
     groups = GroupSerializer(many=True, read_only=True)
     link = URLField(read_only=True, allow_null=True)
+    header_image = MediaSerializer(read_only=True)
 
     class Meta:
         model = models.Event
@@ -198,13 +234,13 @@ class NewsGallerySerializer(FlexFieldsModelSerializer):
         exclude = ("order", "news")
 
 
-class NewsContactSerializer(FlexFieldsModelSerializer):
+class NewsContactBoxSerializer(FlexFieldsModelSerializer):
     """"""
 
     media = MediaSerializer(read_only=True)
 
     class Meta:
-        model = models.NewsContact
+        model = models.NewsContactBox
         exclude = ("news",)
 
 
@@ -276,7 +312,7 @@ class NewsSerializer(FlexFieldsModelSerializer):
     url = URLField(read_only=True, allow_null=True)
     media = NewsMediaSerializer(many=True, read_only=True)
     gallery = NewsGallerySerializer(many=True, read_only=True)
-    contact = NewsContactSerializer(many=True, read_only=True)
+    contact_box = NewsContactBoxSerializer(many=True, read_only=True)
     breadcrumb = ReadOnlyField()
     categories = PrimaryKeyRelatedField(many=True, read_only=True)
     groups = GroupSerializer(many=True, read_only=True)

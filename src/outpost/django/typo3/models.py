@@ -358,6 +358,14 @@ class Event(models.Model):
         db_constraint=False,
         related_name="events",
     )
+    header_image = models.ForeignKey(
+        "Media",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
 
     class Meta:
         managed = False
@@ -430,12 +438,92 @@ class EventMedia(models.Model):
         related_name="+",
     )
     order = models.PositiveIntegerField(blank=True, null=True)
-    preview = models.BooleanField()
 
     class Meta:
         managed = False
         db_table = "typo3_eventmedia"
-        ordering = ("-preview", "-order")
+        ordering = ("-order",)
+
+    class Refresh:
+        interval = 1800
+
+    def __str__(s):
+        return f"{s.event}: {s.media}"
+
+
+class EventGallery(models.Model):
+    id = models.IntegerField(primary_key=True)
+    media = models.ForeignKey(
+        "Media",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    event = models.ForeignKey(
+        "Event",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="gallery",
+    )
+    title = models.CharField(max_length=256, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    alternative = models.TextField(blank=True, null=True)
+    language = models.ForeignKey(
+        "Language",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    order = models.PositiveIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = "typo3_eventgallery"
+        ordering = ("-order",)
+
+    class Refresh:
+        interval = 1800
+
+    def __str__(s):
+        return f"{s.event}: {s.media}"
+
+
+class EventContactBox(models.Model):
+    id = models.IntegerField(primary_key=True)
+    media = models.ForeignKey(
+        "Media",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    event = models.ForeignKey(
+        "Event",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="contact_box",
+    )
+    title = models.CharField(max_length=256, blank=True, null=True)
+    name = models.CharField(max_length=256, blank=True, null=True)
+    phone = PhoneNumberField(blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
+    link_label = models.CharField(max_length=256, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    headline = models.CharField(max_length=256, blank=True, null=True)
+    address = ArrayField(models.CharField(max_length=256, blank=True, null=True))
+
+    class Meta:
+        managed = False
+        db_table = "typo3_eventcontactbox"
 
     class Refresh:
         interval = 1800
@@ -704,7 +792,7 @@ class NewsGallery(models.Model):
         return f"{s.news}: {s.media}"
 
 
-class NewsContact(models.Model):
+class NewsContactBox(models.Model):
     id = models.IntegerField(primary_key=True)
     media = models.ForeignKey(
         "Media",
@@ -720,7 +808,7 @@ class NewsContact(models.Model):
         db_constraint=False,
         null=True,
         blank=True,
-        related_name="contact",
+        related_name="contact_box",
     )
     title = models.CharField(max_length=256, blank=True, null=True)
     name = models.CharField(max_length=256, blank=True, null=True)
@@ -733,7 +821,7 @@ class NewsContact(models.Model):
 
     class Meta:
         managed = False
-        db_table = "typo3_newscontact"
+        db_table = "typo3_newscontactbox"
 
     class Refresh:
         interval = 1800

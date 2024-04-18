@@ -81,6 +81,7 @@ class Migration(migrations.Migration):
                     now()))
                 AND n.deleted = 0
                 AND n.hidden = 0
+                AND n.t3ver_wsid = 0
                 AND n.is_event = 0
             WITH DATA;
             """,
@@ -90,7 +91,7 @@ class Migration(migrations.Migration):
         ),
         (
             """
-            CREATE MATERIALIZED VIEW "public"."typo3_newscontact" AS
+            CREATE MATERIALIZED VIEW "public"."typo3_newscontactbox" AS
             SELECT
                 c.uid AS id,
                 n.uid AS news_id,
@@ -148,11 +149,12 @@ class Migration(migrations.Migration):
                 AND r.table_local::TEXT = 'sys_file'::TEXT
                 AND r.deleted = 0
                 AND r.hidden = 0
+                AND n.t3ver_wsid = 0
                 and n.is_event = 0
             WITH DATA;
             """,
             """
-            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newscontact";
+            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newscontactbox";
             """,
         ),
         (
@@ -294,6 +296,7 @@ class Migration(migrations.Migration):
                     now()))
                 AND n.deleted = 0
                 AND n.hidden = 0
+                AND n.t3ver_wsid = 0
                 AND n.is_event = 0
             WITH DATA;
             """,
@@ -432,6 +435,398 @@ class Migration(migrations.Migration):
             """,
             """
             DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_news";
+            """,
+        ),
+        (
+            """
+            CREATE MATERIALIZED VIEW "public"."typo3_eventgallery" AS
+            SELECT
+                r.uid AS id,
+                r.uid_local AS media_id,
+                n.uid AS event_id,
+                CASE
+                    btrim(r.title,
+                    ' ')
+                        WHEN '' THEN NULL
+                    ELSE btrim(r.title,
+                    ' ')
+                END AS title,
+                CASE
+                    btrim(r.description,
+                    ' ')
+                        WHEN '' THEN NULL
+                    ELSE btrim(r.description,
+                    ' '::TEXT)
+                END AS description,
+                CASE
+                    btrim(r.alternative,
+                    ' '::TEXT)
+                    WHEN ''::TEXT THEN NULL::TEXT
+                    ELSE btrim(r.alternative,
+                    ' '::TEXT)
+                END AS alternative,
+                CASE
+                    WHEN r.sys_language_uid <= 0 THEN NULL::integer
+                    ELSE r.sys_language_uid
+                END AS language_id,
+                r.sorting AS "order"
+            FROM
+                typo3.news n,
+                typo3.file_reference r,
+                typo3.content c
+            WHERE
+                c.CType = 'mugce_gallery'
+                AND c.tx_news_related_news = n.uid
+                AND c.uid = r.uid_foreign
+                AND r.tablenames::TEXT = 'tt_content'::TEXT
+                AND (r.fieldname::TEXT = ANY (ARRAY['assets'::TEXT, 'image'::TEXT]))
+                AND r.table_local::TEXT = 'sys_file'::TEXT
+                AND r.deleted = 0
+                AND r.hidden = 0
+                AND n.datetime <> 0
+                AND n.event_end <> 0
+                AND (n.starttime = 0 OR n.starttime > date_part('epoch'::TEXT, now()))
+                AND CASE n.full_day
+                    WHEN 1 THEN
+                        n.event_end + 86400
+                    ELSE
+                        n.event_end
+                    END > date_part('epoch'::TEXT, now())
+                AND n.deleted = 0
+                AND n.hidden = 0
+                AND n.t3ver_wsid = 0
+                AND n.is_event = 1
+            WITH DATA;
+            """,
+            """
+            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventgallery";
+            """,
+        ),
+        (
+            """
+            CREATE MATERIALIZED VIEW "public"."typo3_eventcontactbox" AS
+            SELECT
+                c.uid AS id,
+                n.uid AS event_id,
+                r.uid_local as media_id,
+                c.header AS title,
+                c.bodytext AS name,
+                CASE
+                    btrim(c.subheader,
+                    ' '::TEXT)
+                    WHEN ''::TEXT THEN NULL::TEXT
+                    ELSE btrim(c.subheader,
+                    ' '::TEXT)
+                END AS phone,
+                CASE
+                    btrim(c.header_link,
+                    ' '::TEXT)
+                    WHEN ''::TEXT THEN NULL::TEXT
+                    ELSE btrim(c.header_link,
+                    ' '::TEXT)
+                END AS url,
+                CASE
+                    btrim(c.mugce_link_label,
+                    ' '::TEXT)
+                    WHEN ''::TEXT THEN NULL::TEXT
+                    ELSE btrim(c.mugce_link_label,
+                    ' '::TEXT)
+                END AS link_label,
+                CASE
+                    btrim(c.mugce_subheader,
+                    ' '::TEXT)
+                    WHEN ''::TEXT THEN NULL::TEXT
+                    ELSE btrim(c.mugce_subheader,
+                    ' '::TEXT)
+                END AS email,
+                CASE
+                    btrim(c.mugce_caption,
+                    ' '::TEXT)
+                    WHEN ''::TEXT THEN NULL::TEXT
+                    ELSE btrim(c.mugce_caption,
+                    ' '::TEXT)
+                END AS headline,
+                ARRAY[c.mugce_text_3,
+                mugce_text_4] AS address
+            FROM
+                typo3.content c,
+                typo3.file_reference r,
+                typo3.news n
+            WHERE
+                c.uid = r.uid_foreign
+                AND c.tx_news_related_news = n.uid
+                AND r.tablenames = 'tt_content'
+                AND c.ctype = 'mugce_contact'
+                AND (r.fieldname::TEXT = ANY (ARRAY['assets'::TEXT, 'image'::TEXT]))
+                AND r.table_local::TEXT = 'sys_file'::TEXT
+                AND r.deleted = 0
+                AND r.hidden = 0
+                AND n.datetime <> 0
+                AND n.event_end <> 0
+                AND (n.starttime = 0 OR n.starttime > date_part('epoch'::TEXT, now()))
+                AND CASE n.full_day
+                    WHEN 1 THEN
+                        n.event_end + 86400
+                    ELSE
+                        n.event_end
+                    END > date_part('epoch'::TEXT, now())
+                AND n.deleted = 0
+                AND n.hidden = 0
+                AND n.t3ver_wsid = 0
+                AND n.is_event = 1
+            WITH DATA;
+            """,
+            """
+            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventcontactbox";
+            """,
+        ),
+        (
+            """
+            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventmedia";
+            """,
+            """
+            CREATE MATERIALIZED VIEW public.typo3_eventmedia AS
+            SELECT r.uid AS id,
+                r.uid_local AS media_id,
+                n.uid AS event_id,
+                    CASE btrim(r.title::text, ' '::text)
+                        WHEN ''::text THEN NULL::text
+                        ELSE btrim(r.title::text, ' '::text)
+                    END AS title,
+                    CASE btrim(r.description, ' '::text)
+                        WHEN ''::text THEN NULL::text
+                        ELSE btrim(r.description, ' '::text)
+                    END AS description,
+                    CASE btrim(r.alternative, ' '::text)
+                        WHEN ''::text THEN NULL::text
+                        ELSE btrim(r.alternative, ' '::text)
+                    END AS alternative,
+                    CASE
+                        WHEN r.sys_language_uid <= 0 THEN NULL::integer
+                        ELSE r.sys_language_uid
+                    END AS language_id,
+                r.sorting AS "order",
+                r.showinpreview::integer::boolean AS preview
+            FROM typo3_multicorn.news n,
+                typo3_multicorn.file_reference r,
+                typo3_multicorn.content c
+            WHERE c.tx_news_related_news = n.uid AND c.uid = r.uid_foreign AND r.tablenames::text = 'tt_content'::text AND (r.fieldname::text = ANY (ARRAY['assets'::text, 'image'::text])) AND r.table_local::text = 'sys_file'::text AND r.deleted = 0 AND r.hidden = 0
+            AND n.datetime <> 0 AND n.event_end <> 0 AND (n.starttime = 0 OR to_timestamp(n.starttime::double precision) > now()) AND
+                    CASE n.full_day
+                        WHEN 1 THEN to_timestamp(n.event_end::double precision) + '24:00:00'::interval
+                        ELSE to_timestamp(n.event_end::double precision)
+                    END > now() AND n.deleted = 0 AND n.hidden = 0 AND n.is_event = 1
+            UNION ALL
+            SELECT r.uid AS id,
+                r.uid_local AS media_id,
+                n.uid AS event_id,
+                    CASE btrim(r.title::text, ' '::text)
+                        WHEN ''::text THEN NULL::text
+                        ELSE btrim(r.title::text, ' '::text)
+                    END AS title,
+                    CASE btrim(r.description, ' '::text)
+                        WHEN ''::text THEN NULL::text
+                        ELSE btrim(r.description, ' '::text)
+                    END AS description,
+                    CASE btrim(r.alternative, ' '::text)
+                        WHEN ''::text THEN NULL::text
+                        ELSE btrim(r.alternative, ' '::text)
+                    END AS alternative,
+                    CASE
+                        WHEN r.sys_language_uid <= 0 THEN NULL::integer
+                        ELSE r.sys_language_uid
+                    END AS language_id,
+                r.sorting AS "order",
+                r.showinpreview::integer::boolean AS preview
+            FROM typo3_multicorn.news n,
+                typo3_multicorn.file_reference r
+            WHERE r.tablenames::text = 'tx_news_domain_model_news'::text AND r.table_local::text = 'sys_file'::text AND (r.fieldname::text = ANY (ARRAY['fal_media'::text, 'fal_related_files'::text])) AND r.uid_foreign = n.uid AND r.deleted = 0 AND r.hidden = 0 AND n.datetime <> 0 AND n.event_end <> 0 AND (n.starttime = 0 OR to_timestamp(n.starttime::double precision) > now()) AND
+                    CASE n.full_day
+                        WHEN 1 THEN to_timestamp(n.event_end::double precision) + '24:00:00'::interval
+                        ELSE to_timestamp(n.event_end::double precision)
+                    END > now() AND n.deleted = 0 AND n.hidden = 0 AND n.is_event = 1
+            WITH DATA;
+            """,
+        ),
+        (
+            """
+            CREATE MATERIALIZED VIEW "public"."typo3_eventmedia" AS
+            SELECT
+                r.uid AS id,
+                r.uid_local AS media_id,
+                n.uid AS event_id,
+                CASE
+                    btrim(r.title,
+                    ' ')
+                        WHEN '' THEN NULL
+                    ELSE btrim(r.title,
+                    ' ')
+                END AS title,
+                CASE
+                    btrim(r.description,
+                    ' ')
+                        WHEN '' THEN NULL
+                    ELSE btrim(r.description,
+                    ' '::TEXT)
+                END AS description,
+                CASE
+                    btrim(r.alternative,
+                    ' '::TEXT)
+                    WHEN ''::TEXT THEN NULL::TEXT
+                    ELSE btrim(r.alternative,
+                    ' '::TEXT)
+                END AS alternative,
+                CASE
+                    WHEN r.sys_language_uid <= 0 THEN NULL::integer
+                    ELSE r.sys_language_uid
+                END AS language_id,
+                r.sorting AS "order"
+            FROM
+                typo3.news n,
+                typo3.file_reference r,
+                typo3.content c
+            WHERE
+                c.ctype != 'mugce_contact'
+                AND c.ctype != 'mugce_gallery'
+                AND c.tx_news_related_news = n.uid
+                AND c.uid = r.uid_foreign
+                AND r.tablenames::TEXT = 'tt_content'::TEXT
+                AND (r.fieldname::TEXT = ANY (ARRAY['assets'::TEXT, 'image'::TEXT]))
+                AND r.table_local::TEXT = 'sys_file'::TEXT
+                AND r.deleted = 0
+                AND r.hidden = 0
+                AND n.datetime <> 0
+                AND n.event_end <> 0
+                AND (n.starttime = 0 OR n.starttime > date_part('epoch'::TEXT, now()))
+                AND CASE n.full_day
+                    WHEN 1 THEN
+                        n.event_end + 86400
+                    ELSE
+                        n.event_end
+                    END > date_part('epoch'::TEXT, now())
+                AND n.deleted = 0
+                AND n.hidden = 0
+                AND n.t3ver_wsid = 0
+                AND n.is_event = 1
+            WITH DATA;
+            """,
+            """
+            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_eventmedia";
+            """,
+        ),
+        (
+            """
+            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_event";
+            """,
+            """
+            CREATE MATERIALIZED VIEW public.typo3_event AS
+            SELECT n.uid AS id,
+                n.pid AS source_id,
+                to_timestamp(n.datetime::double precision) AS start,
+                    CASE n.event_end
+                        WHEN 0 THEN (to_timestamp(n.datetime::double precision)::date + '24:00:00'::interval)::timestamp with time zone
+                        ELSE to_timestamp(n.event_end::double precision)
+                    END AS "end",
+                n.full_day::integer::boolean AS allday,
+                html_unescape(n.title) AS title,
+                NULLIF(btrim(n.organizer_simple::text, ' '::text), ''::text) AS organizer,
+                NULLIF(btrim(n.location_simple::text, ' '::text), ''::text) AS location,
+                html_unescape(n.teaser) AS teaser,
+                html_unescape(n.bodytext) AS body,
+                regexp_split_to_array(NULLIF(btrim(n.keywords), ''::text), '\s*,\s*'::text) AS keywords,
+                NULLIF(btrim(n.description), ''::text) AS description,
+                    CASE
+                        WHEN n.sys_language_uid > 0 THEN n.sys_language_uid
+                        ELSE NULL::integer
+                    END AS language_id,
+                n.register::integer::boolean AS register,
+                    CASE
+                        WHEN n.registration_end > 0 THEN to_timestamp(n.registration_end::double precision)
+                        ELSE NULL::timestamp with time zone
+                    END AS registration_end,
+                n.attendingfees::integer::boolean AS attending_fees,
+                NULLIF(btrim(n.attendingfees_info), ''::text) AS attending_fees_info,
+                NULLIF(btrim(n.www::text, ' '::text), ''::text) AS link,
+                    CASE
+                        WHEN n.dfppoints > 0 THEN n.dfppoints
+                        ELSE NULL::integer
+                    END AS dfp_points,
+                NULLIF(btrim(n.contact_name::text, ' '::text), ''::text) AS contact,
+                NULLIF(btrim(n.contact_email::text, ' '::text), ''::text) AS email,
+                to_timestamp(n.tstamp::double precision) AS last_modified
+            FROM typo3.news n
+            WHERE n.datetime <> 0 AND (n.starttime = 0 OR n.starttime::double precision > date_part('epoch'::text, now())) AND
+                    CASE n.event_end
+                        WHEN 0 THEN to_timestamp(n.datetime::double precision) + '24:00:00'::interval
+                        ELSE to_timestamp(n.event_end::double precision)
+                    END > now() AND n.deleted = 0 AND n.hidden = 0 AND n.is_event = 1 AND n.t3ver_wsid = 0
+            WITH DATA;
+            """,
+        ),
+        (
+            """
+            CREATE MATERIALIZED VIEW public.typo3_event AS
+            SELECT n.uid AS id,
+                n.pid AS source_id,
+                to_timestamp(n.datetime::double precision) AS start,
+                    CASE n.event_end
+                        WHEN 0 THEN (to_timestamp(n.datetime::double precision)::date + '24:00:00'::interval)::timestamp with time zone
+                        ELSE to_timestamp(n.event_end::double precision)
+                    END AS "end",
+                n.full_day::integer::boolean AS allday,
+                html_unescape(n.title) AS title,
+                NULLIF(btrim(n.organizer_simple::text, ' '::text), ''::text) AS organizer,
+                NULLIF(btrim(n.location_simple::text, ' '::text), ''::text) AS location,
+                html_unescape(n.teaser) AS teaser,
+                html_unescape(n.bodytext) AS body,
+                regexp_split_to_array(NULLIF(btrim(n.keywords), ''::text), '\s*,\s*'::text) AS keywords,
+                NULLIF(btrim(n.description), ''::text) AS description,
+                    CASE
+                        WHEN n.sys_language_uid > 0 THEN n.sys_language_uid
+                        ELSE NULL::integer
+                    END AS language_id,
+                n.register::integer::boolean AS register,
+                    CASE
+                        WHEN n.registration_end > 0 THEN to_timestamp(n.registration_end::double precision)
+                        ELSE NULL::timestamp with time zone
+                    END AS registration_end,
+                n.attendingfees::integer::boolean AS attending_fees,
+                NULLIF(btrim(n.attendingfees_info), ''::text) AS attending_fees_info,
+                NULLIF(btrim(n.www::text, ' '::text), ''::text) AS link,
+                    CASE
+                        WHEN n.dfppoints > 0 THEN n.dfppoints
+                        ELSE NULL::integer
+                    END AS dfp_points,
+                NULLIF(btrim(n.contact_name::text, ' '::text), ''::text) AS contact,
+                NULLIF(btrim(n.contact_email::text, ' '::text), ''::text) AS email,
+                to_timestamp(n.tstamp::double precision) AS last_modified,
+                (
+                    SELECT fr.uid_local
+                    FROM typo3.file_reference fr
+                    WHERE
+                        fr.uid_foreign = n.uid AND
+                        fr.tablenames::text = 'tx_news_domain_model_news'::text AND
+                        fr.fieldname::text = 'fal_media'::text
+                    LIMIT 1
+                ) AS header_image_id
+            FROM typo3.news n
+            WHERE
+                n.datetime <> 0 AND
+                (n.starttime = 0 OR n.starttime::double precision > date_part('epoch'::text, now())) AND
+                CASE n.event_end
+                    WHEN 0 THEN
+                        n.datetime + 86400
+                    ELSE
+                        n.event_end
+                    END > date_part('epoch'::text, now()) AND
+                n.deleted = 0 AND
+                n.hidden = 0 AND
+                n.t3ver_wsid = 0 AND
+                n.is_event = 1
+            WITH DATA;
+            """,
+            """
+            DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_event";
             """,
         ),
     ]
