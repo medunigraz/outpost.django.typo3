@@ -10,6 +10,9 @@ from .utils import fetch
 
 
 class LinkField(models.URLField):
+
+    title_split = re.compile(r"\s* - - .*$")
+
     def __init__(self, media_model, *args, **kwargs):
         self.media_model = media_model
         super().__init__(*args, **kwargs)
@@ -25,7 +28,9 @@ class LinkField(models.URLField):
         return self.resolve(value)
 
     def resolve(self, value):
-        url = URL(value.removesuffix("_blank"))
+        url = URL(
+            self.title_split.sub("", value.removesuffix("_blank").replace('"', ""))
+        )
         if url.scheme() == "t3":
             if url.host() == "page":
                 if not url.has_query_param("uid"):

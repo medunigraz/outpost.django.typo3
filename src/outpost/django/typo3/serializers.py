@@ -101,6 +101,51 @@ class EventContactBoxSerializer(FlexFieldsModelSerializer):
         exclude = ("event",)
 
 
+class EventRelatedLinkSerializer(FlexFieldsModelSerializer):
+    """
+    ## Expansions
+
+    To activate relation expansion add the desired fields as a comma separated
+    list to the `expand` query parameter like this:
+
+        ?expand=<field>,<field>,<field>,...
+
+    The following relational fields can be expanded:
+
+     * `language`
+
+    """
+
+    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+
+    class Meta:
+        model = models.EventRelatedLink
+        exclude = ("order", "event", "source")
+
+
+class EventRelatedMediaSerializer(FlexFieldsModelSerializer):
+    """
+    ## Expansions
+
+    To activate relation expansion add the desired fields as a comma separated
+    list to the `expand` query parameter like this:
+
+        ?expand=<field>,<field>,<field>,...
+
+    The following relational fields can be expanded:
+
+     * `language`
+
+    """
+
+    media = MediaSerializer(read_only=True)
+    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+
+    class Meta:
+        model = models.EventRelatedMedia
+        exclude = ("order", "event", "source")
+
+
 class EventMediaSerializer(FlexFieldsModelSerializer):
     """
     ## Expansions
@@ -174,6 +219,8 @@ class EventSerializer(FlexFieldsModelSerializer):
     groups = GroupSerializer(many=True, read_only=True)
     link = URLField(read_only=True, allow_null=True)
     header_image = MediaSerializer(read_only=True)
+    related_links = EventRelatedLinkSerializer(many=True, read_only=True)
+    related_media = EventRelatedMediaSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.Event

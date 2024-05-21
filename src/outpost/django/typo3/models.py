@@ -532,6 +532,85 @@ class EventContactBox(models.Model):
         return f"{s.event}: {s.media}"
 
 
+class EventRelatedLink(OrderedModel):
+    source = models.ForeignKey(
+        "Source", models.DO_NOTHING, db_constraint=False, related_name="+"
+    )
+    language = models.ForeignKey(
+        "Language",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    datetime = models.DateTimeField(blank=True, null=True)
+    event = models.ForeignKey(
+        "Event",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="related_links",
+    )
+    title = models.CharField(max_length=256, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    url = LinkField(Media)
+
+    class Meta:
+        managed = False
+        db_table = "typo3_event_related_link"
+
+    class Refresh:
+        interval = 1800
+
+    def __str__(s):
+        return f"{s.news}: {s.title}"
+
+
+class EventRelatedMedia(OrderedModel):
+    source = models.ForeignKey(
+        "Source", models.DO_NOTHING, db_constraint=False, related_name="+"
+    )
+    language = models.ForeignKey(
+        "Language",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    datetime = models.DateTimeField(blank=True, null=True)
+    event = models.ForeignKey(
+        "Event",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="related_media",
+    )
+    title = models.CharField(max_length=256, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    media = models.ForeignKey(
+        "Media",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+
+    class Meta:
+        managed = False
+        db_table = "typo3_event_related_media"
+
+    class Refresh:
+        interval = 1800
+
+    def __str__(s):
+        return f"{s.news}: {s.title}"
+
+
 class NewsCategory(models.Model):
     id = models.CharField(max_length=128, primary_key=True)
     category = models.ForeignKey(
