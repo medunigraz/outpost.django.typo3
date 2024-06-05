@@ -11,6 +11,7 @@ from purl import URL
 from .conf import settings
 from .fields import (
     LinkField,
+    NormalizedURLField,
     RichTextField,
 )
 from .utils import fetch
@@ -347,7 +348,7 @@ class Event(models.Model):
     registration_end = models.DateTimeField(blank=True, null=True)
     attending_fees = models.BooleanField()
     attending_fees_info = models.TextField(blank=True, null=True)
-    link = models.CharField(max_length=512, blank=True, null=True)
+    link = NormalizedURLField(blank=True, null=True)
     dfp_points = models.IntegerField(blank=True, null=True)
     contact = models.CharField(max_length=256, blank=True, null=True)
     email = models.CharField(max_length=256, blank=True, null=True)

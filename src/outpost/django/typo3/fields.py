@@ -4,12 +4,20 @@ from bs4 import BeautifulSoup
 from django.db import models
 from purl import URL
 from simplejson.errors import JSONDecodeError
+from url_normalize import url_normalize
 
 from .conf import settings
 from .utils import fetch
 
 
-class LinkField(models.URLField):
+class NormalizedURLField(models.URLField):
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
+        return url_normalize(value)
+
+
+class LinkField(NormalizedURLField):
 
     title_split = re.compile(r"\s* - - .*$")
 
@@ -25,50 +33,48 @@ class LinkField(models.URLField):
     def from_db_value(self, value, expression, connection, context):
         if value is None:
             return value
-        return self.resolve(value)
+        if (resolved := self.resolve(value)) :
+            return resolved
+        return super().from_db_value(value, expression, connection, context)
 
     def resolve(self, value):
-        url = URL(
-            self.title_split.sub("", value.removesuffix("_blank").replace('"', ""))
-        )
-        if url.scheme() == "t3":
-            if url.host() == "page":
-                if not url.has_query_param("uid"):
-                    return
-                try:
-                    uid = int(url.query_param("uid"))
-                except ValueError:
-                    return
-                fallback = (
-                    URL(settings.TYPO3_PAGE_URL).query_param("id", uid).as_string()
-                )
-                api = URL(settings.TYPO3_API_URL)
-                api = api.query_param("tx_mugapi_endpoint[recordType]", "RootLine")
-                api = api.query_param("tx_mugapi_endpoint[pageUid]", uid)
-                with fetch(api.as_string()) as r:
-                    if r.status_code != 200:
-                        return fallback
-                    try:
-                        data = r.json()
-                    except JSONDecodeError:
-                        return fallback
-                    if not isinstance(data, list):
-                        return fallback
-                    page = next(filter(lambda p: p.get("uid") == uid, data), None)
-                    if page:
-                        return page.get("uri", fallback)
-                return fallback
-            if url.host() == "file":
-                if not url.has_query_param("uid"):
-                    return
-                try:
-                    media = self.media_model.objects.get(pk=int(url.query_param("uid")))
-                except (self.media_model.DoesNotExist, ValueError):
-                    return
-                base = URL(media.storage.url)
-                return base.path_segments(URL(media.url).path_segments()).as_string()
+        raw = self.title_split.sub("", value.removesuffix("_blank").replace('"', ""))
+        url = URL(raw)
+        if url.scheme() != "t3":
             return
-        return url.as_string()
+        if url.host() == "page":
+            if not url.has_query_param("uid"):
+                return
+            try:
+                uid = int(url.query_param("uid"))
+            except ValueError:
+                return
+            fallback = URL(settings.TYPO3_PAGE_URL).query_param("id", uid).as_string()
+            api = URL(settings.TYPO3_API_URL)
+            api = api.query_param("tx_mugapi_endpoint[recordType]", "RootLine")
+            api = api.query_param("tx_mugapi_endpoint[pageUid]", uid)
+            with fetch(api.as_string()) as r:
+                if r.status_code != 200:
+                    return fallback
+                try:
+                    data = r.json()
+                except JSONDecodeError:
+                    return fallback
+                if not isinstance(data, list):
+                    return fallback
+                page = next(filter(lambda p: p.get("uid") == uid, data), None)
+                if page:
+                    return page.get("uri", fallback)
+            return fallback
+        if url.host() == "file":
+            if not url.has_query_param("uid"):
+                return
+            try:
+                media = self.media_model.objects.get(pk=int(url.query_param("uid")))
+            except (self.media_model.DoesNotExist, ValueError):
+                return
+            base = URL(media.storage.url)
+            return base.path_segments(URL(media.url).path_segments()).as_string()
 
 
 class RichTextField(models.TextField):
