@@ -420,7 +420,11 @@ class Migration(migrations.Migration):
                     WHERE
                         fr.uid_foreign = n.uid AND
                         fr.tablenames = 'tx_news_domain_model_news' AND
-                        fieldname = 'fal_media'
+                        fieldname = 'fal_media' AND
+                        fr.showinpreview = 1 AND
+                        fr.hidden = 0 AND
+                        fr.deleted = 0
+                    ORDER BY fr.sorting
                     LIMIT 1
                 ) AS header_image_id
             FROM typo3.news n
@@ -806,7 +810,11 @@ class Migration(migrations.Migration):
                     WHERE
                         fr.uid_foreign = n.uid AND
                         fr.tablenames::text = 'tx_news_domain_model_news'::text AND
-                        fr.fieldname::text = 'fal_media'::text
+                        fr.fieldname::text = 'fal_media'::text AND
+                        fr.showinpreview = 1 AND
+                        fr.hidden = 0 AND
+                        fr.deleted = 0
+                    ORDER BY fr.sorting
                     LIMIT 1
                 ) AS header_image_id
             FROM typo3.news n
