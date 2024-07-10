@@ -614,12 +614,29 @@ class Migration(migrations.Migration):
             FROM typo3.news n,
                 typo3.file_reference r,
                 typo3.content c
-            WHERE c.tx_news_related_news = n.uid AND c.uid = r.uid_foreign AND r.tablenames::text = 'tt_content'::text AND (r.fieldname::text = ANY (ARRAY['assets'::text, 'image'::text])) AND r.table_local::text = 'sys_file'::text AND r.deleted = 0 AND r.hidden = 0
-            AND n.datetime <> 0 AND n.event_end <> 0 AND (n.starttime = 0 OR to_timestamp(n.starttime::double precision) > now()) AND
-                    CASE n.full_day
-                        WHEN 1 THEN to_timestamp(n.event_end::double precision) + '24:00:00'::interval
-                        ELSE to_timestamp(n.event_end::double precision)
-                    END > now() AND n.deleted = 0 AND n.hidden = 0 AND n.is_event = 1
+            WHERE
+                c.tx_news_related_news = n.uid AND
+                c.uid = r.uid_foreign AND
+                r.tablenames::text = 'tt_content'::text AND
+                (
+                    r.fieldname::text = ANY (ARRAY['assets'::text, 'image'::text])
+                ) AND
+                r.table_local::text = 'sys_file'::text AND
+                r.deleted = 0 AND
+                r.hidden = 0 AND
+                n.datetime <> 0 AND
+                n.event_end <> 0 AND
+                (
+                    n.starttime = 0 OR
+                    n.starttime > extract(epoch from now())
+                ) AND
+                CASE n.full_day
+                    WHEN 1 THEN n.event_end + 86400
+                    ELSE n.event_end
+                END > extract(epoch from now()) AND
+                n.deleted = 0 AND
+                n.hidden = 0 AND
+                n.is_event = 1
             UNION ALL
             SELECT r.uid AS id,
                 r.uid_local AS media_id,
@@ -644,11 +661,28 @@ class Migration(migrations.Migration):
                 r.showinpreview::integer::boolean AS preview
             FROM typo3.news n,
                 typo3.file_reference r
-            WHERE r.tablenames::text = 'tx_news_domain_model_news'::text AND r.table_local::text = 'sys_file'::text AND (r.fieldname::text = ANY (ARRAY['fal_media'::text, 'fal_related_files'::text])) AND r.uid_foreign = n.uid AND r.deleted = 0 AND r.hidden = 0 AND n.datetime <> 0 AND n.event_end <> 0 AND (n.starttime = 0 OR to_timestamp(n.starttime::double precision) > now()) AND
-                    CASE n.full_day
-                        WHEN 1 THEN to_timestamp(n.event_end::double precision) + '24:00:00'::interval
-                        ELSE to_timestamp(n.event_end::double precision)
-                    END > now() AND n.deleted = 0 AND n.hidden = 0 AND n.is_event = 1
+            WHERE
+                r.tablenames::text = 'tx_news_domain_model_news'::text AND
+                r.table_local::text = 'sys_file'::text AND
+                (
+                    r.fieldname::text = ANY (ARRAY['fal_media'::text, 'fal_related_files'::text])
+                ) AND
+                r.uid_foreign = n.uid AND
+                r.deleted = 0 AND
+                r.hidden = 0 AND
+                n.datetime <> 0 AND
+                n.event_end <> 0
+                AND (
+                    n.starttime = 0 OR
+                    n.starttime > extract(epoch from now())
+                ) AND
+                CASE n.full_day
+                    WHEN 1 THEN n.event_end + 86400
+                    ELSE n.event_end
+                END > extract(epoch from now()) AND
+                n.deleted = 0 AND
+                n.hidden = 0 AND
+                n.is_event = 1
             WITH DATA;
             """,
         ),
@@ -761,9 +795,13 @@ class Migration(migrations.Migration):
             FROM typo3.news n
             WHERE n.datetime <> 0 AND (n.starttime = 0 OR n.starttime::double precision > date_part('epoch'::text, now())) AND
                     CASE n.event_end
-                        WHEN 0 THEN to_timestamp(n.datetime::double precision) + '24:00:00'::interval
-                        ELSE to_timestamp(n.event_end::double precision)
-                    END > now() AND n.deleted = 0 AND n.hidden = 0 AND n.is_event = 1 AND n.t3ver_wsid = 0
+                        WHEN 0 THEN n.datetime + 86400
+                        ELSE n.event_end
+                    END > extract(epoch from now()) AND
+                    n.deleted = 0 AND
+                    n.hidden = 0 AND
+                    n.is_event = 1 AND
+                    n.t3ver_wsid = 0
             WITH DATA;
             """,
         ),
