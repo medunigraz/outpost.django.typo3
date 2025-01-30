@@ -81,7 +81,7 @@ class EventViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     {serializer}
     """
 
-    queryset = models.Event.objects.filter(end__gte=timezone.now())
+    queryset = models.Event.objects.all()
     serializer_class = serializers.EventSerializer
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
