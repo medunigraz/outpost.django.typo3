@@ -45,8 +45,8 @@ class Migration(migrations.Migration):
                 r.table_local = 'sys_file' AND
                 r.deleted = 0 AND
                 r.hidden = 0 AND
-                (n.starttime = 0 OR to_timestamp(n.starttime::double precision) < now()) AND
-                (n.endtime = 0 OR to_timestamp(n.endtime::double precision) > now()) AND
+                (n.starttime = 0 OR n.starttime::double precision < date_part('epoch'::text, now())) AND
+                (n.endtime = 0 OR n.endtime::double precision > date_part('epoch'::text, now())) AND
                 n.deleted = 0 AND
                 n.hidden = 0 AND
                 n.is_event = 0
@@ -82,8 +82,8 @@ class Migration(migrations.Migration):
                 r.table_local = 'sys_file' AND
                 r.deleted = 0 AND
                 r.hidden = 0 AND
-                (n.starttime = 0 OR to_timestamp(n.starttime::double precision) < now()) AND
-                (n.endtime = 0 OR to_timestamp(n.endtime::double precision) > now()) AND
+                (n.starttime = 0 OR n.starttime::double precision < date_part('epoch'::text, now())) AND
+                (n.endtime = 0 OR n.endtime::double precision > date_part('epoch'::text, now())) AND
                 n.deleted = 0 AND
                 n.hidden = 0 AND
                 n.is_event = 0
@@ -126,8 +126,8 @@ class Migration(migrations.Migration):
                 r.table_local = 'sys_file' AND
                 r.deleted = 0 AND
                 r.hidden = 0 AND
-                (n.starttime = 0 OR n.starttime < extract(epoch from now())) AND
-                (n.endtime = 0 OR n.endtime > extract(epoch from now())) AND
+                (n.starttime = 0 OR n.starttime < date_part('epoch'::text, now())) AND
+                (n.endtime = 0 OR n.endtime > date_part('epoch'::text, now())) AND
                 n.deleted = 0 AND
                 n.hidden = 0 AND
                 n.is_event = 0
@@ -163,8 +163,8 @@ class Migration(migrations.Migration):
                 r.table_local = 'sys_file' AND
                 r.deleted = 0 AND
                 r.hidden = 0 AND
-                (n.starttime = 0 OR n.starttime < extract(epoch from now())) AND
-                (n.endtime = 0 OR n.endtime > extract(epoch from now())) AND
+                (n.starttime = 0 OR n.starttime < date_part('epoch'::text, now())) AND
+                (n.endtime = 0 OR n.endtime > date_part('epoch'::text, now())) AND
                 n.deleted = 0 AND
                 n.hidden = 0 AND
                 n.is_event = 0

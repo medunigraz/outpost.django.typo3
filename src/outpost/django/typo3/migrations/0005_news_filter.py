@@ -66,13 +66,13 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    to_timestamp(n.starttime) < now()
+                    n.starttime < date_part('epoch'::text, now())
                 )
                 AND
                 (
                     n.endtime = 0
                     OR
-                    to_timestamp(n.endtime) > now()
+                    n.endtime > date_part('epoch'::text, now())
                 )
                 AND
                 n.deleted = 0
@@ -146,13 +146,13 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    to_timestamp(n.starttime) < now()
+                    n.starttime < date_part('epoch'::text, now())
                 )
                 AND
                 (
                     n.endtime = 0
                     OR
-                    to_timestamp(n.endtime) > now()
+                    n.endtime > date_part('epoch'::text, now())
                 )
                 AND
                 n.deleted = 0

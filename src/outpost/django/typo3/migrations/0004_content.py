@@ -105,13 +105,13 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    to_timestamp(n.starttime) < now()
+                    n.starttime < date_part('epoch'::text, now())
                 )
                 AND
                 (
                     n.endtime = 0
                     OR
-                    to_timestamp(n.endtime) > now()
+                    n.endtime > date_part('epoch'::text, now())
                 )
                 AND
                 n.deleted = 0
@@ -158,8 +158,8 @@ class Migration(migrations.Migration):
                 r.table_local = 'sys_file' AND
                 r.deleted = 0 AND
                 r.hidden = 0 AND
-                (n.starttime = 0 OR to_timestamp(n.starttime::double precision) < now()) AND
-                (n.endtime = 0 OR to_timestamp(n.endtime::double precision) > now()) AND
+                (n.starttime = 0 OR n.starttime::double precision < date_part('epoch'::text, now())) AND
+                (n.endtime = 0 OR n.endtime::double precision > date_part('epoch'::text, now())) AND
                 n.deleted = 0 AND
                 n.hidden = 0 AND
                 n.is_event = 0
@@ -195,11 +195,12 @@ class Migration(migrations.Migration):
             r.table_local = 'sys_file' AND
             r.deleted = 0 AND
             r.hidden = 0 AND
-            (n.starttime = 0 OR to_timestamp(n.starttime::double precision) < now()) AND
-            (n.endtime = 0 OR to_timestamp(n.endtime::double precision) > now()) AND
+            (n.starttime = 0 OR n.starttime::double precision < date_part('epoch'::text, now())) AND
+            (n.endtime = 0 OR n.endtime::double precision > date_part('epoch'::text, now())) AND
             n.deleted = 0 AND
             n.hidden = 0 AND
-            n.is_event = 0;
+            n.is_event = 0
+            WITH DATA;
             """,
             """
             DROP MATERIALIZED VIEW IF EXISTS "public"."typo3_newsmedia";
@@ -275,7 +276,7 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    to_timestamp(n.starttime) > now()
+                    n.starttime > date_part('epoch'::text, now())
                 )
                 AND
                 (
@@ -284,11 +285,11 @@ class Migration(migrations.Migration):
                     WHEN
                         1
                     THEN
-                        to_timestamp(n.event_end) + '24:00:00'::INTERVAL
+                        n.event_end + 86400
                     ELSE
-                        to_timestamp(n.event_end)
+                        n.event_end
                     END
-                ) > now()
+                ) > date_part('epoch'::text, now())
                 AND
                 n.deleted = 0
                 AND
@@ -364,7 +365,7 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    to_timestamp(n.starttime::double precision) > now()
+                    n.starttime::double precision > date_part('epoch'::text, now())
                 )
                 AND
                 CASE
@@ -372,10 +373,10 @@ class Migration(migrations.Migration):
                 WHEN
                     1
                 THEN
-                    to_timestamp(n.event_end::double precision) + '24:00:00'::interval
+                    n.event_end::double precision + 86400
                 ELSE
-                    to_timestamp(n.event_end::double precision)
-                END > now()
+                    n.event_end::double precision
+                END > date_part('epoch'::text, now())
                 AND
                 n.deleted = 0
                 AND
@@ -443,17 +444,18 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    to_timestamp(n.starttime::double precision) > now())
+                    n.starttime::double precision > date_part('epoch'::text, now())
+                )
                 AND
                 CASE
                     n.full_day
                 WHEN
                     1
                 THEN
-                    to_timestamp(n.event_end::double precision) + '24:00:00'::interval
+                    n.event_end::double precision + 86400
                 ELSE
-                    to_timestamp(n.event_end::double precision)
-                END > now()
+                    n.event_end::double precision
+                END > date_part('epoch'::text, now())
                 AND
                 n.deleted = 0
                 AND

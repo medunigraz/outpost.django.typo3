@@ -31,15 +31,15 @@ class Migration(migrations.Migration):
             FROM typo3.news_links nl
             INNER JOIN typo3.news n ON n.uid = nl.parent
             WHERE
-                (n.starttime = 0 OR to_timestamp(n.starttime::double precision) < now()) AND
-                (n.endtime = 0 OR to_timestamp(n.endtime::double precision) > now()) AND
+                (n.starttime = 0 OR n.starttime::double precision < date_part('epoch'::text, now())) AND
+                (n.endtime = 0 OR n.endtime::double precision > date_part('epoch'::text, now())) AND
                 n.deleted = 0 AND
                 n.hidden = 0 AND
                 n.is_event = 0 AND
                 n.t3ver_wsid = 0 AND
                 nl.deleted = 0 AND
                 nl.hidden = 0 AND
-                nl.uri ^@ 'https://'
+                nl.uri LIKE 'https://%'
             WITH DATA;
             """,
         ),

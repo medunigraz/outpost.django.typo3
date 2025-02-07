@@ -87,7 +87,7 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    to_timestamp(n.starttime) > now()
+                    n.starttime > date_part('epoch'::text, now())
                 )
                 AND
                 (
@@ -96,11 +96,11 @@ class Migration(migrations.Migration):
                     WHEN
                         1
                     THEN
-                        to_timestamp(n.event_end) + '24:00:00'::INTERVAL
+                        n.event_end + 86400
                     ELSE
-                        to_timestamp(n.event_end)
+                        n.event_end
                     END
-                ) > now()
+                ) > date_part('epoch'::text, now())
                 AND
                 n.deleted = 0
                 AND
@@ -180,7 +180,7 @@ class Migration(migrations.Migration):
                 (
                     n.starttime = 0
                     OR
-                    n.starttime > extract(epoch from now())
+                    n.starttime > date_part('epoch'::text, now())
                 )
                 AND
                 (
@@ -189,11 +189,11 @@ class Migration(migrations.Migration):
                     WHEN
                         1
                     THEN
-                        to_timestamp(n.event_end) + '24:00:00'::INTERVAL
+                        n.event_end + 86400
                     ELSE
-                        to_timestamp(n.event_end)
+                        n.event_end
                     END
-                ) > now()
+                ) > date_part('epoch'::text, now())
                 AND
                 n.deleted = 0
                 AND
