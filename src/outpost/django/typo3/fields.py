@@ -2,6 +2,7 @@ import re
 
 from bs4 import BeautifulSoup
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from purl import URL
 from simplejson.errors import JSONDecodeError
 from url_normalize import url_normalize
@@ -71,7 +72,7 @@ class LinkField(NormalizedURLField):
                 return
             try:
                 media = self.media_model.objects.get(pk=int(url.query_param("uid")))
-            except (self.media_model.DoesNotExist, ValueError):
+            except (ObjectDoesNotExist, ValueError):
                 return
             base = URL(media.storage.url)
             return base.path_segments(URL(media.url).path_segments()).as_string()
@@ -156,7 +157,7 @@ class RichTextField(models.TextField):
             return
         try:
             media = self.media_model.objects.get(pk=url.query_param("uid"))
-        except self.media_model.DoesNotExist:
+        except ObjectDoesNotExist:
             return
         base = URL(media.storage.url)
         elem.attrs["href"] = base.path_segments(
@@ -204,9 +205,9 @@ class RichTextField(models.TextField):
             return
         try:
             pk = elem.attrs.get("data-htmlarea-file-uid")
-            media = models.Media.objects.get(pk=pk)
+            media = self.media_model.objects.get(pk=pk)
             elem.attrs["src"] = media.url
-        except models.Media.DoesNotExist:
+        except ObjectDoesNotExist:
             return
 
     def handle_images_src(self, elem):
