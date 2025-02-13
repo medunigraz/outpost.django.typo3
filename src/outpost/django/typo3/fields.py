@@ -34,7 +34,7 @@ class LinkField(NormalizedURLField):
     def from_db_value(self, value, expression, connection, context):
         if value is None:
             return value
-        if (resolved := self.resolve(value)) :
+        if (resolved := self.resolve(value)):
             return resolved
         return super().from_db_value(value, expression, connection, context)
 
