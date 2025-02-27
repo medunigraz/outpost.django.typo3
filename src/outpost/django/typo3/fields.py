@@ -159,7 +159,10 @@ class RichTextField(models.TextField):
             media = self.media_model.objects.get(pk=url.query_param("uid"))
         except ObjectDoesNotExist:
             return
-        base = URL(media.storage.url)
+        try:
+            base = URL(media.storage.url)
+        except models.Storage.DoesNotExist:
+            return
         elem.attrs["href"] = base.path_segments(
             URL(media.url).path_segments()
         ).as_string()
