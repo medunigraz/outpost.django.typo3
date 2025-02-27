@@ -148,7 +148,11 @@ class RichTextField(models.TextField):
     def handle_a_file(self, elem):
         if "href" not in elem.attrs:
             return
-        url = URL(elem.attrs["href"])
+        try:
+            url = URL(elem.attrs["href"])
+        except:
+            logger.error("Could not parse URL {url}".format(url=elem.attrs["href"]))
+            return
         if url.scheme() != "t3":
             return
         if url.host() != "file":
