@@ -161,7 +161,7 @@ class RichTextField(models.TextField):
             return
         try:
             base = URL(media.storage.url)
-        except models.Storage.DoesNotExist:
+        except ObjectDoesNotExist:
             return
         elem.attrs["href"] = base.path_segments(
             URL(media.url).path_segments()
