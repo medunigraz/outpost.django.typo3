@@ -41,6 +41,9 @@ class NewsFilter(filterset.FilterSet):
     groups = filters.ModelMultipleChoiceFilter(
         label=_("Groups"), queryset=models.Group.objects.all()
     )
+    source = filters.ModelMultipleChoiceFilter(
+        label=_("Source"), queryset=models.Source.objects.filter(private=False)
+    )
 
     class Meta:
         model = models.News
@@ -135,6 +138,9 @@ class EventFilter(filterset.FilterSet):
     )
     groups = filters.ModelMultipleChoiceFilter(
         label=_("Groups"), queryset=models.Group.objects.all()
+    )
+    source = filters.ModelMultipleChoiceFilter(
+        label=_("Source"), queryset=models.Source.objects.filter(private=False)
     )
 
     class Meta:
