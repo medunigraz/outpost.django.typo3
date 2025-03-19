@@ -1,3 +1,4 @@
+import logging
 import re
 
 from bs4 import BeautifulSoup
@@ -9,6 +10,8 @@ from url_normalize import url_normalize
 
 from .conf import settings
 from .utils import fetch
+
+logger = logging.getLogger(__name__)
 
 
 class NormalizedURLField(models.URLField):
