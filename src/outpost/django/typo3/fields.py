@@ -37,15 +37,17 @@ class LinkField(NormalizedURLField):
     def from_db_value(self, value, expression, connection, context):
         if value is None:
             return value
-        if (resolved := self.resolve(value)):
+        if (resolved := self.resolve(value)) :
             return resolved
         return super().from_db_value(value, expression, connection, context)
 
     def resolve(self, value):
-        raw = self.title_split.sub("", value.removesuffix("_blank").replace('"', ""))
+        raw = self.title_split.sub(
+            "", value.removesuffix("_blank").strip().replace('"', "")
+        )
         url = URL(raw)
         if url.scheme() != "t3":
-            return
+            return url.as_string()
         if url.host() == "page":
             if not url.has_query_param("uid"):
                 return
