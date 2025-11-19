@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from purl import URL
-from simplejson.errors import JSONDecodeError
+from requests.exceptions import JSONDecodeError
 from url_normalize import url_normalize
 
 from .conf import settings
@@ -37,7 +37,7 @@ class LinkField(NormalizedURLField):
     def from_db_value(self, value, expression, connection, context):
         if value is None:
             return value
-        if (resolved := self.resolve(value)) :
+        if resolved := self.resolve(value):
             return resolved
         return super().from_db_value(value, expression, connection, context)
 
@@ -240,7 +240,7 @@ class RichTextField(models.TextField):
             func = getattr(self, f"function_{name}", None)
             if func:
                 value = func(value)
-        for (replacement, pattern) in self.regex:
+        for replacement, pattern in self.regex:
             value = pattern.sub(replacement, value)
         parsed = BeautifulSoup(value, "html.parser")
         for query, handlers in self.parser.items():

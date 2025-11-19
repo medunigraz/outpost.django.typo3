@@ -558,7 +558,7 @@ class EventRelatedLink(OrderedModel):
     description = models.TextField(blank=True, null=True)
     url = LinkField(Media)
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         managed = False
         db_table = "typo3_event_related_link"
 
@@ -601,7 +601,7 @@ class EventRelatedMedia(OrderedModel):
         related_name="+",
     )
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         managed = False
         db_table = "typo3_event_related_media"
 
@@ -935,7 +935,7 @@ class NewsRelatedLink(OrderedModel):
     description = models.TextField(blank=True, null=True)
     url = LinkField(Media)
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         managed = False
         db_table = "typo3_news_related_link"
 
@@ -978,7 +978,7 @@ class NewsRelatedMedia(OrderedModel):
         related_name="+",
     )
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         managed = False
         db_table = "typo3_news_related_media"
 

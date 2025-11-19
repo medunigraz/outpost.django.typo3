@@ -1,9 +1,10 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 app_name = "typo3"
 
 urlpatterns = [
-    url(r"^media/(?P<pk>\d+)/(?P<width>\d+)?$", views.MediaView.as_view(), name="media")
+    path("media/<int:pk>/", views.MediaView.as_view(), name="media"),
+    path("media/<int:pk>/<int:width>", views.MediaView.as_view(), name="media"),
 ]
