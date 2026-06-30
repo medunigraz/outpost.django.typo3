@@ -73,39 +73,6 @@ class DjangoStorage(models.Model):
         return str(self.id)
 
 
-class Language(models.Model):
-    """
-    ## Fields
-
-    ### `id` (`integer`)
-    Primary key.
-
-    ### `title` (`string`)
-    Titel of language.
-
-    ### `flag` (`string`)
-    [ISO 3361-1](https://en.wikipedia.org/wiki/ISO_3166-1) code.
-
-    ### `isocode` (`string`)
-    [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) code.
-    """
-
-    id = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=256, blank=True, null=True)
-    flag = models.CharField(max_length=2, blank=True, null=True)
-    isocode = models.CharField(max_length=2, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = "typo3_language"
-
-    class Refresh:
-        interval = 86400
-
-    def __str__(self):
-        return self.title
-
-
 class Group(models.Model):
     """
     ## Fields
@@ -138,9 +105,6 @@ class Category(models.Model):
     ### `id` (`integer`)
     Primary key.
 
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
-
     ### `title` (`string`)
     Titel of category.
 
@@ -155,14 +119,6 @@ class Category(models.Model):
     """
 
     id = models.IntegerField(primary_key=True)
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     title = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     marker = models.IntegerField(blank=True, null=True)
@@ -314,9 +270,6 @@ class Event(models.Model):
 
     ### `last_modified` (`datetime`)
     Date and time of last modification to this event.
-
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
     """
 
     id = models.IntegerField(primary_key=True)
@@ -336,14 +289,6 @@ class Event(models.Model):
         models.TextField(blank=True),
     )
     description = models.TextField(blank=True, null=True)
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     register = models.BooleanField()
     registration_end = models.DateTimeField(blank=True, null=True)
     attending_fees = models.BooleanField()
@@ -430,14 +375,6 @@ class EventMedia(models.Model):
     title = models.CharField(max_length=256, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     alternative = models.TextField(blank=True, null=True)
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     order = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
@@ -473,14 +410,6 @@ class EventGallery(models.Model):
     title = models.CharField(max_length=256, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     alternative = models.TextField(blank=True, null=True)
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     order = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
@@ -537,14 +466,6 @@ class EventRelatedLink(OrderedModel):
     source = models.ForeignKey(
         "Source", models.DO_NOTHING, db_constraint=False, related_name="+"
     )
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     datetime = models.DateTimeField(blank=True, null=True)
     event = models.ForeignKey(
         "Event",
@@ -572,14 +493,6 @@ class EventRelatedLink(OrderedModel):
 class EventRelatedMedia(OrderedModel):
     source = models.ForeignKey(
         "Source", models.DO_NOTHING, db_constraint=False, related_name="+"
-    )
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
     )
     datetime = models.DateTimeField(blank=True, null=True)
     event = models.ForeignKey(
@@ -699,22 +612,11 @@ class News(models.Model):
 
     ### `last_modified` (`datetime`)
     Date and time of last modification to this event.
-
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
     """
 
     id = models.IntegerField(primary_key=True)
     source = models.ForeignKey(
         "Source", models.DO_NOTHING, db_constraint=False, related_name="+"
-    )
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
     )
     datetime = models.DateTimeField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
@@ -807,14 +709,6 @@ class NewsMedia(models.Model):
     title = models.CharField(max_length=256, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     alternative = models.TextField(blank=True, null=True)
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     order = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
@@ -850,14 +744,6 @@ class NewsGallery(models.Model):
     title = models.CharField(max_length=256, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     alternative = models.TextField(blank=True, null=True)
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     order = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
@@ -914,14 +800,6 @@ class NewsRelatedLink(OrderedModel):
     source = models.ForeignKey(
         "Source", models.DO_NOTHING, db_constraint=False, related_name="+"
     )
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     datetime = models.DateTimeField(blank=True, null=True)
     news = models.ForeignKey(
         "News",
@@ -949,14 +827,6 @@ class NewsRelatedLink(OrderedModel):
 class NewsRelatedMedia(OrderedModel):
     source = models.ForeignKey(
         "Source", models.DO_NOTHING, db_constraint=False, related_name="+"
-    )
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
     )
     datetime = models.DateTimeField(blank=True, null=True)
     news = models.ForeignKey(
@@ -1011,9 +881,6 @@ class ZMFCourse(models.Model):
     ### `email` (`string`)
     Contact email address.
 
-    ### `language` (`integer`)
-    Foreign key to [TYPO3 language](../language).
-
     ### `category` (`integer`)
     Foreign key to [TYPO3 category](../category).
     """
@@ -1022,14 +889,6 @@ class ZMFCourse(models.Model):
     page = models.IntegerField()
     last_modified = models.DateTimeField(blank=True, null=True)
     created = models.DateTimeField(blank=True, null=True)
-    language = models.ForeignKey(
-        "Language",
-        models.DO_NOTHING,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
     title = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)

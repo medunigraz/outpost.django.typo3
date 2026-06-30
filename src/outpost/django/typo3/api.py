@@ -19,24 +19,10 @@ from . import (
 )
 
 
-@docstring_format(model=models.Language.__doc__)
-class LanguageViewSet(ReadOnlyModelViewSet):
-    """
-    List languages from TYPO3.
-
-    {model}
-    """
-
-    queryset = models.Language.objects.all()
-    serializer_class = serializers.LanguageSerializer
-    permission_classes = (AllowAny,)
-    filter_fields = ("isocode",)
-
-
 @docstring_format(
     model=models.Category.__doc__, serializer=serializers.CategorySerializer.__doc__
 )
-class CategoryViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
+class CategoryViewSet(ReadOnlyModelViewSet):
     """
     List categories from TYPO3.
 
@@ -47,8 +33,7 @@ class CategoryViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
     permission_classes = (AllowAny,)
-    filter_fields = ("language", "start", "end")
-    permit_list_expands = ("language",)
+    filter_fields = ("start", "end")
 
 
 @docstring_format(
@@ -86,7 +71,7 @@ class EventViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
     filter_class = filters.EventFilter
-    permit_list_expands = ("categories", "language")
+    permit_list_expands = ("categories",)
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -119,7 +104,7 @@ class NewsViewSet(ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
     filter_class = filters.NewsFilter
-    permit_list_expands = ("categories", "language")
+    permit_list_expands = ("categories",)
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -147,4 +132,4 @@ class ZMFCourseViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     queryset = models.ZMFCourse.objects.all()
     serializer_class = serializers.ZMFCourseSerializer
     permission_classes = (AllowAny,)
-    permit_list_expands = ("language", "category")
+    permit_list_expands = ("category",)

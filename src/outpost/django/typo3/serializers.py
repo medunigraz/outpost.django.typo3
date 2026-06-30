@@ -16,43 +16,23 @@ from . import models
 logger = logging.getLogger(__name__)
 
 
-class LanguageSerializer(ModelSerializer):
-    class Meta:
-        model = models.Language
-        fields = "__all__"
-
-
 class GroupSerializer(ModelSerializer):
-    """"""
+    """ """
 
     class Meta:
         model = models.Group
         fields = "__all__"
 
 
-class CategorySerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
-
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+class CategorySerializer(ModelSerializer):
+    """ """
 
     class Meta:
         model = models.Category
         exclude = ("marker",)
 
 
-class MediaSerializer(FlexFieldsModelSerializer):
+class MediaSerializer(ModelSerializer):
     url = SerializerMethodField()
     original = URLField(source="url")
 
@@ -68,30 +48,17 @@ class MediaSerializer(FlexFieldsModelSerializer):
         return path
 
 
-class EventGallerySerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
+class EventGallerySerializer(ModelSerializer):
+    """ """
 
     media = MediaSerializer(read_only=True)
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
 
     class Meta:
         model = models.EventGallery
         exclude = ("order", "event")
 
 
-class EventContactBoxSerializer(FlexFieldsModelSerializer):
+class EventContactBoxSerializer(ModelSerializer):
     """"""
 
     media = MediaSerializer(read_only=True)
@@ -101,90 +68,36 @@ class EventContactBoxSerializer(FlexFieldsModelSerializer):
         exclude = ("event",)
 
 
-class EventRelatedLinkSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
-
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+class EventRelatedLinkSerializer(ModelSerializer):
+    """ """
 
     class Meta:
         model = models.EventRelatedLink
         exclude = ("order", "event", "source")
 
 
-class EventRelatedMediaSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
+class EventRelatedMediaSerializer(ModelSerializer):
+    """ """
 
     media = MediaSerializer(read_only=True)
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
 
     class Meta:
         model = models.EventRelatedMedia
         exclude = ("order", "event", "source")
 
 
-class EventMediaSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
+class EventMediaSerializer(ModelSerializer):
+    """ """
 
     media = MediaSerializer(read_only=True)
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
 
     class Meta:
         model = models.EventMedia
         exclude = ("order", "event")
 
 
-class EventCategorySerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
-
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+class EventCategorySerializer(ModelSerializer):
+    """ """
 
     class Meta:
         model = models.EventCategory
@@ -202,13 +115,12 @@ class EventSerializer(FlexFieldsModelSerializer):
 
     The following relational fields can be expanded:
 
-     * `language`
+     * `categories`
 
     """
 
     expandable_fields = {
         "categories": (CategorySerializer, {"source": "categories", "many": True}),
-        "language": (LanguageSerializer, {"source": "language"}),
     }
     url = URLField(read_only=True, allow_null=True)
     media = EventMediaSerializer(many=True, read_only=True)
@@ -235,53 +147,27 @@ class EventSearchSerializer(HaystackSerializerMixin, EventSerializer):
         search_fields = ("text",)
 
 
-class NewsMediaSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
+class NewsMediaSerializer(ModelSerializer):
+    """ """
 
     media = MediaSerializer(read_only=True)
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
 
     class Meta:
         model = models.NewsMedia
         exclude = ("order", "news")
 
 
-class NewsGallerySerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
+class NewsGallerySerializer(ModelSerializer):
+    """ """
 
     media = MediaSerializer(read_only=True)
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
 
     class Meta:
         model = models.NewsGallery
         exclude = ("order", "news")
 
 
-class NewsContactBoxSerializer(FlexFieldsModelSerializer):
+class NewsContactBoxSerializer(ModelSerializer):
     """"""
 
     media = MediaSerializer(read_only=True)
@@ -291,45 +177,18 @@ class NewsContactBoxSerializer(FlexFieldsModelSerializer):
         exclude = ("news",)
 
 
-class NewsRelatedLinkSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
-
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
+class NewsRelatedLinkSerializer(ModelSerializer):
+    """ """
 
     class Meta:
         model = models.NewsRelatedLink
         exclude = ("order", "news", "source")
 
 
-class NewsRelatedMediaSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-
-    """
+class NewsRelatedMediaSerializer(ModelSerializer):
+    """ """
 
     media = MediaSerializer(read_only=True)
-    expandable_fields = {"language": (LanguageSerializer, {"source": "language"})}
 
     class Meta:
         model = models.NewsRelatedMedia
@@ -348,13 +207,10 @@ class NewsSerializer(FlexFieldsModelSerializer):
     The following relational fields can be expanded:
 
      * `categories`
-     * `language`
-
     """
 
     expandable_fields = {
         "categories": (CategorySerializer, {"source": "categories", "many": True}),
-        "language": (LanguageSerializer, {"source": "language"}),
     }
     url = URLField(read_only=True, allow_null=True)
     media = NewsMediaSerializer(many=True, read_only=True)
@@ -391,13 +247,11 @@ class ZMFCourseSerializer(FlexFieldsModelSerializer):
 
     The following relational fields can be expanded:
 
-     * `language`
      * `category`
 
     """
 
     expandable_fields = {
-        "language": (LanguageSerializer, {"source": "language"}),
         "category": (CategorySerializer, {"source": "category"}),
     }
 

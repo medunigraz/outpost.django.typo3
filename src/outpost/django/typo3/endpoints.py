@@ -1,7 +1,6 @@
 from . import api
 
 v1 = [
-    (r"typo3/language", api.LanguageViewSet, "typo3-language"),
     (r"typo3/category", api.CategoryViewSet, "typo3-category"),
     (r"typo3/group", api.GroupViewSet, "typo3-group"),
     (r"typo3/event", api.EventViewSet, "typo3-event"),

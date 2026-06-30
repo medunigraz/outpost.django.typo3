@@ -12,7 +12,6 @@ from .models import (
 
 class NewsIndex(CelerySearchIndex, indexes.Indexable):
     text = fields.CharField(document=True, use_template=True)
-    language = fields.FacetCharField(model_attr="language__title")
     datetime = fields.DateTimeField(model_attr="datetime", null=True)
     topnews = fields.FacetBooleanField(model_attr="topnews")
 
@@ -25,7 +24,6 @@ class NewsIndex(CelerySearchIndex, indexes.Indexable):
 
 class EventIndex(CelerySearchIndex, indexes.Indexable):
     text = fields.CharField(document=True, use_template=True)
-    language = fields.FacetCharField(model_attr="language__title")
     start = fields.DateTimeField(model_attr="start", null=True)
     end = fields.DateTimeField(model_attr="end", null=True)
     allday = fields.FacetBooleanField(model_attr="allday")

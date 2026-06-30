@@ -32,9 +32,6 @@ class NewsFilter(filterset.FilterSet):
       - `last_modified`: `gt`, `lt`, `gte`, `lte`, `date`
     """
 
-    language = filters.ModelChoiceFilter(
-        label=_("Language"), queryset=models.Language.objects.all()
-    )
     categories = filters.ModelMultipleChoiceFilter(
         label=_("Categories"), queryset=models.Category.objects.all()
     )
@@ -130,9 +127,6 @@ class EventFilter(filterset.FilterSet):
       - `last_modified`: `exact`, `gt`, `lt`, `gte`, `lte`, `contains`, `startswith`
     """
 
-    language = filters.ModelChoiceFilter(
-        label=_("Language"), queryset=models.Language.objects.all()
-    )
     categories = filters.ModelMultipleChoiceFilter(
         label=_("Categories"), queryset=models.Category.objects.all()
     )
