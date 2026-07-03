@@ -378,29 +378,3 @@ class NewsSearchSerializer(HaystackSerializerMixin, NewsSerializer):
     class Meta(NewsSerializer.Meta):
         field_aliases = None
         search_fields = ("text",)
-
-
-class ZMFCourseSerializer(FlexFieldsModelSerializer):
-    """
-    ## Expansions
-
-    To activate relation expansion add the desired fields as a comma separated
-    list to the `expand` query parameter like this:
-
-        ?expand=<field>,<field>,<field>,...
-
-    The following relational fields can be expanded:
-
-     * `language`
-     * `category`
-
-    """
-
-    expandable_fields = {
-        "language": (LanguageSerializer, {"source": "language"}),
-        "category": (CategorySerializer, {"source": "category"}),
-    }
-
-    class Meta:
-        model = models.ZMFCourse
-        exclude = ("page",)
