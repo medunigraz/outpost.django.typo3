@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class NormalizedURLField(models.URLField):
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         if value is None:
             return value
         return url_normalize(value)
@@ -34,12 +34,12 @@ class LinkField(NormalizedURLField):
         kwargs["media_model"] = self.media_model
         return name, path, args, kwargs
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         if value is None:
             return value
         if resolved := self.resolve(value):
             return resolved
-        return super().from_db_value(value, expression, connection, context)
+        return super().from_db_value(value, expression, connection)
 
     def resolve(self, value):
         raw = self.title_split.sub(
@@ -233,7 +233,7 @@ class RichTextField(models.TextField):
     def handle_clean_attrs_empty(self, elem):
         elem.attrs = {k: v for k, v in elem.attrs.items() if v}
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         if value is None:
             return value
         for name in self.functions:
