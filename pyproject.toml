@@ -1,0 +1,30 @@
+[project]
+name = "outpost.django.typo3"
+dynamic = ["version"]
+description = "MUG API Backend - TYPO3"
+authors = [
+    {name = "Michael Fladischer", email = "michael.fladischer@medunigraz.at"}
+]
+license = {text = "BSD"}
+readme = "README.rst"
+requires-python = ">=3.13"
+dependencies = [
+    "django (>=4.2.23)",
+]
+
+[build-system]
+requires = ["setuptools>=80", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+force_grid_wrap = 2
+force_to_top = false
+line_length = 120
+known_first_party = "outpost.django.typo3"
+known_third_party = "django,outpost"
+default_section = "THIRDPARTY"
