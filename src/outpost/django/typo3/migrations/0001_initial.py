@@ -18,27 +18,24 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
                 CREATE FOREIGN TABLE typo3.category (
-                    uid integer,
-                    tstamp bigint,
-                    crdate bigint,
-                    deleted smallint,
-                    hidden smallint,
-                    starttime bigint,
-                    endtime bigint,
-                    title text,
-                    description text,
-                    parent integer,
-                    items integer,
-                    images integer,
-                    shortcut integer,
-                    tx_odsosm_marker integer,
-                    slug character varying
-                )
-                SERVER typo3
-                OPTIONS (
-                    dbname 'typo3-production',
-                    table_name 'sys_category'
-                )
+                    uid integer
+                  , tstamp bigint
+                  , crdate bigint
+                  , deleted smallint
+                  , hidden smallint
+                  , starttime bigint
+                  , endtime bigint
+                  , title text
+                  , description text
+                  , parent integer
+                  , items integer
+                  , images integer
+                  , shortcut integer
+                  , tx_odsosm_marker integer
+                  , slug varchar
+                ) SERVER typo3
+                  OPTIONS (dbname 'typo3-production'
+                         , table_name 'sys_category')
             """,
             reverse_sql="""
                 DROP FOREIGN TABLE typo3.category
@@ -47,34 +44,31 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
                 CREATE FOREIGN TABLE typo3.file_reference (
-                    uid integer,
-                    pid integer,
-                    tstamp bigint,
-                    crdate bigint,
-                    cruser_id integer,
-                    sorting integer,
-                    deleted smallint,
-                    hidden smallint,
-                    uid_local integer,
-                    uid_foreign integer,
-                    tablenames character varying,
-                    fieldname character varying,
-                    sorting_foreign integer,
-                    table_local character varying,
-                    title character varying,
-                    description text,
-                    alternative text,
-                    link character varying,
-                    downloadname text,
-                    showinpreview smallint,
-                    crop text,
-                    autoplay smallint
-                )
-                SERVER typo3
-                OPTIONS (
-                    dbname 'typo3-production',
-                    table_name 'sys_file_reference'
-                )
+                    uid integer
+                  , pid integer
+                  , tstamp bigint
+                  , crdate bigint
+                  , cruser_id integer
+                  , sorting integer
+                  , deleted smallint
+                  , hidden smallint
+                  , uid_local integer
+                  , uid_foreign integer
+                  , tablenames varchar
+                  , fieldname varchar
+                  , sorting_foreign integer
+                  , table_local varchar
+                  , title varchar
+                  , description text
+                  , alternative text
+                  , link varchar
+                  , downloadname text
+                  , showinpreview smallint
+                  , crop text
+                  , autoplay smallint
+                ) SERVER typo3
+                  OPTIONS (dbname 'typo3-production'
+                         , table_name 'sys_file_reference')
             """,
             reverse_sql="""
                 DROP FOREIGN TABLE typo3.file_reference
@@ -83,63 +77,60 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
                 CREATE FOREIGN TABLE typo3.news (
-                    uid integer,
-                    pid integer,
-                    tstamp bigint,
-                    crdate bigint,
-                    deleted smallint,
-                    hidden smallint,
-                    starttime bigint,
-                    endtime bigint,
-                    sorting integer,
-                    fe_group character varying,
-                    title text,
-                    teaser text,
-                    bodytext text,
-                    datetime bigint,
-                    archive bigint,
-                    author text,
-                    author_email text,
-                    categories integer,
-                    related integer,
-                    related_from integer,
-                    related_files text,
-                    related_links text,
-                    type character varying,
-                    keywords text,
-                    tags integer,
-                    media text,
-                    internalurl text,
-                    externalurl text,
-                    istopnews integer,
-                    content_elements text,
-                    path_segment text,
-                    alternative_title text,
-                    description text,
-                    fal_related_files integer,
-                    fal_media integer,
-                    is_event smallint,
-                    full_day smallint,
-                    event_end integer,
-                    organizer integer,
-                    location integer,
-                    organizer_simple character varying,
-                    location_simple character varying,
-                    www character varying,
-                    contact_name character varying,
-                    contact_email character varying,
-                    register smallint,
-                    registration_end integer,
-                    attendingfees smallint,
-                    dfppoints integer,
-                    t3ver_wsid integer,
-                    attendingfees_info text
-                )
-                SERVER typo3
-                OPTIONS (
-                    dbname 'typo3-production',
-                    table_name 'tx_news_domain_model_news'
-                )
+                    uid integer
+                  , pid integer
+                  , tstamp bigint
+                  , crdate bigint
+                  , deleted smallint
+                  , hidden smallint
+                  , starttime bigint
+                  , endtime bigint
+                  , sorting integer
+                  , fe_group varchar
+                  , title text
+                  , teaser text
+                  , bodytext text
+                  , datetime bigint
+                  , archive bigint
+                  , author text
+                  , author_email text
+                  , categories integer
+                  , related integer
+                  , related_from integer
+                  , related_files text
+                  , related_links text
+                  , type varchar
+                  , keywords text
+                  , tags integer
+                  , media text
+                  , internalurl text
+                  , externalurl text
+                  , istopnews integer
+                  , content_elements text
+                  , path_segment text
+                  , alternative_title text
+                  , description text
+                  , fal_related_files integer
+                  , fal_media integer
+                  , is_event smallint
+                  , full_day smallint
+                  , event_end integer
+                  , organizer integer
+                  , location integer
+                  , organizer_simple varchar
+                  , location_simple varchar
+                  , www varchar
+                  , contact_name varchar
+                  , contact_email varchar
+                  , register smallint
+                  , registration_end integer
+                  , attendingfees smallint
+                  , dfppoints integer
+                  , t3ver_wsid integer
+                  , attendingfees_info text
+                ) SERVER typo3
+                  OPTIONS (dbname 'typo3-production'
+                         , table_name 'tx_news_domain_model_news')
             """,
             reverse_sql="""
                 DROP FOREIGN TABLE typo3.news
@@ -148,24 +139,21 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
                 CREATE FOREIGN TABLE typo3.news_links (
-                    uid integer,
-                    pid integer,
-                    tstamp bigint,
-                    crdate bigint,
-                    cruser_id integer,
-                    sorting integer,
-                    deleted smallint,
-                    hidden smallint,
-                    parent integer,
-                    title character varying,
-                    description text,
-                    uri text
-                )
-                SERVER typo3
-                OPTIONS (
-                    dbname 'typo3-production',
-                    table_name 'tx_news_domain_model_link'
-                )
+                    uid integer
+                  , pid integer
+                  , tstamp bigint
+                  , crdate bigint
+                  , cruser_id integer
+                  , sorting integer
+                  , deleted smallint
+                  , hidden smallint
+                  , parent integer
+                  , title varchar
+                  , description text
+                  , uri text
+                ) SERVER typo3
+                  OPTIONS (dbname 'typo3-production'
+                         , table_name 'tx_news_domain_model_link')
             """,
             reverse_sql="""
                 DROP FOREIGN TABLE typo3.news_links
@@ -174,30 +162,27 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
                 CREATE FOREIGN TABLE typo3.file (
-                    uid integer,
-                    pid integer,
-                    tstamp bigint,
-                    type character varying,
-                    storage integer,
-                    identifier text,
-                    extension character varying,
-                    mime_type character varying,
-                    name text,
-                    sha1 character varying,
-                    size bigint,
-                    creation_date bigint,
-                    modification_date bigint,
-                    last_indexed bigint,
-                    missing smallint,
-                    metadata integer,
-                    identifier_hash character varying,
-                    folder_hash character varying
-                )
-                SERVER typo3
-                OPTIONS (
-                    dbname 'typo3-production',
-                    table_name 'sys_file'
-                )
+                    uid integer
+                  , pid integer
+                  , tstamp bigint
+                  , type varchar
+                  , storage integer
+                  , identifier text
+                  , extension varchar
+                  , mime_type varchar
+                  , name text
+                  , sha1 varchar
+                  , size bigint
+                  , creation_date bigint
+                  , modification_date bigint
+                  , last_indexed bigint
+                  , missing smallint
+                  , metadata integer
+                  , identifier_hash varchar
+                  , folder_hash varchar
+                ) SERVER typo3
+                  OPTIONS (dbname 'typo3-production'
+                         , table_name 'sys_file')
             """,
             reverse_sql="""
                 DROP FOREIGN TABLE typo3.file
@@ -206,18 +191,15 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
                 CREATE FOREIGN TABLE typo3.category_record (
-                    uid_local integer,
-                    uid_foreign integer,
-                    tablenames character varying,
-                    sorting integer,
-                    sorting_foreign integer,
-                    fieldname character varying
-                )
-                SERVER typo3
-                OPTIONS (
-                    dbname 'typo3-production',
-                    table_name 'sys_category_record_mm'
-                )
+                    uid_local integer
+                  , uid_foreign integer
+                  , tablenames varchar
+                  , sorting integer
+                  , sorting_foreign integer
+                  , fieldname varchar
+                ) SERVER typo3
+                  OPTIONS (dbname 'typo3-production'
+                         , table_name 'sys_category_record_mm')
             """,
             reverse_sql="""
                 DROP FOREIGN TABLE typo3.category_record
@@ -226,32 +208,29 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
                 CREATE FOREIGN TABLE typo3.content (
-                    uid integer,
-                    pid integer,
-                    tstamp bigint,
-                    crdate bigint,
-                    cruser_id integer,
-                    sorting integer,
-                    deleted smallint,
-                    hidden smallint,
-                    ctype character varying,
-                    header character varying,
-                    bodytext text,
-                    header_link character varying,
-                    list_type character varying,
-                    tx_news_related_news integer,
-                    subheader text,
-                    mugce_link_label text,
-                    mugce_subheader text,
-                    mugce_caption text,
-                    mugce_text_3 text,
-                    mugce_text_4 text
-                )
-                SERVER typo3
-                OPTIONS (
-                    dbname 'typo3-production',
-                    table_name 'tt_content'
-                )
+                    uid integer
+                  , pid integer
+                  , tstamp bigint
+                  , crdate bigint
+                  , cruser_id integer
+                  , sorting integer
+                  , deleted smallint
+                  , hidden smallint
+                  , ctype varchar
+                  , header varchar
+                  , bodytext text
+                  , header_link varchar
+                  , list_type varchar
+                  , tx_news_related_news integer
+                  , subheader text
+                  , mugce_link_label text
+                  , mugce_subheader text
+                  , mugce_caption text
+                  , mugce_text_3 text
+                  , mugce_text_4 text
+                ) SERVER typo3
+                  OPTIONS (dbname 'typo3-production'
+                         , table_name 'tt_content')
             """,
             reverse_sql="""
                 DROP FOREIGN TABLE typo3.content
@@ -261,24 +240,25 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE VIEW public.typo3_category AS SELECT
-                            uid AS id,
-                            CASE starttime
-                                WHEN 0 THEN CAST(NULL AS TIMESTAMPTZ)
-                                ELSE UNIX_TO_TIME(CAST((starttime) AS DOUBLE))
-                                END AS start,
-                            CASE endtime
-                                WHEN 0 THEN CAST(NULL AS TIMESTAMPTZ)
-                                ELSE UNIX_TO_TIME(CAST((endtime) AS DOUBLE))
-                                END AS "end",
-                            title,
-                            description,
-                            parent,
-                            tx_odsosm_marker AS marker
-                        FROM typo3.category
-                        WHERE
-                            ((deleted = 0) AND
-                            (hidden = 0))
+                        CREATE VIEW public.typo3_category
+                          AS SELECT uid AS id
+                                  , CASE starttime
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamptz)
+                                      ELSE unix_to_time(CAST(starttime AS double))
+                                    END AS start
+                                  , CASE endtime
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamptz)
+                                      ELSE unix_to_time(CAST(endtime AS double))
+                                    END AS "end"
+                                  , title
+                                  , description
+                                  , parent
+                                  , tx_odsosm_marker AS marker
+                             FROM typo3.category
+                             WHERE deleted = 0
+                               AND hidden = 0
                     """,
                     reverse_sql="""
                         DROP VIEW public.typo3_category
@@ -307,57 +287,70 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_event AS
-                        SELECT uid AS id,
-                            pid AS source_id,
-                            to_timestamp((datetime)::double precision) AS start,
-                                CASE event_end
-                                    WHEN 0 THEN (((to_timestamp((datetime)::double precision))::date + '24:00:00'::interval))::timestamp with time zone
-                                    ELSE to_timestamp((event_end)::double precision)
-                                END AS "end",
-                            ((full_day)::integer)::boolean AS allday,
-                            public.html_unescape(title) AS title,
-                            NULLIF(btrim((organizer_simple)::text, ' '::text), ''::text) AS organizer,
-                            NULLIF(btrim((location_simple)::text, ' '::text), ''::text) AS location,
-                            public.html_unescape(teaser) AS teaser,
-                            public.html_unescape(bodytext) AS body,
-                            regexp_split_to_array(NULLIF(btrim(keywords), ''::text), '\s*,\s*'::text) AS keywords,
-                            NULLIF(btrim(description), ''::text) AS description,
-                            ((register)::integer)::boolean AS register,
-                                CASE
-                                    WHEN (registration_end > 0) THEN to_timestamp((registration_end)::double precision)
-                                    ELSE NULL::timestamp with time zone
-                                END AS registration_end,
-                            ((attendingfees)::integer)::boolean AS attending_fees,
-                            NULLIF(btrim(attendingfees_info), ''::text) AS attending_fees_info,
-                            NULLIF(btrim((www)::text, ' '::text), ''::text) AS link,
-                                CASE
-                                    WHEN (dfppoints > 0) THEN dfppoints
-                                    ELSE NULL::integer
-                                END AS dfp_points,
-                            NULLIF(btrim((contact_name)::text, ' '::text), ''::text) AS contact,
-                            NULLIF(btrim((contact_email)::text, ' '::text), ''::text) AS email,
-                            to_timestamp((tstamp)::double precision) AS last_modified,
-                            ( SELECT fr.uid_local
-                                FROM typo3.file_reference fr
-                                WHERE
-                                (
-                                    (fr.uid_foreign = n.uid) AND
-                                    ((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND
-                                    ((fr.fieldname)::text = 'fal_media'::text) AND
-                                    (fr.showinpreview = 1) AND
-                                    (fr.hidden = 0) AND
-                                    (fr.deleted = 0))
-                                ORDER BY fr.sorting
-                                LIMIT 1) AS header_image_id
-                        FROM typo3.news n
-                        WHERE
-                        (
-                            (datetime <> 0) AND
-                            (deleted = 0) AND
-                            (hidden = 0) AND
-                            (t3ver_wsid = 0) AND
-                            (is_event = 1))
+                        CREATE MATERIALIZED VIEW public.typo3_event
+                          AS SELECT uid AS id
+                                  , pid AS source_id
+                                  , to_timestamp(CAST(datetime AS double precision)) AS start
+                                  , CASE event_end
+                                      WHEN 0
+                                        THEN CAST(CAST(to_timestamp(CAST(datetime AS double precision)) AS date) + CAST('24:00:00' AS interval) AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(event_end AS double precision))
+                                    END AS "end"
+                                  , CAST(CAST(full_day AS integer) AS boolean) AS allday
+                                  , public.html_unescape(title) AS title
+                                  , NULLIF(btrim(CAST(organizer_simple AS text)
+                                               , CAST(' ' AS text))
+                                         , CAST('' AS text)) AS organizer
+                                  , NULLIF(btrim(CAST(location_simple AS text)
+                                               , CAST(' ' AS text))
+                                         , CAST('' AS text)) AS location
+                                  , public.html_unescape(teaser) AS teaser
+                                  , public.html_unescape(bodytext) AS body
+                                  , regexp_split_to_array(NULLIF(btrim(keywords)
+                                                               , CAST('' AS text))
+                                                        , CAST('\s*,\s*' AS text)) AS keywords
+                                  , NULLIF(btrim(description)
+                                         , CAST('' AS text)) AS description
+                                  , CAST(CAST(register AS integer) AS boolean) AS register
+                                  , CASE
+                                      WHEN registration_end > 0
+                                        THEN to_timestamp(CAST(registration_end AS double precision))
+                                      ELSE CAST(NULL AS timestamp with time zone)
+                                    END AS registration_end
+                                  , CAST(CAST(attendingfees AS integer) AS boolean) AS attending_fees
+                                  , NULLIF(btrim(attendingfees_info)
+                                         , CAST('' AS text)) AS attending_fees_info
+                                  , NULLIF(btrim(CAST(www AS text)
+                                               , CAST(' ' AS text))
+                                         , CAST('' AS text)) AS link
+                                  , CASE
+                                      WHEN dfppoints > 0
+                                        THEN dfppoints
+                                      ELSE CAST(NULL AS integer)
+                                    END AS dfp_points
+                                  , NULLIF(btrim(CAST(contact_name AS text)
+                                               , CAST(' ' AS text))
+                                         , CAST('' AS text)) AS contact
+                                  , NULLIF(btrim(CAST(contact_email AS text)
+                                               , CAST(' ' AS text))
+                                         , CAST('' AS text)) AS email
+                                  , to_timestamp(CAST(tstamp AS double precision)) AS last_modified
+                                  , (SELECT fr.uid_local
+                                     FROM typo3.file_reference AS fr
+                                     WHERE fr.uid_foreign = n.uid
+                                       AND CAST(fr.tablenames AS text) = CAST('tx_news_domain_model_news' AS text)
+                                       AND CAST(fr.fieldname AS text) = CAST('fal_media' AS text)
+                                       AND fr.showinpreview = 1
+                                       AND fr.hidden = 0
+                                       AND fr.deleted = 0
+                                     ORDER BY fr.sorting
+                                     LIMIT 1) AS header_image_id
+                             FROM typo3.news AS n
+                             WHERE datetime <> 0
+                               AND deleted = 0
+                               AND hidden = 0
+                               AND t3ver_wsid = 0
+                               AND is_event = 1
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_event
@@ -434,22 +427,20 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE VIEW public.typo3_eventcategory AS SELECT
-                            CONCAT(COALESCE(cr.uid_local, ''), COALESCE('-', ''), COALESCE(cr.uid_foreign, '')) AS id,
-                            cr.uid_local AS category_id,
-                            cr.uid_foreign AS event_id
-                        FROM
-                            typo3.category_record AS cr
-                        JOIN
-                            typo3.news AS n ON (n.uid = cr.uid_foreign)
-                        WHERE
-                            (
-                                (CAST((cr.tablenames) AS TEXT) = CAST('tx_news_domain_model_news' AS TEXT)) AND
-                                (n.datetime <> 0) AND
-                                (n.event_end <> 0)
-                                AND (n.deleted = 0) AND
-                                (n.hidden = 0) AND
-                                (n.is_event = 1))
+                        CREATE OR REPLACE VIEW public.typo3_eventcategory
+                          AS SELECT concat(cr.uid_local, '-', cr.uid_foreign) AS id
+                                  , cr.uid_local AS category_id
+                                  , cr.uid_foreign AS event_id
+                             FROM typo3.category_record AS cr
+                                  INNER JOIN typo3.news AS n ON n.uid = cr.uid_foreign
+                             WHERE CAST(cr.tablenames AS text) = CAST('tx_news_domain_model_news' AS text)
+                               AND (n.starttime = 0
+                                 OR to_timestamp(CAST(n.starttime AS double precision)) < now())
+                               AND (n.endtime = 0
+                                 OR to_timestamp(CAST(n.endtime AS double precision)) > now())
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.is_event = 1
                     """,
                     reverse_sql="""
                         DROP VIEW public.typo3_eventcategory
@@ -478,62 +469,74 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_eventcontactbox AS
-                        SELECT c.uid AS id,
-                            n.uid AS event_id,
-                            r.uid_local AS media_id,
-                            c.header AS title,
-                            c.bodytext AS name,
-                                CASE btrim(c.subheader, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.subheader, ' '::text)
-                                END AS phone,
-                                CASE btrim((c.header_link)::text, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim((c.header_link)::text, ' '::text)
-                                END AS url,
-                                CASE btrim(c.mugce_link_label, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.mugce_link_label, ' '::text)
-                                END AS link_label,
-                                CASE btrim(c.mugce_subheader, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.mugce_subheader, ' '::text)
-                                END AS email,
-                                CASE btrim(c.mugce_caption, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.mugce_caption, ' '::text)
-                                END AS headline,
-                            ARRAY[c.mugce_text_3, c.mugce_text_4] AS address
-                        FROM typo3.content c,
-                            typo3.file_reference r,
-                            typo3.news n
-                        WHERE
-                            (
-                                (c.uid = r.uid_foreign) AND
-                                (c.tx_news_related_news = n.uid) AND
-                                ((r.tablenames)::text = 'tt_content'::text) AND
-                                ((c.ctype)::text = 'mugce_contact'::text) AND
-                                ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND
-                                ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND
-                                (r.deleted = 0) AND
-                                (r.hidden = 0) AND
-                                (n.datetime <> 0) AND
-                                (n.event_end <> 0) AND
-                                ((n.starttime = 0) OR((n.starttime)::double precision > date_part('epoch'::text, now()))) AND
-                                (
-                                    (
-                                        CASE n.full_day
-                                            WHEN 1 THEN (n.event_end + 86400)
-                                            ELSE n.event_end
-                                        END
-                                    )::double precision > date_part('epoch'::text, now())
-                                ) AND
-                                (n.deleted = 0) AND
-                                (n.hidden = 0) AND
-                                (n.t3ver_wsid = 0) AND
-                                (n.is_event = 1)
-                            )
+                        CREATE MATERIALIZED VIEW public.typo3_eventcontactbox
+                          AS SELECT c.uid AS id
+                                  , n.uid AS event_id
+                                  , r.uid_local AS media_id
+                                  , c.header AS title
+                                  , c.bodytext AS name
+                                  , CASE btrim(c.subheader
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.subheader
+                                               , CAST(' ' AS text))
+                                    END AS phone
+                                  , CASE btrim(CAST(c.header_link AS text)
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(CAST(c.header_link AS text)
+                                               , CAST(' ' AS text))
+                                    END AS url
+                                  , CASE btrim(c.mugce_link_label
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.mugce_link_label
+                                               , CAST(' ' AS text))
+                                    END AS link_label
+                                  , CASE btrim(c.mugce_subheader
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.mugce_subheader
+                                               , CAST(' ' AS text))
+                                    END AS email
+                                  , CASE btrim(c.mugce_caption
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.mugce_caption
+                                               , CAST(' ' AS text))
+                                    END AS headline
+                                  , ARRAY[c.mugce_text_3, c.mugce_text_4] AS address
+                             FROM typo3.content AS c, typo3.file_reference AS r, typo3.news AS n
+                             WHERE c.uid = r.uid_foreign
+                               AND c.tx_news_related_news = n.uid
+                               AND CAST(r.tablenames AS text) = CAST('tt_content' AS text)
+                               AND CAST(c.ctype AS text) = CAST('mugce_contact' AS text)
+                               AND CAST(r.fieldname AS text) = ANY(ARRAY[CAST('assets' AS text)
+                                                                       , CAST('image' AS text)])
+                               AND CAST(r.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                         , CAST('' AS text)])
+                               AND r.deleted = 0
+                               AND r.hidden = 0
+                               AND n.datetime <> 0
+                               AND n.event_end <> 0
+                               AND (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND CAST(CASE n.full_day
+                                          WHEN 1
+                                            THEN n.event_end + 86400
+                                          ELSE n.event_end
+                                        END AS double precision) > date_part(CAST('epoch' AS text)
+                                                                           , now())
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.t3ver_wsid = 0
+                               AND n.is_event = 1
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_eventcontactbox
@@ -593,31 +596,58 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_eventgallery AS
-                        SELECT r.uid AS id,
-                            r.uid_local AS media_id,
-                            n.uid AS event_id,
-                                CASE btrim((r.title)::text, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim((r.title)::text, ' '::text)
-                                END AS title,
-                                CASE btrim(r.description, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.description, ' '::text)
-                                END AS description,
-                                CASE btrim(r.alternative, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.alternative, ' '::text)
-                                END AS alternative,
-                            r.sorting AS "order"
-                        FROM typo3.news n,
-                            typo3.file_reference r,
-                            typo3.content c
-                        WHERE (((c.ctype)::text = 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND (n.datetime <> 0) AND (n.event_end <> 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision > date_part('epoch'::text, now()))) AND ((
-                                CASE n.full_day
-                                    WHEN 1 THEN (n.event_end + 86400)
-                                    ELSE n.event_end
-                                END)::double precision > date_part('epoch'::text, now())) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 1))
+                        CREATE MATERIALIZED VIEW public.typo3_eventgallery
+                          AS SELECT r.uid AS id
+                                  , r.uid_local AS media_id
+                                  , n.uid AS event_id
+                                  , CASE btrim(CAST(r.title AS text)
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(CAST(r.title AS text)
+                                               , CAST(' ' AS text))
+                                    END AS title
+                                  , CASE btrim(r.description
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.description
+                                               , CAST(' ' AS text))
+                                    END AS description
+                                  , CASE btrim(r.alternative
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.alternative
+                                               , CAST(' ' AS text))
+                                    END AS alternative
+                                  , r.sorting AS "order"
+                             FROM typo3.news AS n, typo3.file_reference AS r, typo3.content AS c
+                             WHERE CAST(c.ctype AS text) = CAST('mugce_gallery' AS text)
+                               AND c.tx_news_related_news = n.uid
+                               AND c.uid = r.uid_foreign
+                               AND CAST(r.tablenames AS text) = CAST('tt_content' AS text)
+                               AND CAST(r.fieldname AS text) = ANY(ARRAY[CAST('assets' AS text)
+                                                                       , CAST('image' AS text)])
+                               AND CAST(r.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                         , CAST('' AS text)])
+                               AND r.deleted = 0
+                               AND r.hidden = 0
+                               AND n.datetime <> 0
+                               AND n.event_end <> 0
+                               AND (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND CAST(CASE n.full_day
+                                          WHEN 1
+                                            THEN n.event_end + 86400
+                                          ELSE n.event_end
+                                        END AS double precision) > date_part(CAST('epoch' AS text)
+                                                                           , now())
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.t3ver_wsid = 0
+                               AND n.is_event = 1
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_eventgallery
@@ -649,31 +679,59 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_eventmedia AS
-                        SELECT r.uid AS id,
-                            r.uid_local AS media_id,
-                            n.uid AS event_id,
-                                CASE btrim((r.title)::text, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim((r.title)::text, ' '::text)
-                                END AS title,
-                                CASE btrim(r.description, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.description, ' '::text)
-                                END AS description,
-                                CASE btrim(r.alternative, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.alternative, ' '::text)
-                                END AS alternative,
-                            r.sorting AS "order"
-                        FROM typo3.news n,
-                            typo3.file_reference r,
-                            typo3.content c
-                        WHERE (((c.ctype)::text <> 'mugce_contact'::text) AND ((c.ctype)::text <> 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND (n.datetime <> 0) AND (n.event_end <> 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision > date_part('epoch'::text, now()))) AND ((
-                                CASE n.full_day
-                                    WHEN 1 THEN (n.event_end + 86400)
-                                    ELSE n.event_end
-                                END)::double precision > date_part('epoch'::text, now())) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 1))
+                        CREATE MATERIALIZED VIEW public.typo3_eventmedia
+                          AS SELECT r.uid AS id
+                                  , r.uid_local AS media_id
+                                  , n.uid AS event_id
+                                  , CASE btrim(CAST(r.title AS text)
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(CAST(r.title AS text)
+                                               , CAST(' ' AS text))
+                                    END AS title
+                                  , CASE btrim(r.description
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.description
+                                               , CAST(' ' AS text))
+                                    END AS description
+                                  , CASE btrim(r.alternative
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.alternative
+                                               , CAST(' ' AS text))
+                                    END AS alternative
+                                  , r.sorting AS "order"
+                             FROM typo3.news AS n, typo3.file_reference AS r, typo3.content AS c
+                             WHERE CAST(c.ctype AS text) <> CAST('mugce_contact' AS text)
+                               AND CAST(c.ctype AS text) <> CAST('mugce_gallery' AS text)
+                               AND c.tx_news_related_news = n.uid
+                               AND c.uid = r.uid_foreign
+                               AND CAST(r.tablenames AS text) = CAST('tt_content' AS text)
+                               AND CAST(r.fieldname AS text) = ANY(ARRAY[CAST('assets' AS text)
+                                                                       , CAST('image' AS text)])
+                               AND CAST(r.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                         , CAST('' AS text)])
+                               AND r.deleted = 0
+                               AND r.hidden = 0
+                               AND n.datetime <> 0
+                               AND n.event_end <> 0
+                               AND (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND CAST(CASE n.full_day
+                                          WHEN 1
+                                            THEN n.event_end + 86400
+                                          ELSE n.event_end
+                                        END AS double precision) > date_part(CAST('epoch' AS text)
+                                                                           , now())
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.t3ver_wsid = 0
+                               AND n.is_event = 1
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_eventmedia
@@ -705,21 +763,34 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_event_related_link AS
-                        SELECT nl.uid AS id,
-                            nl.pid AS source_id,
-                                CASE nl.tstamp
-                                    WHEN 0 THEN NULL::timestamp with time zone
-                                    ELSE to_timestamp((nl.tstamp)::double precision)
-                                END AS datetime,
-                            nl.parent AS event_id,
-                            nl.sorting AS "order",
-                            btrim(public.html_unescape((nl.title)::text)) AS title,
-                            NULLIF(btrim(public.html_unescape(nl.description)), ''::text) AS description,
-                            nl.uri AS url
-                        FROM (typo3.news_links nl
-                            JOIN typo3.news n ON ((n.uid = nl.parent)))
-                        WHERE (((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 1) AND (n.t3ver_wsid = 0) AND (nl.deleted = 0) AND (nl.hidden = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_event_related_link
+                          AS SELECT nl.uid AS id
+                                  , nl.pid AS source_id
+                                  , CASE nl.tstamp
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(nl.tstamp AS double precision))
+                                    END AS datetime
+                                  , nl.parent AS event_id
+                                  , nl.sorting AS "order"
+                                  , btrim(public.html_unescape(CAST(nl.title AS text))) AS title
+                                  , NULLIF(btrim(public.html_unescape(nl.description))
+                                         , CAST('' AS text)) AS description
+                                  , nl.uri AS url
+                             FROM typo3.news_links AS nl
+                                  INNER JOIN typo3.news AS n ON n.uid = nl.parent
+                             WHERE (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) < date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND (n.endtime = 0
+                                 OR CAST(n.endtime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                  , now()))
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.is_event = 1
+                               AND n.t3ver_wsid = 0
+                               AND nl.deleted = 0
+                               AND nl.hidden = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_event_related_link
@@ -771,22 +842,40 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_event_related_media AS
-                        SELECT fr.uid AS id,
-                            fr.pid AS source_id,
-                                CASE fr.tstamp
-                                    WHEN 0 THEN NULL::timestamp with time zone
-                                    ELSE to_timestamp((fr.tstamp)::double precision)
-                                END AS datetime,
-                            fr.uid_local AS media_id,
-                            fr.uid_foreign AS event_id,
-                            fr.sorting_foreign AS "order",
-                            NULLIF(btrim((fr.title)::text), ''::text) AS title,
-                            NULLIF(btrim(fr.description), ''::text) AS description
-                        FROM ((typo3.file_reference fr
-                            JOIN typo3.news n ON ((fr.uid_foreign = n.uid)))
-                            JOIN typo3.file f ON ((f.uid = fr.uid_local)))
-                        WHERE (((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND ((fr.fieldname)::text = 'fal_related_files'::text) AND ((fr.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 1) AND (n.t3ver_wsid = 0) AND (f.storage > 0) AND (f.missing = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_event_related_media
+                          AS SELECT fr.uid AS id
+                                  , fr.pid AS source_id
+                                  , CASE fr.tstamp
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(fr.tstamp AS double precision))
+                                    END AS datetime
+                                  , fr.uid_local AS media_id
+                                  , fr.uid_foreign AS event_id
+                                  , fr.sorting_foreign AS "order"
+                                  , NULLIF(btrim(CAST(fr.title AS text))
+                                         , CAST('' AS text)) AS title
+                                  , NULLIF(btrim(fr.description)
+                                         , CAST('' AS text)) AS description
+                             FROM typo3.file_reference AS fr
+                                  INNER JOIN typo3.news AS n ON fr.uid_foreign = n.uid
+                                  INNER JOIN typo3.file AS f ON f.uid = fr.uid_local
+                             WHERE CAST(fr.tablenames AS text) = CAST('tx_news_domain_model_news' AS text)
+                               AND CAST(fr.fieldname AS text) = CAST('fal_related_files' AS text)
+                               AND CAST(fr.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                          , CAST('' AS text)])
+                               AND (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) < date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND (n.endtime = 0
+                                 OR CAST(n.endtime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                  , now()))
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.is_event = 1
+                               AND n.t3ver_wsid = 0
+                               AND f.storage > 0
+                               AND f.missing = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_event_related_media
@@ -833,18 +922,15 @@ class Migration(migrations.Migration):
                 migrations.RunSQL(
                     sql="""
                         CREATE FOREIGN TABLE typo3."group" (
-                            uid integer,
-                            pid integer,
-                            tstamp bigint,
-                            title character varying,
-                            hidden smallint,
-                            deleted smallint
-                        )
-                        SERVER typo3
-                        OPTIONS (
-                            dbname 'typo3-production',
-                            table_name 'fe_groups'
-                        )
+                            uid integer
+                          , pid integer
+                          , tstamp bigint
+                          , title varchar
+                          , hidden smallint
+                          , deleted smallint
+                        ) SERVER typo3
+                          OPTIONS (dbname 'typo3-production'
+                                 , table_name 'fe_groups')
                     """,
                     reverse_sql="""
                         DROP FOREIGN TABLE typo3."group"
@@ -852,15 +938,19 @@ class Migration(migrations.Migration):
                 ),
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_group AS
-                        SELECT uid AS id,
-                            pid AS page,
-                                CASE btrim((title)::text, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim((title)::text, ' '::text)
-                                END AS title
-                        FROM typo3."group" g
-                        WHERE ((hidden = 0) AND (deleted = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_group
+                          AS SELECT uid AS id
+                                  , pid AS page
+                                  , CASE btrim(CAST(title AS text)
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(CAST(title AS text)
+                                               , CAST(' ' AS text))
+                                    END AS title
+                             FROM typo3."group" AS g
+                             WHERE hidden = 0
+                               AND deleted = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_group
@@ -888,15 +978,16 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_media AS
-                        SELECT uid AS id,
-                            storage AS storage_id,
-                            identifier AS path,
-                            mime_type AS mimetype,
-                            name AS filename,
-                            size
-                        FROM typo3.file f
-                        WHERE ((storage > 0) AND (missing = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_media
+                          AS SELECT uid AS id
+                                  , storage AS storage_id
+                                  , identifier AS path
+                                  , mime_type AS mimetype
+                                  , name AS filename
+                                  , size
+                             FROM typo3.file AS f
+                             WHERE storage > 0
+                               AND missing = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_media
@@ -930,37 +1021,61 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_news AS
-                        SELECT uid AS id,
-                            pid AS source_id,
-                                CASE datetime
-                                    WHEN 0 THEN NULL::timestamp with time zone
-                                    ELSE to_timestamp((datetime)::double precision)
-                                END AS datetime,
-                            public.html_unescape(title) AS title,
-                            public.html_unescape(teaser) AS teaser,
-                            public.html_unescape(bodytext) AS body,
-                                CASE starttime
-                                    WHEN 0 THEN NULL::timestamp with time zone
-                                    ELSE to_timestamp((starttime)::double precision)
-                                END AS start,
-                                CASE endtime
-                                    WHEN 0 THEN NULL::timestamp with time zone
-                                    ELSE to_timestamp((endtime)::double precision)
-                                END AS "end",
-                            NULLIF(btrim(author, ' '::text), ''::text) AS author,
-                            NULLIF(btrim(author_email, ' '::text), ''::text) AS email,
-                            regexp_split_to_array(NULLIF(btrim(keywords), ''::text), '\s*,\s*'::text) AS keywords,
-                            NULLIF(btrim(description), ''::text) AS description,
-                            tags,
-                            (istopnews = 1) AS topnews,
-                            to_timestamp((tstamp)::double precision) AS last_modified,
-                            ( SELECT fr.uid_local
-                                FROM typo3.file_reference fr
-                                WHERE ((fr.uid_foreign = n.uid) AND ((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND ((fr.fieldname)::text = 'fal_media'::text) AND (fr.hidden = 0) AND (fr.deleted = 0) AND (fr.showinpreview = 1))
-                                LIMIT 1) AS header_image_id
-                        FROM typo3.news n
-                        WHERE (((starttime = 0) OR ((starttime)::double precision < date_part('epoch'::text, now()))) AND ((endtime = 0) OR ((endtime)::double precision > date_part('epoch'::text, now()))) AND (deleted = 0) AND (hidden = 0) AND (is_event = 0) AND (t3ver_wsid = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_news
+                          AS SELECT uid AS id
+                                  , pid AS source_id
+                                  , CASE datetime
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(datetime AS double precision))
+                                    END AS datetime
+                                  , public.html_unescape(title) AS title
+                                  , public.html_unescape(teaser) AS teaser
+                                  , public.html_unescape(bodytext) AS body
+                                  , CASE starttime
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(starttime AS double precision))
+                                    END AS start
+                                  , CASE endtime
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(endtime AS double precision))
+                                    END AS "end"
+                                  , NULLIF(btrim(author
+                                               , CAST(' ' AS text))
+                                         , CAST('' AS text)) AS author
+                                  , NULLIF(btrim(author_email
+                                               , CAST(' ' AS text))
+                                         , CAST('' AS text)) AS email
+                                  , regexp_split_to_array(NULLIF(btrim(keywords)
+                                                               , CAST('' AS text))
+                                                        , CAST('\s*,\s*' AS text)) AS keywords
+                                  , NULLIF(btrim(description)
+                                         , CAST('' AS text)) AS description
+                                  , tags
+                                  , istopnews = 1 AS topnews
+                                  , to_timestamp(CAST(tstamp AS double precision)) AS last_modified
+                                  , (SELECT fr.uid_local
+                                     FROM typo3.file_reference AS fr
+                                     WHERE fr.uid_foreign = n.uid
+                                       AND CAST(fr.tablenames AS text) = CAST('tx_news_domain_model_news' AS text)
+                                       AND CAST(fr.fieldname AS text) = CAST('fal_media' AS text)
+                                       AND fr.hidden = 0
+                                       AND fr.deleted = 0
+                                       AND fr.showinpreview = 1
+                                     LIMIT 1) AS header_image_id
+                             FROM typo3.news AS n
+                             WHERE (starttime = 0
+                                 OR CAST(starttime AS double precision) < date_part(CAST('epoch' AS text)
+                                                                                  , now()))
+                               AND (endtime = 0
+                                 OR CAST(endtime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                , now()))
+                               AND deleted = 0
+                               AND hidden = 0
+                               AND is_event = 0
+                               AND t3ver_wsid = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_news
@@ -1011,7 +1126,20 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE VIEW public.typo3_newscategory AS SELECT CONCAT(COALESCE(cr.uid_local, ''), COALESCE('-', ''), COALESCE(cr.uid_foreign, '')) AS id, cr.uid_local AS category_id, cr.uid_foreign AS news_id FROM (typo3.category_record AS cr JOIN typo3.news AS n ON ((n.uid = cr.uid_foreign))) WHERE ((CAST((cr.tablenames) AS TEXT) = CAST('tx_news_domain_model_news' AS TEXT)) AND ((n.starttime = 0) OR (UNIX_TO_TIME(CAST((n.starttime) AS DOUBLE)) < CURRENT_TIMESTAMP())) AND ((n.endtime = 0) OR (UNIX_TO_TIME(CAST((n.endtime) AS DOUBLE)) > CURRENT_TIMESTAMP())) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 0))
+                        CREATE OR REPLACE VIEW public.typo3_newscategory
+                          AS SELECT concat(cr.uid_local, '-', cr.uid_foreign) AS id
+                                  , cr.uid_local AS category_id
+                                  , cr.uid_foreign AS news_id
+                             FROM typo3.category_record AS cr
+                                  INNER JOIN typo3.news AS n ON n.uid = cr.uid_foreign
+                             WHERE CAST(cr.tablenames AS text) = CAST('tx_news_domain_model_news' AS text)
+                               AND (n.starttime = 0
+                                 OR to_timestamp(CAST(n.starttime AS double precision)) < now())
+                               AND (n.endtime = 0
+                                 OR to_timestamp(CAST(n.endtime AS double precision)) > now())
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.is_event = 0
                     """,
                     reverse_sql="""
                         DROP VIEW public.typo3_newscategory
@@ -1040,37 +1168,61 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_newscontactbox AS
-                        SELECT c.uid AS id,
-                            n.uid AS news_id,
-                            r.uid_local AS media_id,
-                            c.header AS title,
-                            c.bodytext AS name,
-                                CASE btrim(c.subheader, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.subheader, ' '::text)
-                                END AS phone,
-                                CASE btrim((c.header_link)::text, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim((c.header_link)::text, ' '::text)
-                                END AS url,
-                                CASE btrim(c.mugce_link_label, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.mugce_link_label, ' '::text)
-                                END AS link_label,
-                                CASE btrim(c.mugce_subheader, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.mugce_subheader, ' '::text)
-                                END AS email,
-                                CASE btrim(c.mugce_caption, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(c.mugce_caption, ' '::text)
-                                END AS headline,
-                            ARRAY[c.mugce_text_3, c.mugce_text_4] AS address
-                        FROM ((typo3.news n
-                            JOIN typo3.content c ON (((c.tx_news_related_news = n.uid) AND ((c.ctype)::text = 'mugce_contact'::text))))
-                            LEFT JOIN typo3.file_reference r ON ((((r.tablenames)::text = 'tt_content'::text) AND (r.deleted = 0) AND (r.hidden = 0) AND (c.uid = r.uid_foreign) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])))))
-                        WHERE ((n.t3ver_wsid = 0) AND (n.is_event = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_newscontactbox
+                          AS SELECT c.uid AS id
+                                  , n.uid AS news_id
+                                  , r.uid_local AS media_id
+                                  , c.header AS title
+                                  , c.bodytext AS name
+                                  , CASE btrim(c.subheader
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.subheader
+                                               , CAST(' ' AS text))
+                                    END AS phone
+                                  , CASE btrim(CAST(c.header_link AS text)
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(CAST(c.header_link AS text)
+                                               , CAST(' ' AS text))
+                                    END AS url
+                                  , CASE btrim(c.mugce_link_label
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.mugce_link_label
+                                               , CAST(' ' AS text))
+                                    END AS link_label
+                                  , CASE btrim(c.mugce_subheader
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.mugce_subheader
+                                               , CAST(' ' AS text))
+                                    END AS email
+                                  , CASE btrim(c.mugce_caption
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(c.mugce_caption
+                                               , CAST(' ' AS text))
+                                    END AS headline
+                                  , ARRAY[c.mugce_text_3, c.mugce_text_4] AS address
+                             FROM typo3.news AS n
+                                  INNER JOIN typo3.content AS c ON c.tx_news_related_news = n.uid
+                                                               AND CAST(c.ctype AS text) = CAST('mugce_contact' AS text)
+                                  LEFT JOIN typo3.file_reference AS r ON CAST(r.tablenames AS text) = CAST('tt_content' AS text)
+                                                                     AND r.deleted = 0
+                                                                     AND r.hidden = 0
+                                                                     AND c.uid = r.uid_foreign
+                                                                     AND CAST(r.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                                                               , CAST('' AS text)])
+                                                                     AND CAST(r.fieldname AS text) = ANY(ARRAY[CAST('assets' AS text)
+                                                                                                             , CAST('image' AS text)])
+                             WHERE n.t3ver_wsid = 0
+                               AND n.is_event = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_newscontactbox
@@ -1130,27 +1282,53 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_newsgallery AS
-                        SELECT r.uid AS id,
-                            r.uid_local AS media_id,
-                            n.uid AS news_id,
-                                CASE btrim((r.title)::text, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim((r.title)::text, ' '::text)
-                                END AS title,
-                                CASE btrim(r.description, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.description, ' '::text)
-                                END AS description,
-                                CASE btrim(r.alternative, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.alternative, ' '::text)
-                                END AS alternative,
-                            r.sorting AS "order"
-                        FROM typo3.news n,
-                            typo3.file_reference r,
-                            typo3.content c
-                        WHERE (((c.ctype)::text = 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_newsgallery
+                          AS SELECT r.uid AS id
+                                  , r.uid_local AS media_id
+                                  , n.uid AS news_id
+                                  , CASE btrim(CAST(r.title AS text)
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(CAST(r.title AS text)
+                                               , CAST(' ' AS text))
+                                    END AS title
+                                  , CASE btrim(r.description
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.description
+                                               , CAST(' ' AS text))
+                                    END AS description
+                                  , CASE btrim(r.alternative
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.alternative
+                                               , CAST(' ' AS text))
+                                    END AS alternative
+                                  , r.sorting AS "order"
+                             FROM typo3.news AS n, typo3.file_reference AS r, typo3.content AS c
+                             WHERE CAST(c.ctype AS text) = CAST('mugce_gallery' AS text)
+                               AND c.tx_news_related_news = n.uid
+                               AND c.uid = r.uid_foreign
+                               AND CAST(r.tablenames AS text) = CAST('tt_content' AS text)
+                               AND CAST(r.fieldname AS text) = ANY(ARRAY[CAST('assets' AS text)
+                                                                       , CAST('image' AS text)])
+                               AND CAST(r.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                         , CAST('' AS text)])
+                               AND r.deleted = 0
+                               AND r.hidden = 0
+                               AND (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) < date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND (n.endtime = 0
+                                 OR CAST(n.endtime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                  , now()))
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.t3ver_wsid = 0
+                               AND n.is_event = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_newsgallery
@@ -1182,27 +1360,54 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_newsmedia AS
-                        SELECT r.uid AS id,
-                            r.uid_local AS media_id,
-                            n.uid AS news_id,
-                                CASE btrim((r.title)::text, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim((r.title)::text, ' '::text)
-                                END AS title,
-                                CASE btrim(r.description, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.description, ' '::text)
-                                END AS description,
-                                CASE btrim(r.alternative, ' '::text)
-                                    WHEN ''::text THEN NULL::text
-                                    ELSE btrim(r.alternative, ' '::text)
-                                END AS alternative,
-                            r.sorting AS "order"
-                        FROM typo3.news n,
-                            typo3.file_reference r,
-                            typo3.content c
-                        WHERE (((c.ctype)::text <> 'mugce_contact'::text) AND ((c.ctype)::text <> 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_newsmedia
+                          AS SELECT r.uid AS id
+                                  , r.uid_local AS media_id
+                                  , n.uid AS news_id
+                                  , CASE btrim(CAST(r.title AS text)
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(CAST(r.title AS text)
+                                               , CAST(' ' AS text))
+                                    END AS title
+                                  , CASE btrim(r.description
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.description
+                                               , CAST(' ' AS text))
+                                    END AS description
+                                  , CASE btrim(r.alternative
+                                             , CAST(' ' AS text))
+                                      WHEN CAST('' AS text)
+                                        THEN CAST(NULL AS text)
+                                      ELSE btrim(r.alternative
+                                               , CAST(' ' AS text))
+                                    END AS alternative
+                                  , r.sorting AS "order"
+                             FROM typo3.news AS n, typo3.file_reference AS r, typo3.content AS c
+                             WHERE CAST(c.ctype AS text) <> CAST('mugce_contact' AS text)
+                               AND CAST(c.ctype AS text) <> CAST('mugce_gallery' AS text)
+                               AND c.tx_news_related_news = n.uid
+                               AND c.uid = r.uid_foreign
+                               AND CAST(r.tablenames AS text) = CAST('tt_content' AS text)
+                               AND CAST(r.fieldname AS text) = ANY(ARRAY[CAST('assets' AS text)
+                                                                       , CAST('image' AS text)])
+                               AND CAST(r.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                         , CAST('' AS text)])
+                               AND r.deleted = 0
+                               AND r.hidden = 0
+                               AND (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) < date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND (n.endtime = 0
+                                 OR CAST(n.endtime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                  , now()))
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.t3ver_wsid = 0
+                               AND n.is_event = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_newsmedia
@@ -1234,21 +1439,34 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_news_related_link AS
-                        SELECT nl.uid AS id,
-                            nl.pid AS source_id,
-                                CASE nl.tstamp
-                                    WHEN 0 THEN NULL::timestamp with time zone
-                                    ELSE to_timestamp((nl.tstamp)::double precision)
-                                END AS datetime,
-                            nl.parent AS news_id,
-                            nl.sorting AS "order",
-                            btrim(public.html_unescape((nl.title)::text)) AS title,
-                            NULLIF(btrim(public.html_unescape(nl.description)), ''::text) AS description,
-                            nl.uri AS url
-                        FROM (typo3.news_links nl
-                            JOIN typo3.news n ON ((n.uid = nl.parent)))
-                        WHERE (((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 0) AND (n.t3ver_wsid = 0) AND (nl.deleted = 0) AND (nl.hidden = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_news_related_link
+                          AS SELECT nl.uid AS id
+                                  , nl.pid AS source_id
+                                  , CASE nl.tstamp
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(nl.tstamp AS double precision))
+                                    END AS datetime
+                                  , nl.parent AS news_id
+                                  , nl.sorting AS "order"
+                                  , btrim(public.html_unescape(CAST(nl.title AS text))) AS title
+                                  , NULLIF(btrim(public.html_unescape(nl.description))
+                                         , CAST('' AS text)) AS description
+                                  , nl.uri AS url
+                             FROM typo3.news_links AS nl
+                                  INNER JOIN typo3.news AS n ON n.uid = nl.parent
+                             WHERE (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) < date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND (n.endtime = 0
+                                 OR CAST(n.endtime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                  , now()))
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.is_event = 0
+                               AND n.t3ver_wsid = 0
+                               AND nl.deleted = 0
+                               AND nl.hidden = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_news_related_link
@@ -1300,22 +1518,40 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW public.typo3_news_related_media AS
-                        SELECT fr.uid AS id,
-                            fr.pid AS source_id,
-                                CASE fr.tstamp
-                                    WHEN 0 THEN NULL::timestamp with time zone
-                                    ELSE to_timestamp((fr.tstamp)::double precision)
-                                END AS datetime,
-                            fr.uid_local AS media_id,
-                            fr.uid_foreign AS news_id,
-                            fr.sorting_foreign AS "order",
-                            NULLIF(btrim((fr.title)::text), ''::text) AS title,
-                            NULLIF(btrim(fr.description), ''::text) AS description
-                        FROM ((typo3.file_reference fr
-                            JOIN typo3.news n ON ((fr.uid_foreign = n.uid)))
-                            JOIN typo3.file f ON ((f.uid = fr.uid_local)))
-                        WHERE (((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND ((fr.fieldname)::text = 'fal_related_files'::text) AND ((fr.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 0) AND (n.t3ver_wsid = 0) AND (f.storage > 0) AND (f.missing = 0))
+                        CREATE MATERIALIZED VIEW public.typo3_news_related_media
+                          AS SELECT fr.uid AS id
+                                  , fr.pid AS source_id
+                                  , CASE fr.tstamp
+                                      WHEN 0
+                                        THEN CAST(NULL AS timestamp with time zone)
+                                      ELSE to_timestamp(CAST(fr.tstamp AS double precision))
+                                    END AS datetime
+                                  , fr.uid_local AS media_id
+                                  , fr.uid_foreign AS news_id
+                                  , fr.sorting_foreign AS "order"
+                                  , NULLIF(btrim(CAST(fr.title AS text))
+                                         , CAST('' AS text)) AS title
+                                  , NULLIF(btrim(fr.description)
+                                         , CAST('' AS text)) AS description
+                             FROM typo3.file_reference AS fr
+                                  INNER JOIN typo3.news AS n ON fr.uid_foreign = n.uid
+                                  INNER JOIN typo3.file AS f ON f.uid = fr.uid_local
+                             WHERE CAST(fr.tablenames AS text) = CAST('tx_news_domain_model_news' AS text)
+                               AND CAST(fr.fieldname AS text) = CAST('fal_related_files' AS text)
+                               AND CAST(fr.table_local AS text) = ANY(ARRAY[CAST('sys_file' AS text)
+                                                                          , CAST('' AS text)])
+                               AND (n.starttime = 0
+                                 OR CAST(n.starttime AS double precision) < date_part(CAST('epoch' AS text)
+                                                                                    , now()))
+                               AND (n.endtime = 0
+                                 OR CAST(n.endtime AS double precision) > date_part(CAST('epoch' AS text)
+                                                                                  , now()))
+                               AND n.deleted = 0
+                               AND n.hidden = 0
+                               AND n.is_event = 0
+                               AND n.t3ver_wsid = 0
+                               AND f.storage > 0
+                               AND f.missing = 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_news_related_media
@@ -1361,13 +1597,15 @@ class Migration(migrations.Migration):
             database_operations=[
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW typo3.source AS
-                        SELECT uid AS id,
-                            title
-                        FROM typo3.page p
-                        WHERE ((deleted = 0) AND (hidden = 0) AND (( SELECT count(1) AS count
-                                FROM typo3.news n
-                                WHERE (n.pid = p.uid)) > 0))
+                        CREATE MATERIALIZED VIEW typo3.source
+                          AS SELECT uid AS id
+                                  , title
+                             FROM typo3.page AS p
+                             WHERE deleted = 0
+                               AND hidden = 0
+                               AND (SELECT count(1) AS count
+                                    FROM typo3.news AS n
+                                    WHERE n.pid = p.uid) > 0
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW typo3.source
@@ -1375,7 +1613,12 @@ class Migration(migrations.Migration):
                 ),
                 migrations.RunSQL(
                     sql="""
-                        CREATE VIEW public.typo3_source AS SELECT s.id, s.title, COALESCE(ds.private, FALSE) AS private FROM (typo3.source AS s LEFT JOIN public.typo3_djangosource AS ds ON ((s.id = ds.id_id)))
+                        CREATE VIEW public.typo3_source
+                          AS SELECT s.id
+                                  , s.title
+                                  , COALESCE(ds.private, FALSE) AS private
+                             FROM typo3.source AS s
+                                  LEFT JOIN public.typo3_djangosource AS ds ON s.id = ds.id_id
                     """,
                     reverse_sql="""
                         DROP VIEW public.typo3_source
@@ -1410,22 +1653,19 @@ class Migration(migrations.Migration):
                 migrations.RunSQL(
                     sql="""
                         CREATE FOREIGN TABLE typo3.file_storage (
-                            uid integer,
-                            pid integer,
-                            tstamp bigint,
-                            crdate bigint,
-                            deleted smallint,
-                            name text,
-                            is_browsable smallint,
-                            is_public smallint,
-                            is_online smallint,
-                            is_default smallint
-                        )
-                        SERVER typo3
-                        OPTIONS (
-                            dbname 'typo3-production',
-                            table_name 'sys_file_storage'
-                        )
+                            uid integer
+                          , pid integer
+                          , tstamp bigint
+                          , crdate bigint
+                          , deleted smallint
+                          , name text
+                          , is_browsable smallint
+                          , is_public smallint
+                          , is_online smallint
+                          , is_default smallint
+                        ) SERVER typo3
+                          OPTIONS (dbname 'typo3-production'
+                                 , table_name 'sys_file_storage')
                     """,
                     reverse_sql="""
                         DROP FOREIGN TABLE typo3.file_storage
@@ -1433,12 +1673,14 @@ class Migration(migrations.Migration):
                 ),
                 migrations.RunSQL(
                     sql="""
-                        CREATE MATERIALIZED VIEW typo3.storage AS
-                        SELECT uid AS id,
-                            name AS title,
-                            (is_default = 1) AS "default"
-                        FROM typo3.file_storage fs
-                        WHERE ((deleted = 0) AND (is_public = 1) AND (is_online = 1))
+                        CREATE MATERIALIZED VIEW typo3.storage
+                          AS SELECT uid AS id
+                                  , name AS title
+                                  , is_default = 1 AS "default"
+                             FROM typo3.file_storage AS fs
+                             WHERE deleted = 0
+                               AND is_public = 1
+                               AND is_online = 1
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW typo3.storage
@@ -1446,7 +1688,12 @@ class Migration(migrations.Migration):
                 ),
                 migrations.RunSQL(
                     sql="""
-                        CREATE VIEW public.typo3_storage AS SELECT s.id, s.title, ds.url FROM (typo3.storage AS s LEFT JOIN public.typo3_djangostorage AS ds ON ((ds.id_id = s.id)))
+                        CREATE VIEW public.typo3_storage
+                          AS SELECT s.id
+                                  , s.title
+                                  , ds.url
+                             FROM typo3.storage AS s
+                                  LEFT JOIN public.typo3_djangostorage AS ds ON ds.id_id = s.id
                     """,
                     reverse_sql="""
                         DROP VIEW public.typo3_storage
@@ -1481,25 +1728,22 @@ class Migration(migrations.Migration):
                 migrations.RunSQL(
                     sql="""
                         CREATE FOREIGN TABLE typo3.zmf_course (
-                            uid integer,
-                            pid integer,
-                            tstamp bigint,
-                            crdate bigint,
-                            sorting integer,
-                            deleted smallint,
-                            hidden smallint,
-                            l10n_parent integer,
-                            title character varying,
-                            bodytext character varying,
-                            email character varying,
-                            module integer,
-                            categories integer
-                        )
-                        SERVER typo3
-                        OPTIONS (
-                            dbname 'typo3-production',
-                            table_name 'tx_mugzmfcourses_domain_model_course'
-                        )
+                            uid integer
+                          , pid integer
+                          , tstamp bigint
+                          , crdate bigint
+                          , sorting integer
+                          , deleted smallint
+                          , hidden smallint
+                          , l10n_parent integer
+                          , title varchar
+                          , bodytext varchar
+                          , email varchar
+                          , module integer
+                          , categories integer
+                        ) SERVER typo3
+                          OPTIONS (dbname 'typo3-production'
+                                 , table_name 'tx_mugzmfcourses_domain_model_course')
                     """,
                     reverse_sql="""
                         DROP FOREIGN TABLE typo3.zmf_course
@@ -1507,21 +1751,21 @@ class Migration(migrations.Migration):
                 ),
                 migrations.RunSQL(
                     sql="""
-                        CREATE VIEW public.typo3_zmf_course AS SELECT
-                            uid AS id,
-                            pid AS page,
-                            UNIX_TO_TIME(CAST((tstamp) AS DOUBLE)) AS last_modified,
-                            UNIX_TO_TIME(CAST((crdate) AS DOUBLE)) AS created,
-                            sorting,
-                            title,
-                            NULLIF(CAST((bodytext) AS TEXT), CAST('' AS TEXT)) AS description,
-                            email,
-                            NULLIF(module, 0) AS module_id,
-                            categories AS category_id
-                        FROM
-                            typo3.zmf_course AS zc
-                        WHERE
-                            ((deleted = 0) AND (hidden = 0))
+                        CREATE VIEW public.typo3_zmf_course
+                          AS SELECT uid AS id
+                                  , pid AS page
+                                  , unix_to_time(CAST(tstamp AS double)) AS last_modified
+                                  , unix_to_time(CAST(crdate AS double)) AS created
+                                  , sorting
+                                  , title
+                                  , NULLIF(CAST(bodytext AS text)
+                                         , CAST('' AS text)) AS description
+                                  , email
+                                  , NULLIF(module, 0) AS module_id
+                                  , categories AS category_id
+                             FROM typo3.zmf_course AS zc
+                             WHERE deleted = 0
+                               AND hidden = 0
                     """,
                     reverse_sql="""
                         DROP VIEW public.typo3_zmf_course
