@@ -515,7 +515,7 @@ class Migration(migrations.Migration):
                                 ((r.tablenames)::text = 'tt_content'::text) AND
                                 ((c.ctype)::text = 'mugce_contact'::text) AND
                                 ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND
-                                ((r.table_local)::text = 'sys_file'::text) AND
+                                ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND
                                 (r.deleted = 0) AND
                                 (r.hidden = 0) AND
                                 (n.datetime <> 0) AND
@@ -613,7 +613,7 @@ class Migration(migrations.Migration):
                         FROM typo3.news n,
                             typo3.file_reference r,
                             typo3.content c
-                        WHERE (((c.ctype)::text = 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = 'sys_file'::text) AND (r.deleted = 0) AND (r.hidden = 0) AND (n.datetime <> 0) AND (n.event_end <> 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision > date_part('epoch'::text, now()))) AND ((
+                        WHERE (((c.ctype)::text = 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND (n.datetime <> 0) AND (n.event_end <> 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision > date_part('epoch'::text, now()))) AND ((
                                 CASE n.full_day
                                     WHEN 1 THEN (n.event_end + 86400)
                                     ELSE n.event_end
@@ -669,7 +669,7 @@ class Migration(migrations.Migration):
                         FROM typo3.news n,
                             typo3.file_reference r,
                             typo3.content c
-                        WHERE (((c.ctype)::text <> 'mugce_contact'::text) AND ((c.ctype)::text <> 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = 'sys_file'::text) AND (r.deleted = 0) AND (r.hidden = 0) AND (n.datetime <> 0) AND (n.event_end <> 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision > date_part('epoch'::text, now()))) AND ((
+                        WHERE (((c.ctype)::text <> 'mugce_contact'::text) AND ((c.ctype)::text <> 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND (n.datetime <> 0) AND (n.event_end <> 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision > date_part('epoch'::text, now()))) AND ((
                                 CASE n.full_day
                                     WHEN 1 THEN (n.event_end + 86400)
                                     ELSE n.event_end
@@ -786,7 +786,7 @@ class Migration(migrations.Migration):
                         FROM ((typo3.file_reference fr
                             JOIN typo3.news n ON ((fr.uid_foreign = n.uid)))
                             JOIN typo3.file f ON ((f.uid = fr.uid_local)))
-                        WHERE (((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND ((fr.fieldname)::text = 'fal_related_files'::text) AND ((fr.table_local)::text = 'sys_file'::text) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 1) AND (n.t3ver_wsid = 0) AND (f.storage > 0) AND (f.missing = 0))
+                        WHERE (((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND ((fr.fieldname)::text = 'fal_related_files'::text) AND ((fr.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 1) AND (n.t3ver_wsid = 0) AND (f.storage > 0) AND (f.missing = 0))
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_event_related_media
@@ -1150,7 +1150,7 @@ class Migration(migrations.Migration):
                         FROM typo3.news n,
                             typo3.file_reference r,
                             typo3.content c
-                        WHERE (((c.ctype)::text = 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = 'sys_file'::text) AND (r.deleted = 0) AND (r.hidden = 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 0))
+                        WHERE (((c.ctype)::text = 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 0))
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_newsgallery
@@ -1202,7 +1202,7 @@ class Migration(migrations.Migration):
                         FROM typo3.news n,
                             typo3.file_reference r,
                             typo3.content c
-                        WHERE (((c.ctype)::text <> 'mugce_contact'::text) AND ((c.ctype)::text <> 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = 'sys_file'::text) AND (r.deleted = 0) AND (r.hidden = 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 0))
+                        WHERE (((c.ctype)::text <> 'mugce_contact'::text) AND ((c.ctype)::text <> 'mugce_gallery'::text) AND (c.tx_news_related_news = n.uid) AND (c.uid = r.uid_foreign) AND ((r.tablenames)::text = 'tt_content'::text) AND ((r.fieldname)::text = ANY (ARRAY['assets'::text, 'image'::text])) AND ((r.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND (r.deleted = 0) AND (r.hidden = 0) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.t3ver_wsid = 0) AND (n.is_event = 0))
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_newsmedia
@@ -1315,7 +1315,7 @@ class Migration(migrations.Migration):
                         FROM ((typo3.file_reference fr
                             JOIN typo3.news n ON ((fr.uid_foreign = n.uid)))
                             JOIN typo3.file f ON ((f.uid = fr.uid_local)))
-                        WHERE (((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND ((fr.fieldname)::text = 'fal_related_files'::text) AND ((fr.table_local)::text = 'sys_file'::text) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 0) AND (n.t3ver_wsid = 0) AND (f.storage > 0) AND (f.missing = 0))
+                        WHERE (((fr.tablenames)::text = 'tx_news_domain_model_news'::text) AND ((fr.fieldname)::text = 'fal_related_files'::text) AND ((fr.table_local)::text = ANY (ARRAY['sys_file'::text, ''::text])) AND ((n.starttime = 0) OR ((n.starttime)::double precision < date_part('epoch'::text, now()))) AND ((n.endtime = 0) OR ((n.endtime)::double precision > date_part('epoch'::text, now()))) AND (n.deleted = 0) AND (n.hidden = 0) AND (n.is_event = 0) AND (n.t3ver_wsid = 0) AND (f.storage > 0) AND (f.missing = 0))
                     """,
                     reverse_sql="""
                         DROP MATERIALIZED VIEW public.typo3_news_related_media
