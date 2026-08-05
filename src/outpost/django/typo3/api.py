@@ -33,7 +33,7 @@ class CategoryViewSet(ReadOnlyModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
     permission_classes = (AllowAny,)
-    filter_fields = ("start", "end")
+    filterset_fields = ("start", "end")
 
 
 @docstring_format(
@@ -70,7 +70,7 @@ class EventViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     serializer_class = serializers.EventSerializer
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
-    filter_class = filters.EventFilter
+    filterset_class = filters.EventFilter
     permit_list_expands = ("categories",)
 
     def get_queryset(self):
@@ -103,7 +103,7 @@ class NewsViewSet(ReadOnlyModelViewSet):
     serializer_class = serializers.NewsSerializer
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
-    filter_class = filters.NewsFilter
+    filterset_class = filters.NewsFilter
     permit_list_expands = ("categories",)
 
     def get_queryset(self):
