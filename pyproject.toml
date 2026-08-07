@@ -28,3 +28,6 @@ line_length = 120
 known_first_party = "outpost.django.typo3"
 known_third_party = "django,outpost"
 default_section = "THIRDPARTY"
+
+[tool.setuptools_scm.scm.git]
+describe_command = "git describe --dirty --tags"
