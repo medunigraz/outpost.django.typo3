@@ -120,7 +120,7 @@ class EventSerializer(FlexFieldsModelSerializer):
     """
 
     expandable_fields = {
-        "categories": (CategorySerializer, {"source": "categories", "many": True}),
+        "categories": (CategorySerializer, {"many": True}),
     }
     url = URLField(read_only=True, allow_null=True)
     media = EventMediaSerializer(many=True, read_only=True)
@@ -210,7 +210,7 @@ class NewsSerializer(FlexFieldsModelSerializer):
     """
 
     expandable_fields = {
-        "categories": (CategorySerializer, {"source": "categories", "many": True}),
+        "categories": (CategorySerializer, {"many": True}),
     }
     url = URLField(read_only=True, allow_null=True)
     media = NewsMediaSerializer(many=True, read_only=True)
