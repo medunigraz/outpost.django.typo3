@@ -312,6 +312,13 @@ class Event(models.Model):
         blank=True,
         related_name="+",
     )
+    language = models.ForeignKey(
+        "SourceLanguage",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         managed = False
@@ -645,6 +652,13 @@ class News(models.Model):
         blank=True,
         related_name="+",
     )
+    language = models.ForeignKey(
+        "SourceLanguage",
+        models.DO_NOTHING,
+        db_constraint=False,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         managed = False
@@ -857,3 +871,12 @@ class NewsRelatedMedia(OrderedModel):
 
     def __str__(s):
         return f"{s.news}: {s.title}"
+
+
+class SourceLanguage(models.Model):
+    source = models.ForeignKey("Source", models.DO_NOTHING, db_constraint=False)
+    value = models.PositiveIntegerField()
+    language = models.ForeignKey("base.Language", models.CASCADE)
+
+    def __str__(self):
+        return f"{self.source.title} ({self.language})"

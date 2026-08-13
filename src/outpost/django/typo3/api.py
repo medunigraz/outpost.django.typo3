@@ -71,7 +71,7 @@ class EventViewSet(FlexFieldsMixin, ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = filters.EventFilter
-    permit_list_expands = ("categories",)
+    permit_list_expands = ("categories", "language")
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -104,7 +104,7 @@ class NewsViewSet(ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = filters.NewsFilter
-    permit_list_expands = ("categories",)
+    permit_list_expands = ("categories", "language")
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:

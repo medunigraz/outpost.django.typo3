@@ -16,6 +16,16 @@ from . import models
 logger = logging.getLogger(__name__)
 
 
+class SourceLanguageSerializer(ModelSerializer):
+    """ """
+
+    isocode = ReadOnlyField(source="language.part1")
+
+    class Meta:
+        model = models.SourceLanguage
+        fields = ("isocode",)
+
+
 class GroupSerializer(ModelSerializer):
     """ """
 
@@ -121,6 +131,7 @@ class EventSerializer(FlexFieldsModelSerializer):
 
     expandable_fields = {
         "categories": (CategorySerializer, {"many": True}),
+        "language": SourceLanguageSerializer,
     }
     url = URLField(read_only=True, allow_null=True)
     media = EventMediaSerializer(many=True, read_only=True)
@@ -211,6 +222,7 @@ class NewsSerializer(FlexFieldsModelSerializer):
 
     expandable_fields = {
         "categories": (CategorySerializer, {"many": True}),
+        "language": SourceLanguageSerializer,
     }
     url = URLField(read_only=True, allow_null=True)
     media = NewsMediaSerializer(many=True, read_only=True)

@@ -81,6 +81,7 @@ class Migration(migrations.Migration):
                   , pid integer
                   , tstamp bigint
                   , crdate bigint
+                  , sys_language_uid int4
                   , deleted smallint
                   , hidden smallint
                   , starttime bigint
